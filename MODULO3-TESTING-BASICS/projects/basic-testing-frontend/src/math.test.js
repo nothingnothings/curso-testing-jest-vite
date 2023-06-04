@@ -44,7 +44,7 @@ it('should yield a correct sum if an array of numeric string values is provided'
 
   const values = ['1', '2', '3'];
   const expectedResult = values.reduce((prevValue, curValue) => {
-    return +prevValue + +curValue;  ///queremos um REAL NUMBER, por isso o '+prevValue' e o '+curValue'...
+    return +prevValue + +curValue; ///queremos um REAL NUMBER, por isso o '+prevValue' e o '+curValue'...
   }, 0);
 
   // ACT
@@ -54,4 +54,25 @@ it('should yield a correct sum if an array of numeric string values is provided'
   // ASSERT
 
   expect(result).toBe(expectedResult);
+});
+
+it('should yield 0 if an empty array is provided', () => {
+  // ARRANGE
+  const values = [];
+
+  // ACT
+  const result = add(values);
+
+  // ASSERT
+  expect(result).toBe(0);
+});
+
+it('should throw an error if no argument is passed into the function', () => {
+  // ARRANGE
+
+  // ACT
+  const result = add();
+
+  // ASSERT
+  expect(result).toThrowError();
 });

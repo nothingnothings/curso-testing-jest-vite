@@ -1,0 +1,640 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... ATÉ ESSE PONTO,
+
+
+APRENDEMOS A ESCREVER TESTS,
+
+
+
+E APRENDEMOS QUE 
+
+
+''DEVEMOS USAR O PATTERN TRIPLE A'...
+
+
+
+
+
+
+
+E AGORA SABEMOS QUE 
+
+
+''DEVEMOS ESCREVER MAIS DO QUE 1 ÚNICO TEST'',
+
+
+
+PARA _ CONSEGUIRMOS CHECAR DIFERENTES CENÁRIOS,
+
+
+
+
+E PARA __ TAMBÉM _ CHECAR 'CERTAIN THINGS' QUE 
+NÃO QUEREMOS 
+
+
+
+QUE ACONTEÇAM,
+
+
+
+
+OU ENTAÕ 
+
+
+
+CERTOS VALUES QUE ESPERAMOS CONSEGUIR SE 'INVALID VALUES'
+
+ACABAM 
+
+
+
+PASSED IN...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... APRENDEMOS MT SOBRE TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS ISSO É REALMENTE TUDO QUE 
+
+
+__ DEVEMOS FAZER/ADICIONAR PARA ESSA FUNCTION DE 'ADD',
+
+
+
+
+
+PARA ESSA UNIT?
+
+
+
+
+
+
+
+
+
+
+DEVEMOS ESCREVER MAIS TESTS?
+
+
+
+
+
+
+
+
+
+
+--> GERALMENTE, 
+
+ESSA RESPOSTA É IMPOSSÍVEL DE RESPONDER:
+
+
+
+TUDO DEPENDE 
+
+
+DE 
+
+VC E SUAS EXPECTATIONS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC SEMPRE QUER SER BEM 'THOROUGH' COM SEUS TESTS,
+
+
+VC QUER PREVER 
+QUAISQUER 
+
+CENÁRIOS QUE PODEM ACONTECER,
+
+
+E ESCREVER 
+
+
+TESTS APROPRIADOS --------> MAS, NO FINAL DAS CONTAS,
+
+
+
+O PROCESSO 
+
+
+DE 
+
+
+
+
+WRITE DE TESTS É UM PROCESSO ITERATIVO -------> ISSO QUER DIZER QUE:
+
+
+
+
+
+
+
+
+1) VC ESCREVE SEU CÓDIGO....
+
+
+
+
+
+
+
+2) DPS, VC ESCREVE SEU CÓDIGO DE TESTS...
+
+
+
+
+
+
+
+
+3) DPS VC ESCREVE SEU CÓDIGO DE NOVO, PARA FAZER ALGO DIFERENTE...
+
+
+
+
+
+
+
+
+4) AÍ VC VOLTA AO CÓDIGO DE TESTS,
+
+SE VC REALMENTE PRECISAR DISSO (depende)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VOCê PROVAVELMENTE ADICIONARÁ MAIS TESTES AO LONGO DO TEMPO...
+
+
+
+
+
+
+
+
+
+
+--> QUANTO MAIS TEMPO VC TRABALHA EM 1 PROJECT,
+
+
+
+MAIS IDEIAS VC TERÁ SOBRE ' O QUE PODE DAR ERRADO'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SEUS TESTES DEVEM COBRIR A MAIOR QUANTIDADE DE 
+
+
+
+CENÁRIOS POSSÍVEIS...
+
+
+
+
+
+
+
+
+
+
+
+--> VOCÊ SEMPRE QUER ESTAR 'ABERTO'
+
+
+
+AO WRITE DE MAIS TESTS... E VC TAMBÉM SEMPRE QUER 
+
+PENSAR 
+
+SOBRE 
+
+
+OUTROS POSSIBLE VALUES,
+
+SITUAÇÕES EM QUE AS COISAS PODEM CRASHAR,
+
+
+ETC...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... PARA A FUNCTION DE 'add()',
+
+
+O PROFESSOR TEM MAIS 3 
+
+
+TESTS QUE ELE QUER ADICIONAR...
+
+
+
+
+
+
+
+
+
+
+
+
+--> 3 TESTS QUE FAZEM SENTIDO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1o TEST --> O PROFESSOR QUER CHECAR SE A FUNCTION 
+
+
+RESULTA EM '0' COMO SUm... -> QUER CHECAR SE A SUM FICA COMO '0'
+
+
+SE 1 
+
+__ARRAY VAZIO É PROVIDENCIADO...
+
+
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+
+
+it('should yield 0 if an empty array is provided', () => {
+  // ARRANGE
+  const values = [];
+
+  // ACT
+  const result = add(values);
+
+  // ASSERT
+  expect(result).toBe(0);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... ISSO RESULTOU EM 'PASSED',
+
+
+
+
+
+
+PQ REALMENTE 1 EMPTY ARRAY RESULTOU EM '0'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSE  TEST É BOM PQ 
+
+
+
+
+'''PODEMOS TER DIFERENTES EXPECTATIONS'...
+
+
+
+
+
+
+
+
+
+--> OK.. NOSSA EXPECTATIVA É QUE 
+
+ 
+
+
+
+ O RESULTADO SEJA DE '0'....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -> CERTO...
+
+
+
+
+
+
+
+
+
+ ESSE É 1 TEST ADICIONAL QUE O PROFESSOR QUERIA COLOCAR..
+
+
+
+
+
+
+
+
+
+
+
+
+ --> O PROFESSOR TAMBÉM QUER 
+
+
+
+
+ 
+ COLOCAR 1 TEST 
+
+
+
+
+ PARA ''''ISSO DEVE ACONTECER SE NENHUM
+
+
+ ___ ARGUMENT FOR PASSADO''...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> MAS O PROFESSOR ACHA QUE FAZ MAIS SENTIDO DEIXAR A ESPECTATIVA 
+
+ COMO 
+
+ 'SHOULD THROW AN ERROR'
+
+
+ SE 1 
+
+ ARGUMENTO NÃO FOR PROVIDENCIADO..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ OK, MAS ISTO AQUI NÃO FUNCIONA:
+
+
+
+
+
+
+
+
+
+
+ it('should throw an error if no argument is passed into the function', () => {
+  // ARRANGE
+
+  // ACT
+  const result = add();
+
+  // ASSERT
+  expect(result).toThrow();
+});
+
+
+
+
+
+
+
+
+
+
+NÃO FUNCIONA 
+
+
+
+PQ __ MEU CÓDIGO NÃO ESTÁ FAZENDO 'THROW' DE 1 ERRO 
+
+
+
+COM SUCESSO...
+
+
+
+
+
+
+
+
+
+
+
+ISSO PQ, EM JAVASCRIPT, ERRORS FAZEM 'BUBBLE UP'...
+
+
+
+
+
+--> OK, COMO PODEMOS CHECAR SE 'add()'
+
+
+VAI RESULTAR EM 1 ERROR?
+
+
+
+
+
+
+
+
+
+
+
+
+BEM, O PROFESSOR EXPLICA QUE DEVEMOS MUDAR O NOSSO CÓDIGO 1 POUCO...
+
+
+
+
+
+
+
+
+TENTEI ESCREVER ASSIM, MAS NÃO FUNCIONOU:
+
+
+
+
+
+
+it('should throw an error if no argument is passed into the function', () => {
+  // ARRANGE
+
+  // ACT
+  const result = add();
+
+  // ASSERT
+  expect(result).toThrowError();
+});
