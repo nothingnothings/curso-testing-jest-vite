@@ -1,0 +1,357 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ATÉ AGORA, TEMOS 1 IDEIA BÁSICA SOBRE O QUE É TESTING..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK...
+
+
+
+
+
+
+
+MAS AÍ TEMOS O OUTLINE DESTE CURSO..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEMOS:
+
+
+
+
+1) GETTING STARTED 
+
+
+
+
+
+2) EXPLORAREMOS AS TOOLS QUE PRECISAMOS TER.... (project setup e required tools)
+
+
+TAMBÉM VEREMOS 1 'EXAMPLE TESTING SETUP' -> VEREMOS COMO PODEMOS ADICIONAR 
+
+1 TESTING ENVIRONMENT A 1 PROJECT,
+
+
+E AÍ O PROFESSOR 
+
+VAI 
+
+NOS PROVIDENCIAR 
+
+
+FINISHED 
+
+
+
+PROJECTS COM TESTS _ ENABLADOS,
+COM TODAS 
+
+AS TOOLS NECESSÁRIAS INSTALADAS NELES...
+
+
+
+
+
+
+
+
+
+3) TESTING FUNDAMENTALS --> VEREMOS OS FUNDAMENTALS 
+
+
+
+USADOS NO WRITE DE AUTOMATED UNIT TESTS... -> VEERMOS COMO ESSES TESTS SÃO ESCRITOS,
+
+E QUAL LÓGICA VAI DENTRO DESSES TESTS...
+
+
+
+
+
+
+
+
+
+4) DEPOIS, VEREMOS ALGUNS PATTERNS BONS DE TESTE, 
+
+PARA ESCREVERMOS 
+
+BONS TESTS -> 
+
+
+
+VEREMOS 'O QUE DEVE SER TESTADO NO SEUS TESTS',
+
+E O QUE DEVE SER DEIXADO DE LADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+5) DEPOIS, VEREMOS CONCEPTS DE TEST MAIS AVANÇADOS,
+
+COMO 
+
+
+''INTEGRATION TESTS'''
+
+
+
+E
+ O 
+
+
+ __ TEST __ DE ASYNC CODE...
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO JÁ VAI TE DAR 1 FUNDAÇÃO BOA...
+
+
+
+
+
+
+
+-> MAS SE VC AVANÇAR NO TESTING,
+
+
+VC 
+
+
+
+
+VERÁ QUE VC TERÁ PROBLEMAS QUANDO 
+
+
+SEU PRODUCTION CODE TIVER 
+
+
+ALGUNS 
+
+
+
+
+'''SIDE EFFECTS'
+
+
+
+DENTRO DELE ----------> ESCREVER 
+
+
+TESTS PARA CODE QUE TEM SIDE EFFECTS PODE SER CHALLENGING --> VAMOS 
+
+VER COMO PODEMOS 
+
+ESCREVER 
+CÓDIGO 
+
+DE TEST QUE 
+
+'DEAL'
+
+
+COM 
+
+ESSES SIDE EFFECTS,
+
+
+
+COM CÓDIGO MAIS COMPLEXO,
+
+TUDO 
+
+
+
+
+POR MEIO DO ESTUDO DE 
+
+'MOCKS' E 'SPIES'...
+
+
+
+
+
+
+
+6) ESTUDAREMOS BEM 'MOCKS' E 'SPIES'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> vamos praticar todas essas coisas,
+
+por meio do dive em diversos demos e examples...
+
+
+
+
+
+
+
+
+
+-> É UM PRACTICAL GUIDE COM 1 MONTE DE DEMOS E EXAMPLES...
+
+
+
+
+
+
+
+
+
+
+--> POR FIM,
+
+VEREMOS 
+
+
+
+FRONTEND JAVASCRIPT TESTING... -> VEREMOS 
+
+
+1 PROBLEMA BEM ESPECÍFICO 
+
+
+QUE ENCONTRAREMOS QUANDO TRABALHARMOS COM FRONTEND JAVASCRFIPT- -> É O DOM...
+
+
+
+
+
+
+
+
+
+
+
+
+-> VEREMOS 
+
+
+ 7) COMO ESCREVER TESTS PARA 
+
+
+ CÓDIGO QUE 
+
+ INTERAGE COM O DOM,
+
+
+
+
+ E COMO PODEMOS 
+
+ 'MANIPULATE'
+
+ E 
+
+ PREPARE 
+ O 
+
+ DOM,
+
+ DA MANEIRA QUE 
+
+ DESEJARMOS,
+
+ DENTRO DE NOSSO TESTING CODE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ OK... ESSE É O CONTEÚDO DO CURSO...
+
+
+
+
+
+
+
+
+
+ --> https://github.com/academind/js-testing-practical-guide-code
