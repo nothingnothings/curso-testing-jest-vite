@@ -1,0 +1,876 @@
+
+
+
+
+
+
+
+
+
+
+
+--> OK... CONFORME O PROFESSOR MENCIONOU,
+
+
+NO PRÓXIMO MÓDULO O PROFESSOR NOS MOSTRARÁ 
+
+
+1 EXAMPLE PROJECT...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PROJECTS EM QUE O PROFESSOR 
+
+
+JÁ
+
+INSTALOU 
+
+O 
+
+VITEST PARA NÓS...
+
+
+
+
+
+
+
+
+-> OK...
+
+
+
+
+
+O PROFESSOR NOS DÁ 1 LINK 
+
+
+COM 
+
+3 
+
+PROJECT FOLDERS.. --> DEMO PROJECTS...
+
+
+
+
+
+
+
+
+
+
+
+SÃO PROJECTS QUE 
+
+SERVEM 
+O MESMO 
+
+
+SITE,
+
+MAS 
+
+
+
+COM 3 APPROACHES DIFERENTES...
+
+
+
+
+
+
+
+
+
+certo...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TEMOS ALGUM 'BACKEND' E 'FRONTEND' CODE,
+
+E DIFERENTES MANEIRAS DE ACHIEVE 
+
+O FINAL RESULT,
+
+DE TE 
+
+DAR 
+
+1 FINAL 
+
+WEBSITE QUE 
+
+TE DÁ 
+
+
+1 CALCULADORA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CADA PROJECT É 1 FOLDER COM 1 MONTE DE 
+
+
+CODE FILES E 1 PACKAGE.JSON FILE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC ENTRAR 
+
+
+NESSAS PACKAGE.JSON,
+
+
+VC VERÁ 
+QUE 
+
+
+
+O 
+
+
+VITEST 
+
+ESTARÁ INSTALADO...
+
+
+
+
+
+
+
+
+
+
+MAS EM 2 DAS PACKAGES TEREMOS TAMBÉM O 'EXPRESS' 
+
+
+INSTALADO... --> ISSO PQ 
+
+
+ESSES 
+
+2 PROJECTS,
+
+
+'basic-testing-nodejs'
+
+
+e 
+
+'basic-testing-nodejs-esmodules'
+
+
+
+
+
+SÃO 
+
+
+
+BACKEND PROJECTS,
+
+
+SÃO 
+
+NODE EXPRESS APPS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O OUTRO PROJECT,
+
+COMO 
+
+
+
+
+
+DIZ O NOME DO FOLDER,
+
+É UM 'FRONTEND APP',
+
+
+
+'basic-testing-frontned'...
+
+
+
+
+
+
+
+
+
+
+
+--> LÁ, 
+
+O PROFESSOR N INSTALA O 
+
+EXPRESS,
+
+E SIM 
+
+APENAS 
+
+
+
+ALGUMAS DEPENDENCIES DE 
+
+DEV 
+
+BÁSICAS,
+
+ 
+
+ COMO O 
+
+
+
+ 'http-server',
+
+
+ QUE 
+
+ SERVE 
+
+
+ PARA __ 
+
+ SERVIR 
+
+
+ AQUELA FILE HTML BÁSICA...
+
+
+
+
+
+
+
+
+
+
+ ESSE ARQUIVO HTML IMPORTA 'app.js',
+
+ QUE 
+
+
+ É 
+
+
+
+ 1 
+
+ ARQUIVO 
+
+ JAVASCRIPT COM 1 BOCADO DE CÓDIGO,
+
+
+
+
+ QUE TAMBÉM IMPORTA 
+ ALGUNS OUTROS ARQUIVOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> CERTO...
+
+
+
+
+
+
+
+
+
+ ACERCA DOS IMPORTS DESSA FILE,
+
+ O PROFESSOR EXPLICA QUE 
+
+
+ ELE ESTÁ USANDO/USARÁ 
+
+
+
+ ECMASCRIPT MODULES (sintaxe "import xxx from xx"),
+
+
+
+
+
+
+ E TAMBÉM A SINTAXE DE 
+
+
+ 'export function add() {
+
+ }
+ '
+
+
+
+ EM TODOS ESSES PROJECTS,
+
+ VC TIPICAMENTE USA 
+
+
+ ECMASCRIPT MODULES....
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -> E O BROWSER SUPORTA ESSA SINTAXE DE 'IMPORT' E 'EXPORT'
+
+ OUT OF THE BOX,
+
+
+
+ BASTA 
+
+ VC 
+
+
+
+IMPORTAR SEU MAIN SCRIPT ASSIM:
+
+
+
+'<script type="module" defer src="app.js"></script>' 
+
+
+
+(EU NÃO SABIA DISSO)...
+
+
+
+
+
+-------------------------------------------
+
+
+
+
+
+
+
+
+PARA O PROJECT 'NODE',
+
+
+
+O PROFESSOR TEM 2 VARIANTES 
+
+
+DE 1 MESMO APP...
+
+
+
+
+
+
+
+
+
+
+
+PARA O 'basic-testing-nodejs',
+
+
+
+O PROFESSOR USA A SINTAXE DE 'COMMONJS',
+
+
+
+
+QUE 
+
+
+
+
+se parece com isto:
+
+
+const { add } = require("./src/math");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESSA É A DEFAULT IMPORT SYNTAX QUE USAMOS LÁ...
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+ESSA É A SINTAXE QUE CONHECEMOS, CLÁSSICA, DO NODE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR TAMBÉM TEM 1 VARIANTE DESSE PROJECT,
+EM QUE 
+
+
+
+O PROFESSOR 
+
+
+DEFINIU O TYPE 
+
+
+
+
+do package.json como 'module' ----> É POR ISSO QUE O PROFESSOR 
+
+CONSEGUE 
+
+USAR 
+
+ESMODULES
+
+
+
+lá 
+
+no 'app.js'
+
+desse arquivo...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---> OK... 
+
+
+
+
+
+
+
+
+
+
+--> ISSO PQ A SINTAXE de 'import/export'
+
+
+É SUPORTADA PELO NODE MODERNO..
+
+
+
+
+
+
+--> CERTO..
+
+
+
+
+
+
+
+
+
+
+
+-> TODOS OS 3 PROJECTS QUE TEMOS AQUI, NO FINAL DAS CONTAS,
+
+
+NOS DÃO O MESMO TIPO DE APP...
+
+
+
+
+
+
+
+
+
+--> podemos constatar isso se 
+
+
+
+entrarmos na pasta do project frontend,
+
+
+rodar 
+
+
+'npm install' para instalar todas as dependencies,
+
+e aí 
+
+
+rodar 'npm start',
+
+
+
+pq isso vai startar o development 
+
+
+server 
+
+
+
+NA PORTA LOCALHOST:8080...
+
+
+
+
+
+
+
+
+
+
+
+
+certo...
+
+
+
+
+
+
+
+
+
+
+
+
+podemos testar diversos values com esse input field..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PODEMOS ATÉ MESMO TROCAR O INPUT TYPE DO ELEMENTO, PARA 'text',
+
+
+para aí
+
+
+
+FICARMOS COM 1 ERROR NO CÓDIGO DE 'add()'..
+
+
+
+
+
+
+
+
+
+
+
+--> podemos fazer a mesma coisa nos outros folders,
+
+
+
+rodar 'npm install'...
+
+
+
+
+
+
+
+
+
+
+
+
+mas no folder do app node.js,
+
+
+devemos rodar 
+
+
+
+
+
+
+
+
+'node app.js'
+
+
+PARA STARTAR NOSSO SERVER NODE,
+
+PARA ENTÃO 
+
+ENTRARMOS NO APP,
+
+
+com 'localhost:8080'...
+
+
+
+
+
+
+
+
+
+
+-----> certo...
+
+
+
+
+
+
+
+
+
+
+
+E O MESMO SE APLICARIA SE VC RODASSE O OUTRO NODE APP,
+
+o 
+
+`basic-testing-nodejs-project`,
+
+
+
+com 'node app.js'...
+
+
+
+
+
+
+
+
+
+
+
+ficamos com o mesmo app....
+
+
+
+
+
+
+
+
+
+
+--> OK, É O MESMO PROJECT,
+
+MAS COM DIFERENTES 
+
+MANEIRAS 
+
+
+
+DE CONSEGUIR O END-RESULT (
+
+
+    backend serving do html,
+
+    ou então frontend...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+--> VAMOS USAR ESSAS VERSÕES PARA 
+
+
+APRENDER SOBRE TESTING...
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR 
+
+TEM ESSAS VÁRIAS VERSÕES 
+
+DO PROJETO PARA 
+
+
+NOS MOSTRAR QUE 
+O QUE APRENDERMOS AQUI SE APLICARÁ 
+
+TANTO AO FRONTEND 
+
+
+CODE COMO BACKEND CODE...
+
+
+
+
+
+
+
+
+
+
+
+--> também para nos mostrar que NAÕ HÁ DIFERENÇA ENTRE USAR 'import/export'
+ 
+
+ e 'const {} = required();'...
