@@ -1,0 +1,241 @@
+
+
+
+
+
+
+
+
+OK... O PROFESSOR NOS MOSTROU AQUELE EXEMPLO DE 
+
+
+const { add } = require("./math");	
+
+
+it("should yield the expected sum of two numbers", () => {	
+
+
+    const num1 = 1;
+    const num2 = 2;
+    const result = add(num1, num2);	
+    expect(result).toBe(num1 + num2);	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E USAR O VITEST,
+
+
+É 
+
+
+TÃO SIMPLES 
+
+
+COMO RODAR 
+
+'npm install --save-dev vitest'...
+
+
+
+
+
+
+
+
+
+
+--> RODAMOS ESSE COMANDO EM 1 PROJECT JAVASCRIPT,
+
+
+NÃO INTERESSA SE É FRONTEND OU BACKEND...
+
+
+
+
+
+
+
+
+
+
+
+COM ISSO INSTALADO,
+
+
+TUDO QUE VC PRECISA FAZER É IR ATÉ O 'package.json'
+
+
+
+
+E ESCREVER 
+
+
+
+"scripts" {
+    "test": "vitest --globals"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSA FLAG DE 'globals'
+
+
+APENAS ASSEGURA QUE VC 
+
+
+__CONSEGUIRÁ 
+
+USAR 
+
+FUNCTIONS ESPECIAIS COMO 'it()"
+
+
+
+
+e 
+
+"expect()",
+
+
+
+
+
+
+
+
+
+functions que 
+
+APRENDEREMOS AO LONGO DESTE CURSO,
+
+SEM USAR SPECIAL IMPORTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... O PROFESSOR VAI PROVIDENCIAR 
+
+
+PROJECTS 
+
+
+
+
+JÁ PRONTOS,
+
+
+PQ 
+
+
+
+O NOSSO 
+
+
+
+
+CURSO É 
+
+SOBRE 
+
+
+
+
+TESTING 
+
+
+
+E WRITE DE TESTS,
+
+E NÃO SOBRE 
+
+
+
+COMO ESCREVER DIFERENTES TIPOS DE PROJECTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+--> SE QUEREMOS APRENDER MAIS SOBRE VITEST/JEST,
+
+
+
+DEVEMOS LER OS DOCS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> COM ISSO, ESSE É O SETUP QUE USAREMOS NESSE CURSO..
+
+
+
+
+
+
+
+
+
+
+--> ESSE É O CURSO QUE USAREMOS PARA APRENDER TUDO SOBRE TESTS...
