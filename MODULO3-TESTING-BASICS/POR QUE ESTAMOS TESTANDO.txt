@@ -1,0 +1,606 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... JÁ ADICIONAMOS AQUELE PRIMEIRO TEST,
+
+de 
+
+'it()`..
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS PQ DIABOS ESTAMOS USANDO ESSES TESTS?
+
+
+
+
+
+
+
+
+
+
+
+
+É CLARO QUE ESSA FUNCTION VAI FUNCIONAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEM, A IDEIA É QUE VAMOS ADICIONAR MAIS E MAIS TESTS 
+
+À MEDIDA QUE VAMOS 
+
+
+
+DESENVOLVENDO NOSSO APP,
+
+
+
+
+TUDO __ PARA QUE ELES SEJAM RODADOS DE 1 VEZ (em vez de 
+
+rodar tudo isso manualmente)....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK, MAS PQ ESCREVER ESSES TESTS?
+
+VC PODE ESTAR CONFIANTE 
+
+DE 
+
+
+QUE 
+SEU CÓDIGO ESTÁ CERTO.... --> MAS OS TESTS SÃO 
+
+ÚTEIS,
+
+
+PQ ELES PODEM TE AJUDAR 
+
+
+A 
+
+PEGAR 
+
+BUGS 
+
+
+
+enquanto vc está os escrevendo....
+
+
+
+
+
+
+
+
+veremos mais exemplos disso ao longo do curso...
+
+
+
+
+
+
+
+
+
+
+
+
+
+mas mesmo se seu código estiver error-free,
+
+
+tests 
+
+ainda são valuable...
+
+
+
+
+
+
+
+
+
+
+
+-> PQ DEFINIMOS NOSSO 
+
+TEST ALI,
+
+
+E __ ESSE TEST JÁ 
+
+DESCREVE BEM 
+
+O 
+
+EXPECTEDS
+BEHAVIOR 
+
+DESSA 
+
+
+FUNCTION DE 'add()'...
+
+
+
+
+
+
+
+
+
+
+
+
+AGORA DIGAMOS QUE UM COLEGA,
+
+OU NÓS MESMOS,
+
+EM ALGUNS MESES,
+
+
+
+VAI 
+
+ATÉ A FUNCTION 
+
+DE 
+
+
+
+
+'add()'
+
+
+
+__ E ALTERA_ _ ALGO LÁ...
+
+
+
+
+
+
+
+
+
+
+
+--> POR QUALQUER RAZÃO,
+
+
+
+PODEMOS 
+
+
+DECIDIR QUE 
+
+'''ESSA NÃO É A MANEIRA 
+
+CERTA DE ESCREVER ESSA FUNCTIOn'...
+
+
+
+
+
+
+
+
+
+
+--> por qualquer razão, podemos decidir que 
+
+
+ter '0' 
+
+
+
+
+
+EM 'sum'
+
+E´ALGO ERRADO...
+
+
+
+
+
+
+
+
+
+
+
+tipo assim:
+
+
+
+
+
+
+export function add(numbers) {
+  let sum = 0;
+
+  for (const number of numbers) {
+    sum += number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+
+VIRA ISTO:
+
+
+export function add(numbers) {
+  let sum;
+
+  for (const number of numbers) {
+    sum += number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+É UMA TINY CHANGE, MAS É UMA CHANGE..
+
+
+
+
+
+
+
+
+
+
+
+--> AGORA SE TIVERMOS TEST AUTOMATIZADOS,
+
+
+
+
+
+
+
+
+
+
+basta rodar 'npm test'
+
+
+PARA 
+
+TESTAR 
+
+
+
+SE ISSO ESTÁ FUNCIONANDO...
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+export function add(numbers) {
+  // let sum
+  let sum = 0;
+
+  for (const number of numbers) {
+    sum += number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+--> sempre que FIZERMOS CHANGES NO NOSSO CÓDIGO,
+
+
+
+DEVEMOS 
+
+
+CHECAR SE ISSO QUEBROU ALGO ------> ÀS VEZS 
+
+
+
+OS BREAKS 
+
+
+
+SÃO PROPOSITAIS, 
+
+TVZ 
+
+PQ 
+
+VC QUER COLOCAR 1 CHANGE QUE REALMENTE DEVERÁ SER 'breaking'...
+
+
+
+
+
+
+
+
+
+
+
+ok, MAS COM ESSA MUDANÇA DO 'let sum;',
+
+
+
+
+
+O RESULT DE NOSSO TEST 
+
+
+
+É UM FAILURE,
+
+E FICA ASSIM:
+
+
+
+
+
+
+
+
+
+ FAIL  src/math.test.js > should summarize all number values in an array
+AssertionError: expected NaN to be 15 // Object.is equality
+ ❯ src/math.test.js:10:18
+      8| it('should summarize all number values in an array', () => {
+      9|   const result = add([1, 2, 3, 4, 5]);
+     10|   expect(result).toBe(15);
+       |                  ^
+     11| //   expect(result).toBe(6);
+     12| 
+
+  - Expected   15
+  + Received   NaN
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+Test Files  1 failed (1)
+     Tests  1 failed (1)
+      Time  3ms
+
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
+
+
+
+
+
+
+----------------------------------------
+
+
+
+
+
+
+
+
+
+--> 
+  - Expected   15
+  + Received   NaN
+
+
+
+
+
+
+
+
+
+
+  GANHAMOS 'received: NaN',
+
+
+
+
+
+QUE SIGNIFICA QUE NOSSO OUTPUT 
+
+NÃO FAZ SENTIDO (NÃO É 1 NUMBER, PQ 'undefined + 1' É NOT A NUMBER)..
+
+
+
+
+
+
+
+
+
+
+E AUTOMATED TESTS 
+
+
+
+NOS AJUDAM A RAPIDAMENTE FAZERMOS 'CATCH' DESSES ERRORS...
+
+
+
+
+ESSA É A VANTAGEM DE AUTOTESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-->  FICA FÁCIL DE _ CHECAR_ SEU CÓDIGO, 
+
+QUANDOS CHANGES A ESSE CODE SÃO FEITOS  --> E AÍ 
+
+VC 
+
+
+PODE EVALUATE SE 
+
+ESSA CHANGE FOI 1 INTENDED CHANGE,
+
+OU SE __ 
+
+
+FOI 1 BUG QUE FOI INTRODUZIDO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+É CLARO QUE VC PODE TALVEZ DETECTAR ISSO MANUALMENTE, mas isso 
+
+pode demorar mais tempo...
+
+
+
+
+
+
+--> E VC PODE TALVEZ TBM ACABAR NÃO TESTANDO ESSA FUNCTIONALITY
+ 
+ ESPECIFICAMENTE ------> SE VC TIVER GOOD TEST COVERAGE,
+
+
+
+ TODAS SUAS FUNCTIONS,
+
+ TODAS SUAS UNITS, 
+
+ FUNCTIONALITIES E SCENARIOS,
+
+
+
+
+ SÓ AÍ VC 
+ PODE 
+
+
+
+ PEGAR BUGS RAPIDAMENTE...
