@@ -1,0 +1,392 @@
+
+
+
+
+
+
+
+
+
+OK... MAS HÁ MAIS UM TEST QUE O PROFESSOR QUER 
+
+COLOCAR, AQUI, PARA A FUNCTION DE ADD...
+
+
+
+
+
+
+
+
+
+
+
+
+--> COM ISSO, ACABAREMOS COM OS TESTS DA ADD FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+--> O TEST PODERIA FICAR ASSIM:
+
+
+
+
+
+
+
+
+
+
+it('should throw an error if provided with multiple arguments instead of an array', () => {
+  // ARRANGE
+  const [value1, value2, value3] = [1, 2, 3];
+  // ACT
+  const resultFn = () => {
+    add(value1, value2, value3);
+  };
+  // ASSERT
+  expect(resultFn).toThrowError(
+    'Please provide an array of numbers, instead of multiple number-arguments'
+  );
+});
+
+
+
+
+
+
+-----------------
+
+
+
+
+
+
+
+
+
+O PROFESSOR ADICIONOU esse test por 1 boa razão..
+
+
+
+
+
+
+
+
+
+
+
+
+---> PQ QUANDO OBSERVAMOS 1 FUNCTION COMO 'add()',
+
+
+
+VC PODERIA 
+
+
+
+
+
+PENSAR QUE 
+
+
+
+
+SERIA LEGAL ESCREVER A FUNCTION ASSIM:
+
+
+
+
+
+
+
+add(1, 5, 1);
+
+
+
+
+
+
+
+
+
+
+
+--> E ISSO FARIA SENTIDO,
+
+
+
+MAS A FUNCTION DO PROFESSOR 
+
+QUER 1 ARRAY...
+
+
+
+
+
+
+
+
+
+
+--> É ASSIM QUE ELA FOI ESCRITA, É ASSIM QUE FUNCIONA...
+
+
+
+
+
+
+
+
+
+
+
+SIGNIFICA QUE 
+
+''add(1, 5, 1);''
+
+
+
+
+NÃO VAI FUNCIONAR..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> COMO VAMOS EXPECT GANHAR 1 ERROR AÍ,
+
+
+
+escrevemos 
+
+
+
+
+
+expect(resultFn).toThrowError('Please provide an array of numbers, instead of multiple number-arguments');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E FOI ISSO QUE ESCREVI..
+
+
+
+
+
+
+
+
+
+
+
+-> MAS EU TAMBÉM TIVE DE, DENTRO DO CÓDIGO DE 'add()',
+
+COLOCAR 
+
+1 
+
+CASE 
+
+PARA 
+
+ESSE
+
+
+TIPO DE ERROR,
+
+tipo assim:
+
+
+
+
+
+
+
+
+
+
+export function add(numbers) {
+  // let sum //! FAILURE
+
+  let sum = 0; //* SUCCESS
+
+  if (!numbers) {
+    const error = new Error('No numbers provided.');
+
+    throw error;
+  }
+
+  if (typeof numbers !== 'object') {
+    const error = new Error(
+      'Please provide an array of numbers, instead of multiple number-arguments'
+    );
+
+    throw error;
+  }
+  for (const number of numbers) {
+    // sum += number;  //com erros de concatenação ('0' + 1' = 01; PARA QUE ENTÃO FIQUE 0 + 1 = 1...)
+    sum += +number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------> MEU TEST FUNCIONOU..
+
+
+
+
+
+
+
+
+
+
+ISSO PQ O que eu coloquei dentro de 'toThrowError()'
+
+
+
+
+
+foi aquela exata mensagem...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> mas o professor quer ir além:
+
+
+
+ELE IMAGINA QUE,
+
+
+
+
+SE ALGUÉM NO FUTURO 
+
+MUDAR 
+
+A FUNCTION 
+
+DE 
+
+
+'add()',
+
+
+
+
+
+
+DE MODO 
+
+
+QUE __ ESSA FUNCTION DO NADA 
+
+
+
+
+COMECE A ACEITAR MÚLTIPLOS NÚMEROS,
+
+
+NÓS IMEDIATAMENTE PERCEBAMOS QUE 
+
+ISSO MUDOU 
+
+DE 
+
+ALGUMA MANEIRA INDESEJADA,
+
+PQ 
+
+ALGUNS TESTES VÃO COMEÇAR A FALHAR...
+
+
+
+
+
+
+
+
+
+
+--> MAS TENHA EM MENTE QUE VC PODE 
+
+
+ADICIONAR MAIS TESTS, NO FUTURO...
+
+
+
+
+
+
+
+
+
+
+--> apenas começamos com o testing,
+
+e queremos aprender todos os essentials...
