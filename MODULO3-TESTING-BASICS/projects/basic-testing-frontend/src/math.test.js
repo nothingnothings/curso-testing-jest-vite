@@ -89,3 +89,16 @@ it('should yield something that is not a string, if numbers in string format are
   // ASSERT
   expect(result).not.toBeTypeOf('string');
 });
+
+it('should throw an error if provided with multiple arguments instead of an array', () => {
+  // ARRANGE
+  const [value1, value2, value3] = [1, 2, 3];
+  // ACT
+  const resultFn = () => {
+    add(value1, value2, value3);
+  };
+  // ASSERT
+  expect(resultFn).toThrowError(
+    'Please provide an array of numbers, instead of multiple number-arguments'
+  );
+});
