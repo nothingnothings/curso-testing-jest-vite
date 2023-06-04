@@ -6,10 +6,21 @@ import { it, expect } from 'vitest';
 import { add } from './math.js'; // DEVEMOS USAR/RODAR NOSSA FUNCTION DENTRO DO TEST, COM 'expect().toBe()'...
 
 it('should summarize all number values in an array', () => {
-  const result = add([1, 2, 3, 4, 5]);
-  expect(result).toBe(15);
-//   expect(result).toBe(6);
+  //   const result = add([1, 2, 3, 4, 5]);
+  //   expect(result).toBe(15);
+  //   expect(result).toBe(6);
 
+  // TODO - DEVEMOS SEGUIR O PADRÃO DE 3 FASES (para deixar o test mais legível e fácil de entender)...):
 
-  expect(result).toBe
+  // 1 - ARRANGE
+  const numbers = [1, 2, 3];
+  const expectedResult = numbers.reduce((prevValue, curValue) => {
+    return prevValue + curValue;
+  }, 0);
+
+  // 2 - ACT
+  const result = add(numbers);
+
+  // 3 - ASSERT
+  expect(result).toBe(expectedResult);
 });

@@ -1,0 +1,764 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.... 
+
+
+
+
+
+
+
+ESCREVEMOS NOSSO PRIMEIRO TEST...
+
+
+
+
+
+
+
+
+E O TEST FUNCIONA,
+
+
+
+
+E NÃO É UM TEST RUIM:
+
+
+
+
+
+
+
+
+// import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+// ? 'test' É A MESMA COISA QUE A FUNCTION DE 'it()'...
+
+import { it, expect } from 'vitest';
+
+import { add } from './math.js'; // DEVEMOS USAR/RODAR NOSSA FUNCTION DENTRO DO TEST, COM 'expect().toBe()'...
+
+it('should summarize all number values in an array', () => {
+  const result = add([1, 2, 3, 4, 5]);
+  expect(result).toBe(15);
+//   expect(result).toBe(6);
+
+
+  expect(result).toBe
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK...
+
+
+
+
+
+
+
+NÃO É 1 BAD TEST,
+
+MAS NÃO É PERFECT...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+APESAR DE ELE FAZER SEU TRABALHO,
+
+
+ELE TEM ALGUNS DEFEITOS....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESPECIFICAMENTE,
+
+ELE NÃO SEGUE O PATTERN 
+
+DE 
+
+'ARRANGE, ACT, ASSERT'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK, MAS O QUE É ESSE PATTERN?
+
+
+
+
+
+
+
+
+
+
+
+É 'ALL ABOUT'
+
+
+3 FASES DIFERENTES:
+
+
+
+
+
+
+
+
+
+
+
+1a FASE) 'ARRANGE' 
+
+
+
+
+
+--> NESSA FASE, VC QUER DEFINIR O 
+
+'TESTING ENVIRONMENT 
+E OS VALUES QUE 
+VC 
+VAI USAR NO SEU TEST'...
+
+
+
+
+
+
+
+
+
+
+
+
+2a FASE) 'ACT PHASE'  ----> É NESSA FASE EM QUE VC 
+
+
+__EXECUTA__ O ACTUAL TEST... EXECUTA A FUNCTION QUE DEVE SER TESTADA...
+
+
+
+
+
+
+
+
+
+
+
+
+3a FASE) --> 'ASSERT PHASE' --> é a fase EM QUE 
+VC 
+
+AVALIA O RESULTADO,
+
+
+
+E EM QUE __ VC SETTA SUA EXPECTATION,
+
+E EM QUE 
+
+VC 
+
+SIMPLESMENTE 
+
+
+DEFINE 
+
+
+'''QUAIS RESULTS LEVAM A 1 SUCCESS',
+
+
+
+E QUAIS 
+RESULTS LEVAM A 1 'FAILED TEST'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------> OK... É CLARO QUE NESSE TEST TEMOS UMA EXPECTATION ('expect(result)')...
+
+
+
+
+
+
+
+
+
+
+
+
+-> E É CLARO QUE ESTAMOS EXECUTANDO A FUNCTION DE 'add()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----> MAS 1 PROBLEMA É QUE NÃO ESTAMOS 
+
+'ARRANGING OUR VALUES'.. (primeira fase)...
+
+
+
+
+
+
+
+
+
+
+-> ISSO QUER DIZER QUE 
+
+
+
+'''ESTAMOS APENAS CRIANDO 1 ARRAY __ ON THE FLY__,
+
+
+
+E AÍ 
+
+
+PASSANDO-O  AO CALL DE 'add() ''''''
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO FUNCIONA, SIM,
+
+
+
+
+
+
+MAS É CLARO QUE ESSE TEST __ FICA BEM MAIS FÁCIL DE LER E ANALISAR 
+
+
+
+SE 
+
+
+
+
+
+ADICIONARMOS 
+
+1 CONSTANTE SEPARADA, LÁ NO INÍCIO...
+
+
+
+
+
+
+
+
+
+
+
+-> 1 CONSTANTE CONTENDO ESSES NUMBERS...
+
+
+
+
+
+
+
+
+
+
+
+
+-> ISSO QUER DIZER QUE NOSSOS TESTS SEMPRE SEGUIRÃO ESTE PADRÃO:
+
+
+
+
+
+
+const numbers = [1, 2, 3]; //////ASSERT 
+
+const result = add(numbers); ////ACT 
+
+expect(result).toBe(6); ///ARRANGE
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+// ? 'test' É A MESMA COISA QUE A FUNCTION DE 'it()'...
+
+import { it, expect } from 'vitest';
+
+import { add } from './math.js'; // DEVEMOS USAR/RODAR NOSSA FUNCTION DENTRO DO TEST, COM 'expect().toBe()'...
+
+it('should summarize all number values in an array', () => {
+  //   const result = add([1, 2, 3, 4, 5]);
+  //   expect(result).toBe(15);
+  //   expect(result).toBe(6);
+
+  // TODO - DEVEMOS SEGUIR O PADRÃO DE 3 FASES (para deixar o test mais legível e fácil de entender)...):
+
+  // 1 - ARRANGE
+  const numbers = [1, 2, 3];
+
+  // 2 - ACT
+  const result = add(numbers);
+
+  // 3 - ASSERT
+  expect(result).toBe(6);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+ISSO FAZ TOTAL SENTIDO.. --> com isso,
+
+
+
+
+SE ALGUMA HORA QUISERMOS TROCAR NOSSOS NUMBERS,
+
+
+PODEREMOS 
+
+APENAS 
+
+MEXER NA LINHA DE 
+
+'numbers',
+
+
+SEM TER DE MEXER 
+NA LINHA DE BAIXO, NO MEIO DA 'ENGRONHA'...
+
+
+
+
+
+
+
+
+--> ISSO DEIXA O TEST MAIS LEGÍVEL,
+
+
+
+E MAIS FÁCIL PARA SEUS DEVELOPERS...
+
+
+
+
+
+
+
+
+
+
+
+
+ok... ENTAÕ SÃO AS FASES 
+
+
+
+
+
+'arrange, act, assert'...
+
+
+
+
+
+
+
+
+
+
+--> nós 'ARRANJAMOS'/organizamos as coisas inicialmente,
+
+
+PARA ENTÃO 
+
+
+
+___ATUARMOS, EXECUTARMOS O CÓDIGO.... DEPOIS DISSO,
+
+
+NÓS 
+
+'ANALISAMOS' o código em si, 
+
+
+fazemos 'ASSERT' do código...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS O PROFESSOR NOS EXPLICA QUE A FASE DE 'ASSERT',
+
+AQUI,
+
+AINDA PODE SER MELHORADA...
+
+
+
+
+
+
+
+
+
+
+
+--> ELE FEZ HARDCODE DO 'EXPECTED VALUE',
+
+
+mas o problema com isso é que 
+
+
+SE 
+
+ __ ALGUMA HORA _ O PROFESSOR 
+
+
+ ___ MUDAR __ O VALUE _ DOS INPUTS DE 'numbers',
+
+
+
+
+
+
+
+
+ESSE VALUE HARDCODADO DE '6' VAI DEIXAR DE FUNCIONAR...
+
+
+
+
+
+
+
+
+
+
+-> A EXPECTATION FICARÁ ERRADA... --> 
+
+
+
+
+O PROBLEMA É QUE 
+
+
+SE 
+
+
+
+
+NÓS NÃO REPARARMOS ISSO 
+
+
+INIICALMENTE,
+
+
+
+
+
+PENSAREMOS QUE O PROBLEMA EXISTIRÁ DENTRO 
+
+
+DA FUNCTION DE 'add()",
+
+
+
+QUANDO 
+
+
+O PROBLEMA DE VERDADE ESTÁ NO NOSSO TEST... (expectation errada)...
+
+
+
+
+
+
+
+
+
+
+
+É POR ISSO QUE, EM VEZ DE FAZERMOS HARD CODE DO EXPECTED VALUE ASSIM,
+
+
+
+
+
+
+
+
+É MELHOR DEFINIRMOS O 'EXPECTED VALUE' já na fase de 'arrange',
+
+
+PARA ENTÃO PASSAR APENAS A VARIÁVEL LÁ EMBAIXO, TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+// import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+// ? 'test' É A MESMA COISA QUE A FUNCTION DE 'it()'...
+
+import { it, expect } from 'vitest';
+
+import { add } from './math.js'; // DEVEMOS USAR/RODAR NOSSA FUNCTION DENTRO DO TEST, COM 'expect().toBe()'...
+
+it('should summarize all number values in an array', () => {
+  //   const result = add([1, 2, 3, 4, 5]);
+  //   expect(result).toBe(15);
+  //   expect(result).toBe(6);
+
+  // TODO - DEVEMOS SEGUIR O PADRÃO DE 3 FASES (para deixar o test mais legível e fácil de entender)...):
+
+  // 1 - ARRANGE
+  const numbers = [1, 2, 3];
+  const expectedResult = numbers.reduce((prevValue, curValue) => {
+    return prevValue + curValue;
+  }, 0);
+
+  // 2 - ACT
+  const result = add(numbers);
+
+  // 3 - ASSERT
+  expect(result).toBe(expectedResult);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+certo...
+
+
+
+
+
+
+
+
+
+É UMA BOA IDEIA DERIVAR ___ O RESULTADO PROGRAMATICAMENTE, LÁ NA FASE DE 'ASSERT'..
+
+
+
+
+
+
+
+
+
+ESSE PATTERN DE 'TRIPLE A'
+
+É UM PATTERN QUE O PROFESSOR RECOMENDA,
+
+PQ 
+
+
+ELE DEIXA SEUS TESTS ORGANIZADOS E ESTRUTURADOS..
+
+
+
+
+
+
+
+ESSE PATTERN SERÁ USADO AO LONGO DO CURSO INTEIRo,..
