@@ -1,0 +1,695 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... VAMOS COMEÇAR COM O TESTING SETUP...
+
+
+
+
+
+
+
+
+TUDO  COMEÇA COM  O GENERAL APP SETUP,
+
+
+PARA SEU APP...
+
+
+
+
+
+
+
+
+
+
+
+SEU BUSINESS CODE,
+
+
+AS COISAS QUE VC VAI QUERER TESTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC VAI CONSTRUIR 1 APP,
+
+
+
+NODEJS, REACT,
+
+QUALQUER COISA..
+
+
+
+
+
+
+
+
+
+--> VC ESTÁ BUILDANDO COISA,
+
+E ESTÁ ESCREVENDO CÓDIGO PARA ISSO...
+
+
+
+
+
+
+
+
+
+
+
+--> VC PRECISA DE 1 INDEPENDENT SETUP...
+
+
+
+
+
+
+
+
+
+--> SE VC PLANEJA APENAS TESTAR SEU CÓDIGO MANUALMENTE, VC PODE 'PARAR POR AÍ'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC VÊ ISSO UM MONTE EM PROJETOS...
+
+
+
+
+
+
+
+
+
+-> NOS CURSOS DO MAX TEMOS APENAS O CORE PROJECT, SEM O  TESTING..
+
+
+
+
+
+
+
+
+
+
+--> ISSO PQ __ FOCAMOS NAS FEATURES E CONCEPTS...
+
+
+
+
+
+
+
+--> MAS É CLARO QUE NESSE CURSO QUEREMOS VER AUTOMATED TESTS...
+
+
+
+
+
+
+
+--> AS BOAS NOTÍCIAS É QUE PODEMOS 'MERGE' NOSSA TESTING CONFIGURATION 
+
+
+
+
+COM O MAIN PROJECT,
+
+COMO VEREMOS 
+
+NAS AULAS SEGUINTES...
+
+
+
+
+
+
+
+
+
+
+
+--> É BEM PROVÁVEL QUE VC ESTEJA USANDO 'WEBPACK',
+
+'VITE'
+
+
+OU ALGO ASSIM PARA OPTIMIZAR SEU CÓDIGO..
+
+
+
+
+
+
+
+
+
+
+--> E MT FREQUENTEMENTE 
+
+VC 
+
+USA ALGUMA 
+
+TOOL, COMO  A TOOL DE 'CREATE-REACT-APP'
+
+
+
+E 
+
+
+
+'ANGULAR CLI',
+
+
+1 TOOL QUE CRIA O PROJECT PARA NÓS,
+
+QUE 
+
+VEM COM ALGUMA CONFIGURATION 
+
+OUT OF THE BOX,
+
+
+PARA QUE 
+
+VC FOQUE NO CÓDIGO QUE VC ESCREVERÁ ------> E ISSO É O QUE VC SEMPRE TEM,
+
+PQ VC PRECISA DISSO 
+PARA 
+
+
+
+
+CONSTRUIR 1 PRODUCT,
+
+PARA 
+
+
+ESCREVER 1 APP,
+
+PARA ESCREVER CODE..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS SE VC QUER TESTAR 1 PROJECT,
+
+VC PRECISA DE FERRAMENTAS EXTRAS NESSE PROJECT...
+
+
+
+
+
+
+
+
+
+
+-- VC PRECISA:
+
+
+
+
+
+
+
+1) DE 1 TEST RUNNER...
+
+
+
+
+
+
+2) DE 1 'ASSERTION LIBRARY'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST RUNNER -------> É UMA TOOL QUE __ 
+
+
+TIPICAMENTE __ EXECUTA__ O SEU TESTING CODE... -----> PQ TESTS 
+
+SÃO APENAS 
+
+
+CÓDIGO QUE VC ESCREVE,
+
+
+ 
+
+ MAS NÃO CODE QUE PERTENCE AO SEU MAIN APP OU PROJECT,
+
+
+ E SIM 
+
+ CÓDIGO QUE 
+
+ ESTÁ LÁ PARA __ TESTAR __ OUTROS CÓDIGOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> E ESSE TESTING CODE DEVE SER EXECUTADO POR 1 TEST RUNNER 
+
+
+ JUSTAMENTE PQ 
+
+ 
+
+ ELE __ NÃO FAZ PARTE DE SEU MAIN APP ------> SEU MAIN APP É EXECUTADO SEPARADAMENTE...
+
+
+
+
+
+
+
+
+
+
+ -> É POR ISSO QUE TEMOS 1 'TEST RUNNER',
+
+
+
+
+
+ QUE __ EXECUTA__ SEU TEST CODE APENAS,
+
+
+ E DURANTE O DEVELOPMENT..
+
+
+
+
+
+
+
+
+
+
+
+ --> OS TEST RUNNERS DETECTAM AUTOMATICAMENTE SEU 
+
+
+
+ TESTING CODE,
+
+
+ DESDE QUE VC ESCREVA SEU TESTING CODE 
+
+
+
+ EM 1 CERTO FORMATO,
+
+
+
+ QUE SEUS TESTES SIGAM 1 CERTO FORMATO...
+
+
+
+
+
+
+
+
+
+
+
+
+ --> OS TEST RUNNERS DEVEM:
+
+
+ 1) EXECUTE YOUR TESTS 
+
+
+
+
+ 2) GATHER THE RESULTS OF THESE TESTS 
+
+
+ 3) DISPLAY THE RESULTS OF THESE TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> E HÁ DIFERNETES TOOLS DE TEST RUNNER,
+
+
+
+ A DEPENDER DA LANGUAGE DE PROGRAMAÇÕA QUE VC ESTÁ USANDO.. -> MAS àS VEZES 
+
+ HÁ 
+
+ MÚLTIPLAS ALTERNATIVAS PARA 
+
+ 1 
+
+ MESMA PROGRAMMING LANGUAGE ---------> NO JAVASCRIPT,
+
+
+
+ TEMOS A TOOL 
+
+
+
+
+ DO 
+
+ 'JEST',
+
+
+ MAS O __'KARMA'' 
+
+
+
+ É UMA ALTERNATIVA POPULAR (
+
+    apesar do 
+
+    jest ser MAIS POPULAR...
+ )
+
+
+
+
+
+
+
+
+
+
+
+
+
+ MAS O _ TEST RUNNER__ APENAS_ EXECUTA__ SEUS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> MAS ALÉM DISSO,
+
+
+ PRECISAMOS TAMBÉM DEFINIR ''' O QUE FAZ 1 TEST SER SUCCESSFUL ou não'''...
+
+
+
+
+
+
+
+
+ -> OU SEJA,
+
+
+ 1 MANEIRA DE DEFINIR 'EXPECTATIONS',
+
+
+ 1 MANEIRA DE DEFINIR EXPECTED RESULTS,
+
+
+
+
+
+ DE DEFINIR O QUE É 'SUCCESS' E O QUE É 'FAILURE'...
+
+
+
+
+
+
+
+
+
+
+
+
+ 2) É AÍ QUE ENTRAM EM JOGO AS 
+
+ 'ASSERTION LIBRARY' ------> PQ COM ASSERTION LIBRARIES,
+
+ VC PODE DEFINIR 
+
+ OS SEUS 
+
+ 'EXPECTED OUTCOMES' ----> AÍ A LIBRARY 
+
+
+ VAI VERIFICAR SE O CODE QUE 
+
+ VC TESTOU ACTUALLY PRODUZ 
+
+ 1 
+
+ RESULTADO QUE 'MATCHES'
+
+ AS EXPECTATIONS...
+
+
+
+
+
+
+
+
+
+
+
+ --> E BOAS ASSERTION LIBRARIES 
+
+ DEVEM SUPORTAR __ TODO TIPO _ DE 
+
+
+ OUTCOMES E SITUATIONS,
+
+
+
+ INCLUSIVE 
+
+ 'SYNC VS ASYNC CODE',
+
+
+
+ e assim por diante.ç..
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> A TOOL QUE ESCOLHEMOS DEPENDE DA LINGUAGEM DE PROGRAMAÇÃO...
+
+
+
+
+
+
+
+ --> DENTRO DO JAVASCIRPT,
+
+
+
+ TEMOS AS ALTERNATIVAS 
+
+
+
+
+ DE 'JEST' ou 'CHAI'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ----> JEST É UMA TOOL QUE TEM AMBOS ASPECTOS (test runner e assertion library)..
+
+
+
+
+
+
+
+
+ ISSO É BOM, PQ AÍ PRECISAMOS INSTALAR APENAS 1 TOOL PARA 'DEFINE EXPECTATIONS 
+
+ E RUN TESTS'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ok... esse é o overview de 1 testing setup,
+
+ e de quais tools são necessárias..
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --. NA PRÓXIMA LIÇÃO,
+
+
+
+
+ O PROFESSOR VAI MOSTRAR 1 'EXAMPLE PROJECT',
+
+
+ E 
+
+ 1 
+ EXAMPLE SETUP--->  ESSE SETUP VAI ADICIONAR 1 TEST RUNNER 
+
+ E 
+
+ 1 
+
+ ASSERTION LIBRARY..
+
+
+
+
+
+
+
+
+
+
+ --> O PROFESSOR VAI USAR 1 FERRAMENTA QUE 
+
+
+
+ NÃO É O JEST,
+
+ E QUE É AINDA MELHOR, E QUE ESTÁ CONSEGUINDO AINDA MAIS TRAÇÃO, ULTIMAMENTE...
