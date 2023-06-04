@@ -874,3 +874,14 @@ CODE COMO BACKEND CODE...
  
 
  e 'const {} = required();'...
+
+
+
+
+
+
+
+
+
+
+ --> VAMOS USAR ISSO NO PRÓXIMO MÓDULO...S

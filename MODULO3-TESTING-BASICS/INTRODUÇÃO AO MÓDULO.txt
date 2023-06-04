@@ -1,0 +1,212 @@
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... AGORA QUE APRENDEMOS SOBRE QUAIS TOOLS SÃO NECESSÁRIAS (vitest ou jest),
+
+
+
+
+
+
+
+
+E AGORA QUE VIMOS NOSSOS EXAMPLE SETUPS,
+
+EM QUE 
+ESSAS 
+
+TOOLS (vitest)
+
+
+JÁ 
+
+ESTAVA INTEGRADA,
+
+
+
+
+
+
+com package.jsons como estes:
+
+
+
+
+
+
+
+
+{
+  "name": "basic-testing-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "vitest": "^0.9.0"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO, VAMOS, É CLARO,
+
+
+CRIAR ALGUNS UNIT TESTS,
+
+
+
+E VAMOS 
+
+
+APRENDER A ESCREVER UNIT TESTS...
+
+
+
+
+
+
+
+A 'STATE YOUR EXPECTATIONS',
+
+
+
+A 
+
+
+COMO ''DEFINIR O QUE É SUCCESS E O QUE É FAIL'...
+
+
+
+
+
+
+
+
+
+
+
+-> APRENDEREMOS SOBRE TUDO ISSO E SOBRE 1 'PATTERN' ESPECÍFICO QUE 
+
+DEVEMOS SEGUIR QUANDO ESCREVEMOS TESTES,
+
+
+
+QUE É 
+
+
+O 
+
+
+
+PADRÃO 
+
+
+'''''AAA''' -> 
+
+
+
+
+
+
+
+''''ARRANGE,
+
+
+
+
+
+
+ACT,
+
+
+
+
+
+ASSERT''''..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ALÉM DISSO, VAMOS APRENDER SOBRE 
+
+'O QUE VC DEVE TESTAR',
+
+
+
+
+E 
+
+SOBRE COMO PODEMOS ORGANIZAR NOSSOS TESTS SE ESTAMOS TESTANDO 
+
+MÚLTIPLAS COISAS,
+
+
+
+
+
+MESMO SE ESTIVERMOS TESTANDO MÚLTIPLAS UNITS...
+
+
+
+
+
+
+
+
+
+DEVEMOS COMEÇAR...
