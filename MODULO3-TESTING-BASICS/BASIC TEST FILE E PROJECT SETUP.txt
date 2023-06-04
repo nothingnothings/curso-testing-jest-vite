@@ -1,0 +1,1217 @@
+ 
+
+
+
+
+
+
+
+
+
+
+ --> OK...
+
+
+
+
+
+
+ PARA COMEÇARMOS COM OS BASICS,
+
+ VOLTAMOS 
+
+ AO NOSSO PROJECT SETUP,
+
+ SETUP DA ÚLTIMA SECTION...
+
+
+
+
+
+
+
+
+
+
+
+ -> TEMOS NOSSOS 3 PROJECTS 
+
+
+
+
+
+ PARA CADA 
+
+ PROJECT FOLDER,
+
+ RODAMOS NPM INSTALL PARA TER TODAS NOSSAS DEPENDENCIES...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> ESSES 3 PROJECTS PRODUZEM 
+
+ O 
+
+
+ MESMO 
+
+ WEBSITE,
+
+
+ MAS DE MANEIRAS DIFERENTES...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ OK, MAS COMO ESCREVEMOS TESTS?
+
+
+
+
+
+
+
+
+
+ PRIMEIRAMENTE 
+
+ ENTRAMOS 
+
+ NO PROJECT FOLDER DE 'basic-testing-frontend'..
+
+
+
+
+
+
+
+
+
+
+
+E CLARO QUE ISSO NÃO IMPORTA,
+
+
+PQ 
+
+
+ESSES TESTS DE AGORA VÃO FUNCIONAR 
+
+
+
+
+NOS 3 PROJECTS...
+
+
+
+
+
+
+
+
+
+
+
+OK..
+
+
+
+
+
+
+
+
+
+
+DENTRO DESSE FOLDER, NO ARQUIVO .JS,
+
+
+temos este código:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { extractNumbers } from './src/parser.js';
+import {
+  validateStringNotEmpty,
+  validateNumber,
+} from './src/util/validation.js';
+import { add } from './src/math.js';
+import { transformToNumber } from './src/util/numbers.js';
+
+const form = document.querySelector('form');
+const output = document.getElementById('result');
+
+function formSubmitHandler(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  let result = '';
+  
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  let resultText = '';
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  output.textContent = resultText;
+}
+
+form.addEventListener('submit', formSubmitHandler);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSE ARQUIVO SEGURA O STARTING CODE, MAIN CODE QUE É EXECUTADO QUANDO 
+
+
+
+O ARQUIVO É CARREGADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TEMOS 1 MONTE DE CÓDIGO AQUI...
+
+
+
+
+
+
+
+
+
+
+
+--> VOLTAREMOS A ESSE CÓDIGO VÁRIAS VEZES AO LONGO DO CURSO...
+
+
+
+
+
+
+
+
+
+
+
+-> VEREMOS TAMBÉM 'COMO MELHORAR ESSE CODE, PARA TESTING'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> MAS EM VEZ DE ANALISAR ESSE CÓDIGO,
+
+VAMOS 
+
+ANALISAR 1 DAS FILES QUE É IMPORTADA NESSA FILE,
+
+QUE É 
+
+
+'math.js.'..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> DENTRO OD ARQUIVO, ESTE CÓDIGO:
+
+
+
+
+
+export function add(numbers) {
+  let sum = 0;
+
+  for (const number of numbers) {
+    sum += number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OU SEJA,
+
+É UMA FUNCTION QUE 
+
+'ACEITA NUMBERS', 1 array de numbers,
+
+
+
+E AÍ 
+
+
+
+__ CALCULA UMA SUM...
+
+
+
+UMA SUM QUE COMEÇA COM 0,
+
+E EM QUE 
+
+
+ADICIONAMOS TODOS OS NUMBERS 
+
+
+
+
+PASSADOS COMO PARÂMETRO 
+
+NO ARRAY,
+
+
+PARA AÍ SER RETORNADA A SUM NO FINAL..
+
+
+
+
+
+
+
+
+
+
+
+
+ESSA FUNCTION DE 'sum'
+
+É USADA 
+
+
+NO NOSSO CÓDIGO EM VÁRIOS LUGARES 
+
+
+(
+    com 
+    'result = add(numbers).toString()'...   ,
+
+
+    por exemplo..
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... MAS VAMOS COMEÇAR COM ESSA FUNCTION DE 'add',
+
+
+PQ 
+
+ELA SERÁ A PRIMEIRA UNIT QUE VAMOS TESTAR....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO PQ 1 UNIT, COMO APRENDEMOS,
+
+
+
+É UMA SMALL PIECE DO SEU SOFTWARE,
+
+QUE VAI FUNCIONAR 'STANDALONE'...
+
+
+
+
+
+
+
+
+
+
+
+
+E FREQUENTEMENTE SUAS 'UNITS' SERÃO FUNCTIONS...
+
+
+
+
+
+
+
+
+
+SUAS UNITS OCASIONALMENTE PODEM SER CLASSES,
+
+
+MAS FREQUENTEMENTE SERÃO FUNCTIONS...
+
+
+
+
+
+
+
+E __ VC ___ VAI QUERER ENCONTRAR AS 'SMALLEST PIECES',
+
+REALMENTE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... em 'app.js',
+
+TEMOS 
+
+
+
+1 FUNCTION BEM GRANDE,
+
+
+
+'formSubmitHandler()',
+
+
+
+QUE É BEM BEM GRANDE:
+
+
+
+
+
+
+
+function formSubmitHandler(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  let result = '';
+  
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  let resultText = '';
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VC __ PODERIA__ CHAMAR ISSO DE UNIT,
+
+
+MAS AS FUNCTIONS QUE 
+
+SÃO CHAMADAS 
+
+
+NESSA FUNCTION 
+
+SÃO 
+
+AS 
+'SMALLEST UNITS'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OU SEJA, VC QUER _ 'LOOK FOR FUNCTIONS THAT DONT CALL ANY OTHER FUNCTIONS',
+
+
+
+e essas serão suas units de verdade.. ---> DEVEM SER 'SMALL' 
+
+E NÃO 
+
+
+
+
+REALIZAREM TANTAS TAREFAS....  É POR ESSE TIPO 
+
+DE 'COISA'  QUE DEVEMOS PROCURAR....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS COMO PODEMOS TESTAR ESSA FUNCTION DE 'add()'?
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> BEM, ANTES DE MAIS NADA,
+
+
+DEVEMOS PRIMEIRAMENTE ADICIONAR 1 NOVA FILE, QUE VAI CONTER 
+
+OS TESTS PARA ESSA FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+--> É ISSO QUE TIPICAMENTE FAZEMOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> NA VERDADE,
+
+O VITEST__ __
+TAMBÉM 
+
+SUPORTA 
+
+
+1 ESTILO DE ESCRITA 
+
+EM QUE 
+
+
+
+'''ESCREVEMOS NOSSOS TESTS 
+
+NAS MESMAS FILES EM QUE NOSSO MAIN-CODE ESTÁ'''...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO É CHAMADO DE 'IN-SOURCE TESTING'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSE RECURSO PODE SER MT ÚTIL,
+
+
+MAS POR ENQUANTO VAMOS O IGNORAR,
+
+
+PQ 
+
+ 
+ O JEST NÃO A POSSUI...
+
+
+
+
+
+
+
+
+
+
+
+--> OK... PARA TESTAR NOSSA FUNCTION,
+
+FAREMOS 1 COISA QUE TIPICAMENTE FAREMOS,
+
+
+QUE É 
+
+
+
+'CRIAR 1 FILE COM O MESMO NOME DA FILE DE VERDADE,
+
+
+
+MAS COM '.test.js',
+
+
+
+
+
+
+
+
+
+COM A PALAVRA '.test'
+
+
+ANTES DA EXTENSION DO NEGÓCIO..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> outra alternativa  à extensão '.test'
+
+É A EXTENSÃO '.spec'...
+
+
+
+
+
+
+
+ASSIM QUE VC EXECUTAR ESSE ARQUIVO,
+
+
+O 
+
+
+vitest 
+
+
+VAI AUTOMATICMAENTE PERCEBER QUE ESSA É UMA TESTING FILE,
+
+
+
+QUE CONTÉM TESTS,
+
+E VAI EXECUTAR 
+
+OS TESTS NO INTERIOR DESSE ARQUIVO...
+
+
+
+
+
+
+
+
+
+certo....
+
+
+é por isso que criamos o arquivo math.test.js...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... SEUS TEST RUNNERS VÃO 'PICK UP' 
+
+ESSA FILE E VÃO A EXECUTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> o vitest já está instalado,
+
+
+
+e pode ser executado com o comando 'npm test'...
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+
+
+AGORA COM ESSE ARQUIVO DE 'math.test.js',
+
+
+QUEREMOS 
+
+ADICIONAR NOSSOS TASKS A ESSA FILE...
+
+
+
+
+
+
+
+
+
+
+
+
+MAS COMO ADICIONAMOS TESTS NA NOSSA FILE?
+
+
+
+
+DEVEMOS __ USAR 1 KEYWORD ESPECÍFICA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> A KEYWORD QUE DEVE SER UTILIZADA É 'test'...
+
+
+
+
+
+
+
+
+-> E, PARA UTILIZÁ-LA,
+
+
+VC DEVE A IMPORTAR LÁ DO 'vitest',
+
+TIPO ASSIM:
+
+
+
+import { test } from 'vitest';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO.... SE VC N QUER IMPORTAR,
+
+N QUER IMPORTAR ESSE ARQUIVO,
+
+
+
+
+VC 
+
+
+
+PODE 
+
+
+
+
+
+COLOCAR A FLAG DE '--globals'
+
+
+LÁ NO PACKAGE.JSOn,
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+{
+  "name": "basic-testing-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "vitest --run --reporter verbose --globals",
+    "test:watch": "vitest",
+    "start": "http-server -c-1"
+  },
+  "keywords": [],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.0",
+    "install": "^0.13.0",
+    "npm": "^8.6.0",
+    "vitest": "^0.9.0"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+COM ESSA FLAG ADICIONADA ALI, 
+
+
+
+
+ESSAS KEY FUNCTIONS (como 'test', mostrada agora)
+
+
+FICARÃO DISPONÍVEIS GLOBALMENTE...
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS O PROFESSOR DIZ QUE 
+
+
+usar o 'test()"
+
+
+NATIVAMENTE,
+
+
+LÁ 
+
+
+
+NOS ARQUIVOS JS,
+
+É MELHOR,
+
+PQ ISSO 
+
+NOS DÁ 
+
+
+AUTO-COMPLETION MELHOR, NO IDE...
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO... PODEMOS IMPORTAR 
+
+
+
+ESSA KEYWORD..
+
+
+
+
+
+
+
+
+
+
+ALTERNATIVAMENTE,
+
+
+VC PODERIA 
+
+
+
+
+importar o 'it'... 
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+// import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+// ? 'test' É A MESMA COISA QUE A FUNCTION DE 'it()'...
+
+import { it } from 'vitest';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO... O 'it' PODE PARECER ESTRANHO,
+
+MAS LOGO FARÁ SENTIDO....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> CERTO... 
+
+
+COMO PRIMEIRO ARGUMENTO DESSA FUNCTION, DEVEMOS COLOCAR 1 STRING...
+
+
+
+
+
+
+E, DENTRO DESSA STRING, VC DEVE DEFINIR O QUE SEU TEST DEVERÁ TESTAR, 
+
+
+E SUA EXPECTATION...
+
+
+
+
+
+
+
+
+
+--> E VC DEVE __PROVIDENCIAR 1 SENTENCE BEM 
+
+ESTRITA,
+
+QUE DESCREVA O COMPORTAMENTO (não escreva 1 redação).
