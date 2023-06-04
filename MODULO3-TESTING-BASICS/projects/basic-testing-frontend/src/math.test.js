@@ -68,11 +68,24 @@ it('should yield 0 if an empty array is provided', () => {
 });
 
 it('should throw an error if no argument is passed into the function', () => {
-  // ARRANGE
+  // TODO - É ASSIM QUE __ FAZEMOS __ PARA TESTAR SE UMA FUNCTION LANÇA UM ERRO:
 
-  // ACT
-  const result = add();
+  // ARRANGE (AND ACT)
+  const resultFn = () => {
+    add();
+  };
 
   // ASSERT
-  expect(result).toThrowError();
+  expect(resultFn).toThrowError('No numbers provided.');
+});
+
+it('should yield something that is not a string, if numbers in string format are provided', () => {
+  // ARRANGE
+  const values = ['1', '2'];
+
+  // ACT
+  const result = add(values);
+
+  // ASSERT
+  expect(result).not.toBeTypeOf('string');
 });

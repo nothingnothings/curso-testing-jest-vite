@@ -1,0 +1,537 @@
+
+
+
+
+
+
+
+
+
+
+
+OK, MAS COMO PODEMOS CHECAR SE 1 CERTA UNIT, 1 CERTA 
+
+
+
+
+FUNCTION,
+
+
+PRODUZ 1 ERRO...?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEM, CONFORME MENCIONADO,
+
+NÃO PODEMOS 
+
+
+
+'SEARCH'/'EXPECT'  PELO RETURN DE 1 ERROR,,
+
+
+
+
+PQ 
+
+
+
+1 ERROR NÃO É RETURNED NO JAVASCRIPT (
+     em mtas linguagens, não são retornados...
+),
+
+
+
+E SIM É 'THROWN'...
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE PRECISAMOS TENTAR FAZER '__CATCH__ ''
+
+
+
+
+
+DO EXECUTE DESSA FUNCTION, DENTRO DO it...
+
+
+
+
+
+
+
+
+
+
+--> o professor diz que poderíamos pensar em 'try {} catch(error) {
+
+}',
+
+
+
+
+
+
+
+
+
+
+E AÍ PODERÍAMOS FAZER 'EXPECT'
+
+DE QUE 
+O 
+
+'expect(error).toBeDefined()'...
+
+
+
+
+
+
+
+
+
+
+MAS 1 MANEIRA BEM MAIS FÁCIL, NA EXPERIÊNCIA DO PROFESSOR,
+
+É ESCREVER ASSIM:
+
+
+
+
+
+
+
+
+
+
+const resultFn = () => {
+
+}
+
+
+
+
+
+
+
+
+
+E ESSA VARIABLE/FUNCTION VAI SEGURAR 1 FUNCTION...
+
+1 anon function arrow...
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+DENTRO DISSO, O PROFESSOR ARMAZENA 
+1 ARROW FUNCTION...
+
+
+
+
+
+
+
+
+--> aí, dentro disso,
+o professor 
+
+
+
+
+
+vai rodar 'add()'...
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+const resultFn = () => {
+add();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO QUER DIZER QUE ESSA FUNCTION DE 'add()"
+
+SÓ VAI SER EXECUTADA 
+
+QUANDO 
+
+ESSAA FUNCTION ARROW DE 'resultFn'
+
+
+FOR EXECUTADA....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO... E O PROFESSOR QUER QUE O VITEST 
+
+
+EXECUTE ESSA FUNCTION ,
+
+
+
+
+
+
+e vamos esperar que 'resultFn'
+
+ACABE EM 
+
+'toThrow()',
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+it('should throw an error if no argument is passed into the function', () => {
+  // TODO - É ASSIM QUE __ FAZEMOS __ PARA TESTAR SE UMA FUNCTION LANÇA UM ERRO:
+
+  // ARRANGE (AND ACT)
+  const resultFn = () => {
+    add();
+  };
+
+  // // ACT
+  // const result = resultFn();
+
+  // ASSERT
+  expect(resultFn).toThrowError();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... É UM PADRÃO 1 POUCO DIFERENTE, PQ AS ETAPAS DE 'ARRANGE' E 'ACT' FICAM 
+
+EM 1 
+
+MESMA FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E ISSO FUNCIONA, PQ 1 ERROR REALMENTE SERÁ 'THROWN'
+
+
+
+SE 
+
+
+NENHUM NEGÓCIO FOR PROVIDENCIADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PODEMOS DEIXAR ESSE CHECK AINDA MAIS SEGURO/ESPECÍFICO,
+
+
+
+
+BASTA 
+
+COLOCAR 
+
+
+
+
+'expect(resultFn).toThrowError('No numbers provided');',
+
+
+
+
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+it('should throw an error if no argument is passed into the function', () => {
+  // TODO - É ASSIM QUE __ FAZEMOS __ PARA TESTAR SE UMA FUNCTION LANÇA UM ERRO:
+
+  // ARRANGE (AND ACT)
+  const resultFn = () => {
+    add();
+  };
+
+  // // ACT
+  // const result = resultFn();
+
+  // ASSERT
+  expect(resultFn).toThrowError('No numbers provided.');
+});
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+it('should throw an error if no argument is passed into the function', () => {
+  // TODO - É ASSIM QUE __ FAZEMOS __ PARA TESTAR SE UMA FUNCTION LANÇA UM ERRO:
+
+  // ARRANGE (AND ACT)
+  const resultFn = () => {
+    add();
+  };
+
+  // ASSERT
+  expect(resultFn).toThrowError('No numbers provided.');
+});
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ O PROFESSOR TAMBÉM FALA DA FUNCTION DE '.not',
+
+
+ QUE PODE SER ADICIONADA EM QUALQUER 
+
+
+
+___ FUNCTION DE 'toBe()'
+
+
+ou 'toXXXX()',
+
+
+E QUE 
+
+
+
+
+SIMPLESMENTE INVERTE O RESULTADO DA EXPECTATION DO TEST...
+
+
+
+
+
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+it('should yield something that is not a string, if numbers in string format are provided', () => {
+  // ARRANGE
+  const values = ['1', '2'];
+
+  // ACT
+  const result = add(values);
+
+  // ASSERT
+  expect(result).not.toBeTypeOf('string');
+});
+
+
+
+
+
+
+
+------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+certo... isso faz total sentido...
+
+
+
+
+
+
+
+
+
+
+TUDO ISSO LÊ COMO SENTENCES HUMAN READABLE...
+
+
+
+
+
+
+
+
+
+
+ok.... e temos 'toThrow()"
+
+e 'toThrowError()'...
+
+
+
+
+
+
+OK... É ASSIM QUE PODEMOS CHECAR POR ERRORS,
+
+
+
+
+
+E TAMBÉM COMO PODEMOS USAR O 'not()'...
