@@ -1,0 +1,244 @@
+
+
+
+
+
+
+
+
+
+
+
+--> OK...
+ 
+
+
+ AGORA É HORA DE PRATICARMOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> É HORA DE TESTARMOS OUTRAS FUNCTIONS/UNITS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -> EM 1 PROJETO DA VIDA-REAL,
+
+
+
+
+ MTAS VEZES VC NÃO TESTARÁ TANTO ASSIM 1 MESMA FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> TEMOS ALGUMAS OUTRAS FUNCTIONS,
+
+
+ QUE SÃO MAIS TRICKY...
+
+
+
+
+
+
+
+
+
+ COMO 'extractNumbers'...
+
+
+
+
+
+
+
+
+
+ -> esta function:
+
+
+
+
+
+
+
+
+
+
+
+ export function extractNumbers(formData) {
+  const num1Input = formData.get('num1');
+  const num2Input = formData.get('num2');
+
+  return [num1Input, num2Input];
+}
+
+
+
+
+
+
+
+
+
+
+--> ELA É MAIS TRICKY PQ RECEBEMOS 1 'FORM DATA OBJECT',
+
+
+
+QUE É 1 OBJECT BASEADO EM 1 OBJECT QUE É 'BUILT-IN'
+
+NO BROWSER,
+
+
+
+
+BROWSER QUE DEVE TER 1 'GET METHOD' (precisamso 
+
+aprender mais coisas)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS __ EM 'numbers' e 'validation',
+
+
+TEMOS FUNCTIONS MAIS SIMPLES..
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+export function transformToNumber(value) {
+  return +value;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+TUDO QUE ISSO FAZ É TRANSFORMAR 
+
+
+1 non-number value 
+
+
+
+EM __ 1 NUMERIC VALUE... (função meio desnecessária, mas 
+O PROFESSOR FOI BEM GRANULAR NESSE PROJECT,
+
+PARA TERMOS BASTANTE OPORTUNIDADES PARA PRATICAR)...
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR RECOMENDA QUE 
+
+
+PRATIQUEMOS O QUE APRENDEMOS..
+
+
+
+
+
+
+
+
+--> DEVEMOS ADICIONAR 
+
+
+ALGUNS TESTS PARA ESSE ARQUIVO de 'numbers.js'...
+
+
+
+
+
+
+
+
+--> PARA ESSA FUNCTION DE 'transformToNumber'...
+
+
+
+
+
+
+NA PRÓXIMA LIÇÃO, O PROFESSOR NOS MOSTRARÁ OS TESTS QUE ELE INVENTOU..
