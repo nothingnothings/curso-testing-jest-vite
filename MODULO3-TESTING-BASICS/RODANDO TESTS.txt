@@ -1,0 +1,527 @@
+
+
+
+
+
+
+
+
+
+
+
+
+-> OK... AGORA QUEREMOS EXECUTAR NOSSOS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO,
+PRECISAMOS 
+
+RODAR O SCRIPT DE 'npm test',
+
+
+PARA 
+RODAR 
+
+  
+
+  O TEST DEFINIDO NO NOSSO PACKAGE.JSON, NOS SCRIPTS:
+
+
+
+
+
+
+
+
+  {
+  "name": "basic-testing-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "vitest --run --reporter verbose",
+    "test:watch": "vitest",
+    "start": "http-server -c-1"
+  },
+  "keywords": [],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.0",
+    "install": "^0.13.0",
+    "npm": "^8.6.0",
+    "vitest": "^0.9.0"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+O QUE VEREMOS, COM ISSO,
+
+É 1 SUMMARY 
+
+DE 
+
+
+
+'TEST FILES' --> O NÚMERO DE TEST FILES ENCONTRADAS...
+
+
+
+
+
+'TESTS '--> NÚMERO DE TESTS QUE DERAM CERTo..
+
+
+
+
+
+
+
+
+--> TAMBÉM FICAMOS COM ALGUM 
+
+
+OUTPUT 
+
+SOBRE AS TEST FILES,
+
+E OS 
+
+TEST QUE 
+
+FORAM PASSADOS...
+
+
+
+
+
+
+
+
+
+
+
+(FICAMOS COM GREEN MARKS NOS TESTES QUE FUNCIONARAM)..
+
+
+
+
+
+
+
+
+
+
+-->  E OS TESTES QUE APARECEM NO TERMINAL 
+
+SÃO JUSTAMENTE OS TESTS QUE VC DEFINIU 
+
+
+LÁ 
+
+
+
+
+
+NO 'it()'...
+
+
+
+
+
+
+
+
+
+--> DEFINIR MENSAGENS MELHORES NO 'IT'
+
+
+VAI FACILITAR 
+
+
+
+
+A IDENTIFICAÇÃO NO TERMINAL...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OBS::
+
+
+
+
+
+
+SE VC ESCREVE 'vitest --run'
+
+
+
+
+SEM A FLAG DE 
+
+
+'--reporter verbose',
+
+
+
+
+
+
+
+
+VC FICARÁ COM 1 OUTPUT MAIS SIMPLIFICADO DE SEUS TESTS,
+
+
+
+
+
+
+
+PQ NÃO VAMOS 
+
+SABER 
+
+'QUAIS 
+
+
+TESTS FALHARAM'...
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR GOSTA DO DETAILED OUTPUT,
+
+
+
+E EU TAMBÉM... (não 
+
+ter isso nos prejudica...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...  a flag de '--run'
+
+SIGNIFICA 
+
+'''O VITEST RODARÁ APENAS 1 ÚNICA VEZ'''..
+
+
+
+
+
+a alternativa é '--watch',
+
+
+QUE 
+
+
+FARÁ COM QUE O VITEST FIQUE FAZENDO 'WATCH DE SUAS FILES',
+
+
+
+
+
+o que vai fazer ELE RE-RODAR OS TESTS SEMPRE QUE VC 
+
+SALVAR ALGUM ARQUIVO/TEST...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> certo..
+
+
+
+
+
+
+PODEMOS COLOCAR ISSO COM 
+
+'test:watch'...
+
+
+
+
+(um novo script)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HMMM QUER DIZER QUE O COMPORTAMENTO __ DEFAULT 
+
+
+
+DO __ _VITEST É DE WATCH:
+
+
+
+{
+  "name": "basic-testing-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "vitest --watch --reporter verbose",
+    "test:watch": "vitest",
+    "start": "http-server -c-1"
+  },
+  "keywords": [],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.0",
+    "install": "^0.13.0",
+    "npm": "^8.6.0",
+    "vitest": "^0.9.0"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... ISSO SIGNIFICA QUE 
+
+SE MUDAMOS ALGO EM 1 TEST,
+
+
+COMO NOSSO 'EXPECTED RESULT',
+
+E ENTÃO 
+
+SALVAMOS 
+
+O ARQUIVO,
+
+
+
+
+O TEST VAI RE-RODAR...
+
+
+
+
+
+
+
+
+
+
+
+--> QUANDO ALGUM TEST FALHAR,
+
+
+
+VEREMOS 
+QUAL 
+
+TEST FALHOU...
+
+
+
+
+
+
+
+
+
+
+
+--> E PODEMOS VER QUAL LINHA 
+
+FALHOU,
+
+
+
+QUAL 
+
+VALUE ERA ESPERADO (expected),
+
+
+
+E QUAL 
+VALUE RECEBEMOS ('received')...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----> OK... MAS É IMPORTANTE SABER O QUE É 
+
+ESSE WATCH MODE,
+POR ISSO O PROFESSOR NOS MOSTROU...
+
+
+
+
+
+
+
+
+
+
+
+OK.... ISSO JÁ TE MOSTRA 'COMO VC DEFINE 
+
+O QUE 
+
+É O SUCESSO DE 1 TEST,
+
+E O QUE É 1 FAILURE'...
+
+
+
+
+
+
+
+
+
+--> SE 
+
+SUA EXPECTATION É 'MET',
+
+
+
+É UM SUCCESS (function de 'expect' com 'toBe()"),
+
+
+
+
+
+
+
+
+E SE NÃO O É,
+
+
+
+É 1 FAILURE...
+
+
+
+
+
+
+
+
+
+
+
+--> É ASSIM QUE O TESTING FUNCIONA, EM GERAL...
