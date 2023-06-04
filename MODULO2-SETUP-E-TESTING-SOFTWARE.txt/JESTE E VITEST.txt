@@ -1,0 +1,1000 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... AGORA DEVEMOS EXPLORAR O TESTING SETUP USADO NESSE CURSO,
+
+E FALAR SOBRE VÁRIAS ALTERNATIAS QUE TEREMOS...
+
+
+
+
+ 
+
+
+-> BEM, CONFORME MENCIONAMOS,
+TUDO 
+COMEÇA 
+
+COM NOSSO APP SETUP,
+
+O PROJECT EM SI...
+
+
+
+
+
+
+
+
+
+- QUANDO O ASSUNTO É O NOSSO SETUP,
+
+
+NÃO INTERESSA O TIPO DE 
+
+
+APP QUE ESTAMOS ESCREVENDO....
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOSSO APP PODE SER 1 SIMPLES NODE EXPRESS APP,
+
+
+
+NÃO INTERESSA O TIPO DE APP....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PODE SER QUALQUER OUTRO 'NODEJS FRAMEWORK PROJECT'..
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS TAMBÉM PODE SER 
+
+1 
+
+'FRONTEND, PLAIN JAVASCRIPT PROJECT',
+
+
+
+OU ENTÃO 
+
+
+COM 
+
+
+1 BUNDLER COMO 'WEBPACK' 
+
+
+
+OU 'VITE'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> TAMBÉM PODE SER 1 REACT OU ANGULAR PROJECT...
+
+
+
+
+
+
+
+
+
+
+
+--> NÃO INTERESSA,
+
+PODE SER QUALQUER TIPO DE PROJECT, ATÉ MESMO TYPESCRIPT PROJECTS...
+
+
+
+
+
+
+
+
+
+
+TUDO QUE APRENDERMOS AQUI VAI SE APLICAR A ESSES TIPOS DE PROJECTS..
+
+
+
+
+
+
+
+
+
+
+
+
+-> O WRITE DE TESTS,
+
+E A IDEIA POR TRÁS DO WRITE DE TESTS SEMPRE SERÁ A MESMA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ALGUNS TIPOS DE PROJECT,
+
+QUE FORAM 
+
+CRIADOS COM CERTAS TOOLS (
+    angular cli e create-react-app
+)
+
+
+
+
+TIPICAMENTE 
+
+
+JÁ POSSUEM 1 'FULL TESTING WORKFLOW'
+
+
+JÁ BUILT-IN....
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O QUE APRENDEREMOS 
+
+NESSE CURSO VAI NOS AJUDAR COM ESSES PROJECTS TAMBÉM,
+
+
+PQ O CÓDIGO QUE VC 
+
+ESCREVE, DE TESTES,
+
+
+É PRATICAMENTE SEMPRE O MESMO...
+
+
+
+
+
+
+
+
+
+
+
+
+--> AS COISAS SÓ MUDAM SE O SEU SETUP FOR 1 TIPO MT ESPECÍFICO DE CONFIG/SETUP...
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS A IDEIA GERAL,
+
+
+O APPROACH TOWARDS TESTING,
+
+E A LÓGICA 
+
+
+DOS TESTS,
+
+
+
+
+ISSO SEMPRE SERÁ O MESMO...
+
+
+
+
+
+
+
+
+
+--> MAS É CLARO QUE 
+
+VC PODE TER 1 PROJECT QUE VC CRIA 'FROM SCRATCH',
+
+POR CONTA PRÓPRIA.. --------> NESSES CASOS,
+
+VC NÃO TERÁ 
+
+1 
+
+
+'PRE-DEFINED TESTING SETUP',
+
+
+
+
+
+
+
+1 TESTING CONFIGURATION E WORKFLOW...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> NESSES CASOS,
+
+REALMENTE PRECISAMOS DE 1 'TEST RUNNER'
+
+E 
+
+1 
+'ASSERTION LIBRARY'...
+
+
+
+
+
+
+
+
+
+
+-> DEVEMOS CONFIGURAR ESSAS COISAS PARA QUE FUNCIONEM 
+
+
+NO NOSSO SETUP...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+JÁ VIMOS NESSE SLIDE QUE 'JEST'
+
+É UMA TOOL 
+
+MT ÚTIL,
+
+
+
+
+PQ 
+
+
+ELA TRAZ TANTO 
+O 'TEST RUNNER'
+
+
+COMO A 'ASSERTION LIBRARY'...
+
+
+
+
+
+
+
+
+
+
+
+
+E O JEST REALMENTE É UMA TOOL 
+
+
+MT BOA PARA TESTING,
+
+E PODEMOS 
+
+
+O UTILIZAR COM TODO TIPO DE PROJECT,
+
+
+COMO PODEMOS VER NO SITE OFICIAL...
+
+
+
+
+
+
+
+
+
+NOS DOCS,
+
+
+
+VEMOS COMO PODEMOS COMEÇAR COM ELE,
+
+E ELE É REALMENTE SUPER SIMPLES...
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR MOSTRA 
+
+
+
+1 EXEMPLO EM QUE 
+
+O PROFESSOR INSTALA O JEST 
+
+EM 
+
+1 
+BASIC NODEJS APP..
+
+
+
+
+
+
+
+
+
+
+
+
+--> ELE ADICIONA 
+
+
+
+APENAS 1 FILE, COM 1 TEST DENTRO DELA,
+
+
+
+
+
+E AÍ EXECUTA TUDO..
+
+
+
+
+
+
+
+
+
+
+
+
+-----> MAS COM ISSO, O PROFESSOR PODE RODAR APENAS npm test',
+
+
+
+PARA __ TESTAR __ 
+
+
+
+
+O CÓDIGO TODO (todos os cases)...
+
+
+
+
+
+
+
+
+APRENDEREMOS TUDO ISSO SOBRE O CURSO...
+
+
+
+
+
+
+
+
+
+--> É SUPER SIMPLES 'GET STARTED'
+
+COM O JEST,
+
+E É POR ISSO QUE 
+
+ELE 
+
+É 
+
+SUPER POPULAR...
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS O JEST TEM ALGUMAS DESVANTAGENS --> ELE PODE SER 1 POUCO LENTO...
+
+
+
+
+
+
+
+
+
+ESPECIALMENTE SE VC TIVER 1 PROJECT QUE USA 'ESMODULES'...
+
+
+
+
+
+(
+    OU SEJA,
+
+    QUE USA NÃO 
+
+    COMMONJS (
+
+        que é tipo 'const { add } = require('./math');'
+    )
+)
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+PROJECTS QUE UTILIZAM 
+
+
+
+'import axios from 'axios';' 
+
+
+
+
+
+
+
+
+
+
+OS IMPORT E EXPORT STATEMENTS...
+
+
+
+
+
+
+
+
+
+
+
+
+certo....
+
+
+
+
+
+
+
+
+SE VC USA ESSES 'ESMODULES',
+
+
+ESSA OUTRA SINTAXE DE IMPORT/EXPORT,
+
+
+
+O JEST 
+
+'KINDA' SUPORTA TUDO ISSO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ELE SUPORTA 'ECMASCRIPT MODULES',
+
+
+MAS O SUPORTE É APENAS 
+
+EXPERIMENTAL -------> NA EXPERIÊNCIA DO PROFESSOR,
+
+
+
+
+SETUP TUDO ISSO 
+
+
+E FAZER 
+
+ISSO FUNCIONAR 
+
+
+
+COM A SINTAXE DE 'IMPORT/EXPORT'
+
+
+É BEM ANNOYING,
+
+
+
+
+
+PQ TIPICAMENTE VC ACABA INSTALANDO EXTRA TOOLS,
+
+E AÍ 
+
+VC 
+
+
+
+TEM QUE DEFINIR 
+
+
+1 EXTRA WORKFLOW,
+
+
+
+
+
+TUDO PARA O TESTING,
+
+EM QUE O CÓDIGO 
+
+ACABA 'TRANSPILED'
+
+E CHANGED 
+
+POR TRÁS DAS CENAS .-------------> ISSO É BEM ANNOYING -> SE SEU 'MAIN CODE'
+
+
+FUNCIONA 
+
+
+'JUST LIKE THAT',
+
+SEM QUALQUER 
+
+
+STEP EXTRA,
+
+
+
+E 
+
+SE 
+
+VC 
+
+
+PRECISA 
+
+SETTAR 1 CONFIG ESPECIAL NO SEU TESTER APENAS PARA FAZER O TEST FUNCIONAR,
+
+ISSO NÃO É BOM,,
+
+
+PQ 
+
+
+
+VC NÃO QUER TESTAR ALGO DIFERENTE DAQUILO QUE 
+
+
+VC VAI RODAR EM PRODUCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... O JEST TEM SUAS DESVANTAGENS,
+
+APESAR 
+
+
+DE 
+
+SER 
+
+BEM POPULAR...
+
+
+
+
+
+
+
+
+
+
+VC PODE WORKAROUND ESSES DOWNSIDES,
+CLARO,
+
+
+
+
+MAS AQUI USAREMOS O 'VITEST'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> É UMA TOOL BEM POPULAR, MODERNA,
+
+QUE 
+
+TE 
+
+DEIXA ESCREVER 
+
+TESTS,
+
+
+E QUE 
+
+__ É COMPATÍVEL 
+
+
+
+COM A SINTAXE JEST..
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO PQ O VITEST TEM 1 API QUE 
+
+
+
+TE DEIXA ESCREVER 
+
+
+SEUS TESTS DA MESMA MANEIRA QUE 
+
+VC ESCREVE JEST TESTS...
+
+
+
+
+
+
+
+
+
+
+
+--> ELE TAMBÉM NOS DÁ 'CONVENIENCE' FEATURES EXTRAS,
+
+QUE 
+
+SÃO 
+
+
+REALMENTE BOAS DE SE TER...
+
+
+
+
+
+
+
+
+
+
+
+---> ELE TAMBÉM FUNCIONA COM ESMODULES OUT OF THE BOX (
+
+    e também funciona 
+
+
+    com 
+
+
+    A SINTAXE CLÁSSICA, DE 'COMMONJS'...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E O PROFESSOR NOS MOSTRA O QUÃO SIMPLES É USAR O JEST:
+
+
+
+
+
+
+
+
+
+
+
+const { add } = require("./math");	
+
+
+it("should yield the expected sum of two numbers", () => {	
+
+
+    const num1 = 1;
+    const num2 = 2;
+    const result = add(num1, num2);	
+    expect(result).toBe(num1 + num2);	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+USAMOS ISSO COM O JEST...
+
+
+
+
+
+
+
+MAS AÍ O PROFESSOR TROCOU O 'JEST'
+
+COM O VITEST...
+
+
+
+
+
+
+
+
+
+--> o comando 
+
+
+
+ainda é 'npm test',
+
+
+e ainda 
+
+RODAMOS 
+
+TODOS OS TESTS COMO ANTES...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE VAMOS USAR O VITEST,
+
+PQ ELE É MAIS RÁPIDO,
+
+
+PQ ELE __ TEM ESSE SUPORTE 'ESMODULES' MELHOR,
+
+
+
+
+
+E __ PQ __ O CODE QUE VC 
+
+ESCREVE NOS SEUS TESTS É O MESMO QUE VC ESCREVE NO JEST...
+
+
+
+
+
+
+
+
+
+
+-> CERTO....
+
+
+
+
+
+BEM LEGAL...
+
+
+
+
+
+
+
+ESSA TOOL MODERNA NOS DÁ TODAS ESSAS VANTAGENS...
+
+
+
+
+
+
+
+
+
+
+assim como o JEST, O VITEST É UM TEST RUNNER E ASSERTION LIBRARY...
+
+
+
