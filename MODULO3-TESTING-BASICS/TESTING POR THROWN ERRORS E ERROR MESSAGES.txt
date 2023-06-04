@@ -1,0 +1,418 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ANTES DE CONTINUARMOS,
+
+HÁ MAIS 1 COISA 
+
+SOBRE 'CHECK FOR ERRORS'
+
+
+em testes 
+
+que 
+
+o 
+
+professor quer 
+
+
+
+nos mostrar...
+
+
+
+
+
+
+
+
+
+
+é o 
+
+
+call de 'toThrowError()',
+
+
+
+em vez de 
+
+'toThrow()'..
+
+
+
+
+
+
+
+
+
+
+--> PODEMOS PASSAR 1 PARAMETER OPCIONAL,
+
+
+
+1 'EXPECTED VALUE'
+
+QUE 
+
+VC 
+
+ESPERA QUE 
+
+EXISTA NA ERROR MESSAGE/NA INSTANCE DA ERROR CLASS QUE FOI USADA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+---> OK.... passamos 1 string... ou, então,
+
+
+1 
+
+regular expression (para procurar __POR TALVEZ 1 PARTE DA ERROR MESSAGE )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TAMBÉM PODEMOS PASSAR 1 CLASS (checar se o error que foi THROWN 
+
+
+
+
+
+pode ser considerado como dessa class aí...)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... --> PARA TER CERTEZA DE QUE 
+
+ESSE TEST 
+
+
+ESTÁ 
+
+
+
+
+
+CHECANDO POR ESSE ERROR EXATO,
+
+PODEMOS ESCREVER TIPO ASSIM:
+
+
+
+
+
+
+
+
+it('should throw an error if provided with multiple arguments instead of an array', () => {
+  // ARRANGE
+  const [value1, value2, value3] = [1, 2, 3];
+  // ACT
+  const resultFn = () => {
+    add(value1, value2, value3);
+  };
+  // ASSERT
+  expect(resultFn).toThrowError(
+    'Please provide an array of numbers, instead of multiple number-arguments'
+  );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ALÉM DISSO,
+
+
+PODEMOS 
+
+
+RODAR 1 TEST E FAZER EXPECT 
+
+
+QUE 
+
+
+
+
+A FRASE DE ERROR 
+
+TIVESSE 
+
+
+
+O TRECHO ESPECÍFICO 
+
+
+
+
+'is not iterable'...
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO, ACHO QUE SERÁ 
+
+
+NECESSÁRIO 
+
+
+
+UMA REGULAR EXPRESSION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR ESCREVE ASSIM:
+
+
+
+
+
+
+
+
+expect(resultFn).toThrow(/is not iterable/);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EU POSSO FAZER ALGO PARECIDO,
+
+
+
+
+
+
+
+COM MINHA PRÓPRIA VERSÃO:
+
+
+
+
+
+
+
+
+
+
+
+
+
+it('should throw an error if provided with multiple arguments instead of an array', () => {
+  // ARRANGE
+  const [value1, value2, value3] = [1, 2, 3];
+  // ACT
+  const resultFn = () => {
+    add(value1, value2, value3);
+  };
+  // ASSERT
+  expect(resultFn).toThrowError(/multiple number-arguments/);
+});
+
+
+
+
+
+
+
+
+
+
+(AGORA ELE VAI PROCURAR PELO TRECHO 'multiple number-arguments' para constatar o throw 
+
+desse error)...
+
+
+
+
+
+EX:
+
+
+
+
+
+
+it('should throw an error if provided with multiple arguments instead of an array', () => {
+  // ARRANGE
+  const [value1, value2, value3] = [1, 2, 3];
+  // ACT
+  const resultFn = () => {
+    add(value1, value2, value3);
+  };
+  // ASSERT
+  expect(resultFn).toThrowError(/multiple number-arguments/); // --> podemos usar uma REGEX, aqui, para testar se a mensagem de erro contém uma certa string...
+});
+
+
+
+
+
+------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+se não tivermos 1 string/regex como argumento de 'toThrowError()' (ou 'toThrow()'),
+
+
+
+
+NOSSO TEST PASSARIA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+é bom especificar bem o 'range' de errors que 
+
+podem ser thrown,
+
+PARA QUE 
+
+VC 
+
+N FIQUE EXPECTING O TIPO ERRADO DE ERROR...
+
+
+
+
+
+

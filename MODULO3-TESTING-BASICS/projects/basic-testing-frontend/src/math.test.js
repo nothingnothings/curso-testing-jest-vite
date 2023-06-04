@@ -102,3 +102,14 @@ it('should throw an error if provided with multiple arguments instead of an arra
     'Please provide an array of numbers, instead of multiple number-arguments'
   );
 });
+
+it('should throw an error if provided with multiple arguments instead of an array', () => {
+  // ARRANGE
+  const [value1, value2, value3] = [1, 2, 3];
+  // ACT
+  const resultFn = () => {
+    add(value1, value2, value3);
+  };
+  // ASSERT
+  expect(resultFn).toThrowError(/multiple number-arguments/); // --> podemos usar uma REGEX, aqui, para testar se a mensagem de erro contém uma certa string...
+});
