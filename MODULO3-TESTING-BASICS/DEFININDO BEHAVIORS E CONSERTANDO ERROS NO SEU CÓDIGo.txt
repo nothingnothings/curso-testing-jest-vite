@@ -1,0 +1,995 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... QUE OUTROS TESTS PODEMOS ESCREVER?
+
+
+
+
+
+
+
+BEM, TEMOS UM MONTE DE OUTROS ARQUIVOS,
+
+COM OUTRAS UNITS,
+
+
+
+
+
+outras functions...
+
+
+
+
+
+
+
+
+
+
+--> MAS AINDA NÃO ACABAMOS COM A FUNCTION DE 'add()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO PQ __ VOCÊ TIPICAMENTE ESCREVERÁ MÚLTIPLOS TESTS 
+
+PARA 
+
+1 
+
+MESMA UNIT..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ, PARA 1 ÚNICO TEST,
+
+VC TIPICAMNETE 
+
+VAI TESTAR APENAS 1 ÚNICA COISA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> 1 COISA POR VEZ, BASICAMNETE...
+
+
+
+
+
+
+
+
+
+
+--> com o último test,
+
+
+testamos se 
+
+
+realmente 
+
+são somadas as coisas em 1 array...
+
+
+
+
+
+
+
+ENTRETANTO, COM TESTS,
+
+
+TAMBÉM QUEREMOS TESTAR COISAS QUE 
+
+''NÃO DEVEM ACONTECER''...
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE O PROFESSOR ADICIONA OUTRO TEST,
+
+
+
+
+
+ESTE AQUI:
+
+
+
+
+
+
+
+it('should yield NaN if at least one invalid number is provided', () => {
+  // ARRANGE
+
+  const values = [1, 'string'];
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBeNaN();
+});
+
+
+
+
+
+
+
+
+
+
+
+ESCREVI TIPO ASSIM.... E O CÓDIGO FALHOU,
+
+
+O TEST FALHOU, PQ FIQUEI COM ISTO:
+
+
+
+
+AssertionError: expected '1string' to be NaN
+ ❯ src/math.test.js:39:18
+     37|   // ASSERT
+     38| 
+     39|   expect(result).toBeNaN();
+       |                  ^
+     40| });
+     41| 
+
+
+
+
+
+
+
+
+
+
+
+OK...
+
+
+
+
+
+
+
+
+ISSO QUER DIZER QUE 
+
+
+ELE _ CONCATENOU OS VALUES,
+
+EM VEZ DE OS SOMAR...
+
+
+
+
+
+(ou seja,
+
+meu MAIN CODE PRECISA SER EDITADO, PARA  QUE 
+
+
+SEJA RETORNADO `NaN` em vez de '1string'...)
+
+
+
+
+
+
+
+----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE ESSE FOSSE 1 APP MAIOR,
+
+
+
+
+
+PODERÍAMOS USAR ESSA FUNCTION DE 'ADD'
+
+
+EM 
+
+
+
+
+
+1 LUGAR EM QUE 1 INVALID VALUE É 
+
+
+USADO,
+
+
+
+
+
+
+E, SE ISSO ACONTECER, ESSA FUNCTION PODE TALVEZ 'CRASH',
+OU 
+
+
+THROW 1 ERROR...
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSA FUNCTION NÃO VAI CRASHAR/DAR 1 ERRO,
+
+
+MAS VAI CONCATENAR OS VALUEs...
+
+
+
+
+
+
+
+
+-> OK... É POR ISSO QUE 
+
+É IMPORTANTE DEFINIR 
+
+
+A MAIOR QUANTIDADE 
+
+DE 
+EXPECTATIONS POSSÍVEIS,
+
+DESDE QUE ELAS FAÇAM SENTIDO...
+
+
+
+
+
+
+
+
+
+----> ok..
+
+
+
+
+
+
+
+
+
+
+o professor escreve assim:
+
+
+
+
+
+
+
+
+
+const inputs = ['invalid', 2];
+
+
+
+
+
+
+
+
+
+
+
+--> OK... 'invalid' É 1 value que não pode ser convertido em 1 number...
+
+
+
+
+
+
+
+
+isso feito,
+
+executamos 
+
+
+'add(inputs)',
+
+
+
+
+
+
+
+
+
+
+
+
+e __ o professor quer definir a expectation de que 
+
+'O RESULT DESSE NEGÓCIO AÍ NÃO SERÁ 1 
+NUMBER,
+
+será NaN'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> para isso, ele escreve 
+
+
+
+
+expect(result).toBeNaN();
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+MAS SE RODAMOS ISSO AÍ,
+
+RECEBEMOS 'FAILED'...
+
+
+
+
+
+
+
+
+
+-----> FICOU 'failed'
+
+PQ, NO FINAL DAS CONTAS,
+
+
+
+NOSSO OUTPUT 
+
+
+
+
+FICOU 
+
+
+
+
+
+COMO '0invalid1'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK, MAS PQ ESTAMOS CONSEGUINDO ISSO?
+
+
+
+
+
+
+
+
+É PQ NOSSO CÓDIGO ATUALMENTE NÃO ESTÁ FUNCIONANDO DA MANEIRA QUE 
+
+QUEREMOS:
+
+
+
+
+
+export function add(numbers) {
+  // let sum //! FAILURE
+  let sum = 0;  //* SUCCESS
+
+  for (const number of numbers) {
+    sum += number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+ok..
+
+
+
+
+
+
+
+
+
+----> PODEMOS ADICIONAR OUTRO TEST,
+
+
+como 
+
+
+
+
+
+
+
+it('should yield a correct sum if an array of numeric string values is provided', () => {
+  // ARRANGE
+
+  const values = ['1', '2', '3'];
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBe(6);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> com isso,
+
+ficamos com 1 array de numbers, mas de numbers que são DE TYPE TEXT...
+
+
+
+
+
+
+--> É POR ISSO QUE O TEST _ VAI _ _fAIL...
+
+
+ 
+
+
+
+------> PQ ELES SERÃO CONCATENADOS, E NÃO SOMADOS...
+
+
+
+
+
+
+
+OK.. mas antes, o professor vai tirar esse hard code:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+it('should yield a correct sum if an array of numeric string values is provided', () => {
+  // ARRANGE
+
+  const values = ['1', '2', '3'];
+  const expectedResult = numbers.reduce((prevValue, curValue) => {
+    return +prevValue + +curValue;
+  }, 0);
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBe(expectedResult);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESTE TEST FALHA:
+
+
+
+
+
+
+
+
+
+
+
+it('should yield a correct sum if an array of numeric string values is provided', () => {
+  // ARRANGE
+
+  const values = ['1', '2', '3'];
+  const expectedResult = numbers.reduce((prevValue, curValue) => {
+    return +prevValue + +curValue;  ///queremos um REAL NUMBER, por isso o '+prevValue' e o '+curValue'...
+  }, 0);
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBe(expectedResult);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FALHA PQ FICAMOS COM '123' 
+
+
+em vez de 
+
+
+
+
+6.....
+
+
+
+
+
+
+
+ISSO ACONTECEU 
+
+
+PQ __  É ASSIM QUE O JAVASCRIPT FUNCIONA, NO FINAL DAS CONTAS,
+
+
+SE 
+VC 
+
+
+COMBINAR 1 NUMBER COM STRINGS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC USA O OPERADOR '+' em strings (ou strings e numbers),
+
+
+
+O JAVASCRIPT CONCATENA ESSES VALUES EM 1 LONGA STRING...
+
+
+
+
+
+
+
+
+
+certo...
+
+
+
+
+
+
+
+
+
+ISSO FAZ SENTIDO...
+
+
+
+
+
+
+
+
+
+
+
+-> QUER DIZER QUE NOSSOS 
+
+TESTS DETECTARAM 1 PROBLEMA COM NOSSA 'MATH FUNCTION'...
+
+
+
+
+
+
+
+ESSE É JUSTAMENTE O PROPÓSITO DOS TESTS:
+
+
+
+
+
+
+VC QUER DETECTAR PROBLEMAS OU NO SEU CÓDIGO,
+
+
+
+
+OU, TALVEZ,
+
+
+
+
+IMPEDIR PROBLEMAS NO FUTURO,
+
+
+
+
+SEJA POR SUA PARTE OU PARTE DE SEUS COLEGAS....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA CONSERTAR ESSE PROBLEMA,
+
+
+
+
+
+
+
+ALTERAMOS O CÓDIGO DO 'add()',
+
+
+PARA QUE ELE CONVERTA 
+
+CADA ELEMENTO EM 1 NUMBER,
+
+ANTES 
+
+
+DE ADICIONAR CADA ELEMENTO NA SUM..
+
+
+
+ex:
+
+
+
+
+
+
+
+
+
+
+
+
+export function add(numbers) {
+  // let sum //! FAILURE
+  let sum = 0;  //* SUCCESS
+
+  for (const number of numbers) {
+    // sum += number;  //com erros de concatenação ('0' + 1' = 01; PARA QUE ENTÃO FIQUE 0 + 1 = 1...)
+    sum += +number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK...
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+export function add(numbers) {
+  // let sum //! FAILURE
+  let sum = 0; //* SUCCESS
+
+  for (const number of numbers) {
+    // sum += number;  //com erros de concatenação ('0' + 1' = 01; PARA QUE ENTÃO FIQUE 0 + 1 = 1...)
+    sum += +number;
+  }
+  return sum;
+}
+
+
+
+
+
+
+
+
+
+
+
+COM ISSO, TODOS NOSSOS TESTS VÃO FUNCIONAR..
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+it('should yield a correct sum if an array of numeric string values is provided', () => {
+  // ARRANGE
+
+  const values = ['1', '2', '3'];
+  const expectedResult = values.reduce((prevValue, curValue) => {
+    return +prevValue + +curValue;  ///queremos um REAL NUMBER, por isso o '+prevValue' e o '+curValue'...
+  }, 0);
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBe(expectedResult);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESSA É A IDEIA POR TRÁS DE TESTS,
+
+E A RAZÃO PARA VC ESCREVER MAIS DO QUE APENAS 1 ÚNICO TEST,
+ 
+ PARA CADA 
+
+
+ FUNCTION/UNIT ...

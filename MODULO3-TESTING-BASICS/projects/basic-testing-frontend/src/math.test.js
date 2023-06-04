@@ -24,3 +24,34 @@ it('should summarize all number values in an array', () => {
   // 3 - ASSERT
   expect(result).toBe(expectedResult);
 });
+
+it('should yield NaN if at least one invalid number is provided', () => {
+  // ARRANGE
+
+  const values = [1, 'string'];
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBeNaN();
+});
+
+it('should yield a correct sum if an array of numeric string values is provided', () => {
+  // ARRANGE
+
+  const values = ['1', '2', '3'];
+  const expectedResult = values.reduce((prevValue, curValue) => {
+    return +prevValue + +curValue;  ///queremos um REAL NUMBER, por isso o '+prevValue' e o '+curValue'...
+  }, 0);
+
+  // ACT
+
+  const result = add(values);
+
+  // ASSERT
+
+  expect(result).toBe(expectedResult);
+});
