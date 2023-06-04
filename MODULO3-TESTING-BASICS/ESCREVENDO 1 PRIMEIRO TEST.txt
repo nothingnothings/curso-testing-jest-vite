@@ -1,0 +1,775 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+PARA COMEÇAR, PODEMOS ESCREVER 
+
+
+
+1 
+
+
+
+_  TEST,
+
+
+
+PODEMOS 
+
+
+
+COLOCAR A EXPECTATIVA DO QUE ESSA FUNCTION DEVE FAZER...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ELA DEVE SOMAR TODOS OS NÚMEROS PASSADOS NO ARRAY DESSA FUNCTION,
+
+
+E AÍ __ dEVE __ RETORNAR _ 
+
+
+O RESULTADO DESSA SOMA...
+
+ 
+
+TIPO ASSIM:
+
+
+
+
+
+
+import { it } from 'vitest';
+
+it('should summarize all number values in an array', () => {
+
+    
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... É POR ISSO QUE O NOME É 'it()'...
+
+
+
+
+
+
+
+
+
+
+A MAIOR PARTE DOS TEST RUNNERS USAM 'it' em vez de 'test'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... PASSAMOS A DESCRIPTION DE NOSSO TEST...
+
+
+
+
+
+
+
+
+
+
+A DESCRIPITION É NICE, SIM,
+
+
+
+
+MAS _ O QUE FALTA É o
+
+
+ACTUAL TEST...
+
+
+
+
+
+
+
+
+
+
+
+
+--> O TEST EM SI É O SEGUNDO ARGUMENTO DESSA FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+DEVEMOS usar a function de 'expect()"..
+
+
+
+
+'expect().toBe()'...
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ --> DVEMOS ESCREVER ESSA FUNCTION DENTRO DE NOSSA ANON FUNCTION/ARROW FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> O TESTING CODE É A PARTE INTERESSANTE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> A FUNCTION DE 'it()"
+
+
+ SERÁ EXECUTADA 
+
+
+ QUANDO __ O TEST FOR EXECUTADO.... O TEST RUNNER VAI EXECUTAR 
+
+
+
+ A FUNCTION DE 'it'
+
+ PARA NÓS..
+
+
+
+
+
+
+
+
+
+
+
+
+ --> CADA 'CASE', CADA TEST,
+
+
+
+ FICA EM 1 'IT' STATEMENT/FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ OK... MAS QUAL DEVERÁ SER A LÓGICA DE TEST?
+
+
+
+
+
+
+
+
+
+
+
+ DEVERÁ __ 'EXECUTAR A FUNCTION DE ADD',
+
+
+
+
+
+
+ __ E AÍ _ PASSAR __ PARA DENTRO 1 ARRAY DE NUMBERS,
+
+ E AÍ 
+
+
+ DEFINIR ALGUM 'EXPECTED VALUE',
+
+ QUE 
+
+ SERÁ 
+
+
+
+ __CHECADO __ PELO VITEST,
+
+ PELA 
+
+ ASSERTION LIBRARY QUE VC ESTÁ USANDO (vitest é o test runner e a assertion library)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ISSO FEITO,
+
+ O VITEST VAI MARCAR O TEST COMO 'SUCCESSFUL',
+
+ SE 
+
+
+ A 
+
+ EXPECTATION FOI MET,
+
+ OU ENTÃO COMO FAILURE,
+
+
+ SE 
+
+
+
+ A EXPECTATION NÃO FOI MET...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> PARA ISSO,
+
+ DEVEMOS 
+
+
+ IMPORTAR A FUNCTION DE 'add'
+
+ E A EXECUTAR DENTRO DA FUNCTION, TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+// ? 'test' É A MESMA COISA QUE A FUNCTION DE 'it()'...
+
+import { it, expect } from 'vitest';
+
+import { add } from './math.js'; // DEVEMOS USAR/RODAR NOSSA FUNCTION DENTRO DO TEST, COM 'expect().toBe()'...
+
+it('should summarize all number values in an array', () => {
+  expect(add([1, 2, 3, 4, 5])).toBe(15);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----> SE RODAMOS 'npm test'
+
+
+NO ROOT DE NOSSO PROJECT,
+
+GANHAMOS ESTE OUTPUT:
+
+
+
+ RUN  v0.9.0 A:/PROJETO17-TESTING-JEST-E-VITE/MODULO3-TESTING-BASICS/projects/basic-testing-frontend
+
+ √ src/math.test.js (1)
+   √ should summarize all number values in an array
+
+Test Files  1 passed (1)
+     Tests  1 passed (1)
+      Time  777ms (in thread 2ms, 38848.89%)
+
+
+
+
+
+
+
+----------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO... PASSEI 1 ARRAY DE NUMBERS, E PASSEI A EXPECTATIVA...
+
+
+
+
+
+
+
+
+
+
+
+'expect(xxxx).toBe(yyyy)'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> A FUNCTION DE 'expose'
+
+
+
+VEM JUNTO COM O VITEST..
+
+
+
+
+
+
+
+
+
+
+--> O JEST TAMBÉM TEM A MESMA FUNCTION...
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+aqui rodamos a function de EXPECT...
+
+
+
+
+
+
+
+
+
+--> NA FUNCTION DE 'EXPECT',
+
+
+COLOCAMOS O 
+
+RESULT 
+
+DO RUN DA FUNCTION QUE 
+
+
+
+QUEREMOS TESTAR,
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+// import { test } from 'vitest';  // é possível deixar de importar diretamente o 'test' do vitest, se vc escrever '--globals' lá no run de 'npm test', lá na package.json do seu project... mas isso não é recomendado, pq o suporte do IDE sem o impotrt não é tão bom..
+// ? 'test' É A MESMA COISA QUE A FUNCTION DE 'it()'...
+
+import { it, expect } from 'vitest';
+
+import { add } from './math.js'; // DEVEMOS USAR/RODAR NOSSA FUNCTION DENTRO DO TEST, COM 'expect().toBe()'...
+
+it('should summarize all number values in an array', () => {
+  const result = add([1, 2, 3, 4, 5]);
+  expect(result).toBe(15);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DEPOIS DO call de 'expect()',
+
+
+
+VC RODA 'toBe()',
+
+
+
+
+
+
+MAS É CLARO QUE EXISTEM 
+
+
+
+MTOS MÉTODOS QUE 
+
+COMEÇAM COM 'toBe'...
+
+
+
+
+
+
+
+
+
+
+
+OS MÉTODOS DO VITEST QUE COMEÇAM COM toBe são:
+
+
+
+toBeDefined
+toBeUndefined
+toBeNull
+toBeNaN,
+
+
+
+
+
+
+ETC etC...
+
+
+
+
+
+
+
+
+
+
+TODOS ESSES METHODS SÃO PROVIDENCIADOS PELO VITEST/ASSERTION LIBRARY QUE 
+
+VC USA 
+
+
+
+UNDER THE HOOD..
+
+
+
+
+
+
+
+CADA 1 DESSES MÉTODOS É CLARO,
+
+
+E TE AJUDA A DEFINIR A SUA CRITERIA/EXPECTATION..
+
+
+
+
+
+
+
+
+--> 'toBe(6)',
+
+
+
+
+OU QUALQUER OUTRA COISA....
+
+
+
+
+
+
+
+
+
+
+
+
+
+E SE EXISTIR ALGUM 'FAIL' DURANTE O RUN DESSE TEST, O OUTPUT FICARÁ ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+ RUN  v0.9.0 A:/PROJETO17-TESTING-JEST-E-VITE/MODULO3-TESTING-BASICS/projects/basic-testing-frontend
+
+ ❯ src/math.test.js (1)
+   × should summarize all number values in an array
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/math.test.js > should summarize all number values in an array
+AssertionError: expected 15 to be 6 // Object.is equality
+ ❯ src/math.test.js:11:18
+      9|   const result = add([1, 2, 3, 4, 5]);
+     10|   expect(result).toBe(15);
+     11|   expect(result).toBe(6);
+       |                  ^
+     12| 
+     13| 
+
+  - Expected   6
+  + Received   15
+
+
+
+
+
+
+
+
+
+  ---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  na API do vitest
+
+
+  temos todas as functions diferentes.. ----> 
+
+
+
+
+
+  DEVEMOS USAR OS DOCS DO VITEST 
+
+
+
+
+  para ver 
+
+  exemplos de utilização de vários desses methods...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  --> CERTO... ESSE FOI NOSSO PRIMEIRO TEST..
+
+
+
+
+
+
+
+
+  NOSSOS TESTS DEVEM SER SIMPLES E BÁSICOS...
