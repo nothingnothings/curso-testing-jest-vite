@@ -1,0 +1,1021 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... PARA ESTA COURSE SECTION,
+
+O PROFESSOR AINDA VAI USAR O PROJECT QUE 
+
+
+
+USAMOS NA ÚLTIMA SECTION....
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROJECT COM NOSSOS TESTS JÁ ADICIONADOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+O CONHECIMENTO DA SECTION ANTERIOR 
+
+
+
+
+ É 'EXPECTED' NESTA SECTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> SE ANALISARMOS O PROJECT EM QUE TRABALHAMOS,
+
+
+
+
+
+
+
+
+CONSTATAREMOS 
+
+
+
+
+
+QUE 
+
+
+'OS TESTS FUNCIONAM NOS 3 PROJECTS'...
+
+
+
+
+
+
+
+
+
+
+-> MAS SE ANALISARMOS O PROJECT 'FRONTEND',
+
+
+VEREMOS QUE 
+
+TEMOS 
+
+2 
+
+
+FILES,
+
+o 
+
+'parser.js'
+
+ 
+e o 'app.js',
+
+
+
+
+
+
+
+
+
+PARA AS QUAIS AINDA NÃO ESCREVEMOS NENHUM 
+
+TEST...
+
+
+
+
+
+
+
+
+
+
+
+--> OK... -----> O 'parser.js'
+
+
+É ACTUALLY 1 
+
+FILE BEM SIMPLES,
+
+COM UMA FUNCTION BEM SIMPLES NO SEU INTERIOR ->  MAS ESSA FUNCITON ESTÁ 
+
+
+FAZENDO 1 COISA ESPECIAL...
+
+
+
+
+
+
+
+
+
+É ESTE CÓDIGO:
+
+
+
+
+
+export function extractNumbers(formData) {
+  const num1Input = formData.get('num1');
+  const num2Input = formData.get('num2');
+
+  return [num1Input, num2Input];
+}
+
+
+
+
+
+
+
+
+
+
+
+este código está USANDO 1 FEATURE BUILT-IN NO BROWSER,
+
+
+O OBJECT DE 'formData'...
+
+
+
+
+
+
+
+
+
+
+-> VEREMOS ISSO MAIS TARDE NO CURSO....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> JÁ O ARQUIVO 'app.js'
+
+ESTÁ USANDO 
+
+
+
+TAMBÉM ALGUMAS 'BUILT-IN FEATURES' DO BROWSER,
+
+
+E ALGUMAS 
+
+
+
+
+
+
+__ APIs...
+
+
+
+
+
+
+
+
+
+MAS __ ALÉM DISSO,
+
+O 'app.js'
+
+
+é PROVAVELMENTE NOSSO ARQUIVO JAVASCRIPT MAIS COMPLEXO,
+
+QUE ESTÁ FAZENDO 1 MONTE DE COISAS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> FAZEMOS 1 MONTE DE COISAS DENTRO 
+
+
+da function de 'formSubmitHandler',
+
+
+COMO PODEMOS 
+
+PERCEBER:
+
+
+
+
+function formSubmitHandler(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  let result = '';
+  
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  let resultText = '';
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+FAZEMOS 1 MONTE DE COISAS DIFERENTES NESSA ONE SINGLE FUNCTION,
+
+
+
+E AÍ 
+
+
+TAMBÉM TEMOS 1 CÓDIGO ALI EMBAIXO,
+
+O DE 
+
+
+
+'form.addEventListener('submit', formSubmitHandler);'
+
+,
+
+
+
+
+QUE 
+
+
+
+NÃO ESTÁ DENTRO DE NENHUMA FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+É CLARO QUE, TIPICAMENTE,
+
+
+GOSTARÍAMOS 
+
+
+DE TESTAR 
+
+
+O CÓDIGO 
+
+
+
+QUE 
+
+FICA NESSE ARQUIVO TAMBÉM.... MAS COMO ESSA FUNCTION DE 'formSubmitHandler'
+
+
+
+FAZ 1 MONTE DE COISAS,
+
+
+A PERGUNTA É 
+
+
+'''COMO VAMOS TESTAR ISSO?''' ---------> PQ O PROBLEMA 
+
+
+
+
+
+NÃO É SOMENTE 
+
+
+QUE 'TEMOS MT CÓDIGO DENTRO DESSA FUNCTION',
+
+
+E QUE
+ 
+ ESSA FUNCTION FAZ VÁRIAS COISAS... -> O PROBLEMA TAMBÉM 
+
+
+ RESIDE NO FATO DE QUE 
+
+
+
+ __eSTAMOS USANDO ALGUMAS BROWSER BUILT-IN APIs,
+
+
+
+ como 
+
+
+ 'document.querySelector()',
+
+
+
+
+ 'document.getElementById()',
+
+
+
+
+
+
+ e também oo 
+
+
+ CREATE DO OBJECT DE 'formData',
+
+
+ com 
+
+
+ 'const formData = new FormData(form)',
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ OBJECT QUE ENTÃO ESTAMOS PASSANDO PARA DENTRO DAQUELA FUNCTION DE 
+
+ 'extractNumbers',
+
+
+ TIPO ASSIM:
+
+
+
+
+
+   event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  let result = '';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E ASSIM:
+
+
+
+
+
+
+
+export function extractNumbers(formData) {
+  const num1Input = formData.get('num1');
+  const num2Input = formData.get('num2');
+
+  return [num1Input, num2Input];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO SIGNIFICA QUE ESTAMOS 'USANDO 1 MONTE DE BUILT-IN BROWSER FEATURES' ---> E ISSO É IMPORTANTE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+PQ QUANDO ESCREVEMOS TESTS,
+
+
+HÁ CERTAS COISAS QUE DEVEMOS TESTAR, E CERTAS COISAS 
+
+
+QUE DEVEMOS EVITAR TESTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1a COISA --> VC DEVE __ TER EM MENTE _ QUE _ SEUS TESTS 
+
+SEMPRE DEVEM TESTAR ___ APENAS __ O APPLICATION CODE,
+
+O
+ 
+ CÓDIGO DE SEU APP -----------> VC N DEVE TESTAR THIRD-PARTY 
+
+ CODE,
+
+ NÃO 
+
+ DEVE 
+
+ TESTAR AS APIS COM QUE VC TRABALHA,
+
+
+
+ NÃO DEVE 
+
+ TESTAR 
+
+
+
+
+ PACKAGES NATIVOS DO NODEJS...
+
+
+
+
+
+
+
+
+
+
+
+
+ 2a COISA --> VC 'NÃO DEVE TESTAR AS COISAS QUE VC 
+
+ NÃO VAI CONSEGUIR MUDAR' ------> ISSO É MT IMPORTANTE ---> SE 
+
+
+
+ NÓS ESTAMOS ESCREVENDO TESTS PARA NOSSO CÓDIGO,
+
+
+ NÃO VAMOS QUERER 
+
+
+
+TESTAR '''SE O DOCUMENT.querySelector corretamente 
+
+
+retrieva uma form
+
+SE EXISTE 1 FORM NO NOSSO ARQUIVO HTML''..
+
+
+
+
+
+
+
+
+--> NÓS TALVEZ QUEIRAMOS 
+CHECAR SE 'USAMOS ESSA FORM/FORM DATA CORRETAMENTE',
+
+
+
+OU ENTÃO 
+
+
+
+CHECAR E TESTAR '''SE EXISTE 
+
+1 ELEMENTO FORM NO HTML DOCUMENT, EM PRIMEIRO LUGAR''' --> PQ ESSAS SÃO COISAS 
+
+
+QUE PODEMOS 
+
+INFLUENCIAR/MUDAR, COMO DESENVOLVEDORES -->  OU SEJA,
+
+
+NÃO TEMOS NECESSIDADE DE __ TESTAR__ 
+
+'document.querySelector',
+
+OU QUAQLUER 
+
+
+
+
+OUTRA BROWSER API OU 
+
+
+
+
+TESTAR COISAS NATIVAS DE QUALQUER ENVIRONMENT COM QUE 
+
+ESTIVERMOS TRABALHANDO...S
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK..
+
+
+
+
+
+
+
+
+
+MAS A QUESTÃO É QUE COISAS COMO 'querySelector'
+
+
+e 'getElementById'
+
+
+PODEM FALHAR,
+PODEM TER BUGS ----------> PODEM FALHAR EM CENÁRIOS EM QUE 'não devem falhar',
+
+
+
+
+MAS NAÕ 
+
+
+
+SERÁ SEU TRABALHO CONSERTAR ESSES BUGS...
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC ESTIVER TRABALHANDO NESSES PROJECTS,
+
+
+
+TRABALHANDO NO PROJECT DO DOCUMENT.querySelector,,
+
+
+VC PODERÁ TESTAR ESSAS COISAS...
+
+
+
+
+
+
+
+
+MAS VC N VAI QUERER TESTAR ESSAS THIRD-PARTY 
+
+
+APIs/códigos no seu projeto,
+
+
+
+
+pq 
+
+
+
+VC N VAI PODER INFLUENCIAR 
+
+ESSAS COISAS, DE QUALQUER FORMA....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EX:::::
+
+
+
+DIGAMOS QUE  ESTAMOS USANDO A FUNCTION DE 'FETCH'
+
+
+NO NOSSO CÓDIGO -----> É UMA BROWSER API PARA ENVIAR HTTP REQUESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC NÃO VAI QUERER SABER SE ESSE METHOD ESTÁ FUNCIONANDO 
+
+CORRETAMENTE,
+
+
+
+PQ ISSO NÃO ESTÁ NO ESCOPO 
+
+
+DO SEU PROJETO..
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC TAMBÉM NÃO VAI __TESTAR __ SEU SERVERSIDE 
+
+
+CODE 
+
+
+IMPLICITAMENTE 
+
+
+PELO CLIENTSIDE CODE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------> OU SEJA,
+
+
+CÓDIGOS DE TEST NO SEU FRONTEND PROJECT NÃO VÃO DISPARAR 
+
+
+REQUESTS CONTRA SEU BACKEND...
+
+
+
+
+
+
+
+
+
+
+
+--> O IDEAL É ESCREVER TESTS PARA 
+
+
+SEU BACKEND CODE,
+
+INDEPENDENTES 
+
+
+DO SEU FRONTEND PROJECT E DOS TESTS DE SEU FRONTEND PROJECT...
+
+
+
+
+
+
+
+
+
+
+
+
+MAS VC NÃO QUER 'TESTAR IMPLICITAMENTE SEU CÓDIGO 
+
+BACKEND,
+
+USANDO 
+
+
+SEUS TESTS FRONTEND'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O QUE VC VAI QUERER TESTAR, NO SEU FRONTEND PROJECT,
+
+
+
+
+SERIA A 'REACTION' AO __ RESPONSE QUE VC 'GET BACK'
+
+QUANDO 
+
+VC 
+
+ENVIA 1 REQUEST --------> OU SEJA,
+
+
+SUAS REACTIONS A:
+
+
+
+
+
+
+
+1) 'EXPECTED RESPONSE DATA'
+
+
+
+
+
+2) 'MISSING RESPONSE DATA'
+
+
+
+
+3) ERROS POSSÍVEIS..
+
+
+
+
+
+
+
+
+E É ISSO QUE VAMOS QUERER TESTAR --------> PARA ISSO,
+
+SEMPRE DEVEMOS 
+
+PENSAR NO QUE SEU CÓDIGO FAZ E DEVERIA FAZER,
+
+
+PARA AÍ DERIVAR O QUE VC VAI QUERER TESTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE 'TESTAR SEU PRÓPRIO CODE'
+
+
+É ALGO IMPORTANTE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----> É POR ISSO QUE NÃO VAMOS 'TESTAR SE O DOCUMENT.getElementById'
+
+ESTÁ 
+
+
+FUNCIONANDO CORRETAMENTE..
+
+
+
+
+
+
+
+
+
+
+
+-. O PROFESSOR TVZ QUEIRA TESTAR '''SE EXISTE 1 FORM 
+
+
+NO MEU FRONTEND PROJECT,
+
+
+
+
+PQ 
+
+
+
+ESSA É NOSSA RESPONSABILIDADE,
+
+
+
+MAS O FUNCIONAMENTO DO 'querySelector'
+NÃO É NOSSA RESPONSABILIDADE'....
+
