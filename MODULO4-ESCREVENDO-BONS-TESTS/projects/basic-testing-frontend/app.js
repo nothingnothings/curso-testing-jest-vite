@@ -7,11 +7,11 @@
 // import { transformToNumber } from './src/util/numbers.js';
 
 import { formExtractor } from './src/form/formExtractor';
+import { outputResult } from './src/form/outputResult';
 import { resultConstructor } from './src/form/resultConstructor';
 import { resultTextConstructor } from './src/form/resultTextConstructor';
 
 const form = document.querySelector('form');
-const output = document.getElementById('result');
 
 // function formSubmitHandler(event) { // ! CÓDIGO SEM OUTSOURCING (ruim para tests)
 //   event.preventDefault();
@@ -47,13 +47,13 @@ const output = document.getElementById('result');
 // * código COM outsourcing (bom para tests)
 function formSubmitHandler(event) {
   // 1 - OBTÉM A DATA CONTIDA NO DOM, NA FORM
-  const numberInputs = formExtractor(event);
+  const numberInputs = formExtractor(event, from);
   // 2 - CONSTRÓI/VALIDA O RESULTADO (por meio de uma adição - transformação dos elementos)
   const result = resultConstructor(numberInputs);
   // 3 - CONSTRÓI A MENSAGEM DE RESULTADO, a partir do resultado
   const resultText = resultTextConstructor(result);
   // 4 - INSERE A MENSAGEM DE RESULTADO NO DOM
-  output.textContent = resultText;
+  outputResult(resultText);
 }
 
 // * CÓDIGO OUTSOURCEADO (bom para tests)

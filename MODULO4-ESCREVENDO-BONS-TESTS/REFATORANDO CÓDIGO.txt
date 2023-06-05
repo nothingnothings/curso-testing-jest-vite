@@ -1,0 +1,550 @@
+
+
+
+
+
+
+
+
+
+--> CERTO... REFATOREI TODO O CÓDIGO, POR CONTA PRÓPRIA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> O IDEAL SERIA CRIAR '.test.js'
+
+PARA CADA 1 DESSES ARQUIVOS,
+
+PARA 
+
+TESTAR 
+
+SEU BEHAVIOR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESCREVI ALGUNS TESTS PARA 'resultTextConstructor':
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { resultTextConstructor } from './resultTextConstructor';
+
+describe('resultTextConstructor', () => {
+  it('should always return a string', () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor();
+
+    // ASSERT
+    expect(result).toBeTypeOf('string');
+  });
+
+  it("return 'Result: undefined' upon being called with no arguments", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor();
+
+    // ASSERT
+    expect(result).toBe('Result: undefined');
+  });
+
+  it("return 'Invalid input, you must enter valid numbers.', upon receiving 'invalid' as an argument", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor('invalid');
+
+    // ASSERT
+    expect(result).toBe('Invalid input. You must enter valid numbers.');
+  });
+
+  it("return an empty string upon receiving 'no-calc' as an argument", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor('no-calc');
+
+    // ASSERT
+    expect(result).toBe('');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+AGORA DEVO FAZER A MESMA COISA COM 'resultConstructor'
+
+
+e 
+
+'
+formExtractor'...
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { resultConstructor } from './resultConstructor.js';
+
+describe('resultConstructor', () => {
+  it('should always return a string', () => {
+    // ARRANGE AND ACT
+    const result = resultConstructor();
+
+    // ASSERT
+    expect(result).toBeTypeOf('string');
+  });
+
+  it('should return the sum of passed numbers as a string, if an array of numbers in string format is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const result = resultConstructor(['1', '2']);
+
+    // ASSERT
+    expect(result).toBe('3');
+  });
+
+  it('should return an error if an array of numbers is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const result = resultConstructor([1, 2]);
+
+    // ASSERT
+    expect(result).toBe('value.trim is not a function');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tipo isso...
+
+
+
+
+
+
+
+
+
+
+OK.... MAS O PROFESSOR QUER SPLITTAR O CÓDIGO AINDA MAIS...
+
+
+
+
+
+
+
+
+
+
+
+ou seja,
+
+
+
+
+
+ESTA FUNCTION AQUI:
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { transformToNumber } from '../util/numbers.js';
+import { validateStringNotEmpty, validateNumber } from '../util/validation.js';
+import { add } from '../math.js';
+
+export const resultConstructor = (numberInputs) => {
+  let result = '';
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  return result;
+};
+
+
+
+
+
+
+
+
+
+
+
+PRECISA SER MAIS SPLITTADA AINDA...
+
+
+
+
+
+
+
+
+
+
+
+
+ELE DIZ QUE O 'VALIDATE' E 'TRANSFORM'
+
+DE NOSSOS NUMBERS NÃO PERTENCE NESSA FUNCTION....
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE ELE PEGA O CÓDIGO DO FOR LOOP 
+
+
+
+
+E COLOCA NO MESMO ARQUIVO UMA OUTRA FUNCTION...
+
+
+
+
+
+
+
+
+
+--> CRIAMOS OUTRA FUNCTION , DE NOME 'cleanNumbers',
+
+QUE FARÁ ESSA FUNÇÃO...
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { transformToNumber } from '../util/numbers.js';
+import { validateStringNotEmpty, validateNumber } from '../util/validation.js';
+import { add } from '../math.js';
+
+export const resultConstructor = (numberInputs) => {
+  let result = '';
+  try {
+    const numbers = cleanNumbers(numberInputs);
+
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  return result;
+};
+
+const cleanNumbers = (numberInputs) => {
+  const numbers = [];
+  for (const numberInput of numberInputs) {
+    validateStringNotEmpty(numberInput);
+    const number = transformToNumber(numberInput);
+    validateNumber(number);
+    numbers.push(number);
+  }
+
+  return numbers;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... CONTINUA FUNCIONANDO, MAS AGORA COM ESSE OUTSOURCING...
+
+
+
+
+
+
+
+
+
+
+
+
+O CÓDIGO DE formSubmitHandler 
+
+ficou assim:
+
+
+
+
+
+
+
+
+function formSubmitHandler(event) {
+  // 1 - OBTÉM A DATA CONTIDA NO DOM, NA FORM
+  const numberInputs = formExtractor(event, from);
+  // 2 - CONSTRÓI/VALIDA O RESULTADO (por meio de uma adição - transformação dos elementos)
+  const result = resultConstructor(numberInputs);
+  // 3 - CONSTRÓI A MENSAGEM DE RESULTADO, a partir do resultado
+  const resultText = resultTextConstructor(result);
+  // 4 - INSERE A MENSAGEM DE RESULTADO NO DOM
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS O PROFESSOR AINDA VAI OUTSOURCEAR 'output.textContent'
+
+
+A UMA OUTRA FUNCTION, lá em 'form',
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function outputResult(resultText) {
+    output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+FICOU ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// * código COM outsourcing (bom para tests)
+function formSubmitHandler(event) {
+  // 1 - OBTÉM A DATA CONTIDA NO DOM, NA FORM
+  const numberInputs = formExtractor(event, from);
+  // 2 - CONSTRÓI/VALIDA O RESULTADO (por meio de uma adição - transformação dos elementos)
+  const result = resultConstructor(numberInputs);
+  // 3 - CONSTRÓI A MENSAGEM DE RESULTADO, a partir do resultado
+  const resultText = resultTextConstructor(result);
+  // 4 - INSERE A MENSAGEM DE RESULTADO NO DOM
+  outputResult(resultText);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+É CLARO QUE O PROFESSOR AINDA QUER TESTAR SE ISSO TUDO FUNCIONA...
+
+
+
+
+
+
+
+
+
+
+funciona como antes...
+
+
+
+
+
+O REFACTOR 
+
+
+
+DE NOSSO CÓDIGO VAI NOS AJUDAR COM O TESTING... --> COISAS COMO 
+
+
+O 
+
+'resultTextConstructor'
+
+
+
+VAI NOS AJUDAR A TESTAR ESSAS COISAS COMO UNITS.... -> ESSA É A IDEIA POR 
+
+TRÁS 
+
+DE UNIT TESTING..
+
+
+
+
+
+
+
+
+-> VC QUER TER UNIDADES GRANULARES,
+
+PARA QUE 
+
+OS DIFERENTES BEHAVIORS POSSAM SER TESTADOS STANDALONE,
+DE FORMA INDEPENDENTE...
