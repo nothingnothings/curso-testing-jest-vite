@@ -1,0 +1,595 @@
+
+
+
+
+
+
+
+
+
+TESTAR APENAS SEU CÓDIGO É O ESSENCIAL,
+
+REGRA ESSENCIAL DE UNIT TESTS...
+
+
+
+
+
+
+
+
+
+
+MAS O PROFESSOR TEM ALGUMAS RULES QUE VÃO NOS AJUDAR A ESCREVER BONS TESTS...
+
+
+
+
+
+
+
+
+
+
+1a REGRA) SIGA O PADRÃO 'ARRANGE', 'ACT','ASSERT'..
+
+
+
+
+--> ESSE PADRÃO TE AJUDA A DEIXAR SEU CÓDIGO 
+
+MAIS LEGÍVEL E ORGANIZADO, E TAMBÉM TE AJUDA A ESCREVER 
+
+
+TESTS MAIS SIMPLES E BÁSICOS,
+
+QUE É ALGO QUE VC SEMPRE QUER FAZER...
+
+
+
+
+
+
+
+
+
+
+
+2a REGRA) SEUS TESTS DEVEM  __ TIPICAMENTE__ TESTAR APENAS 1 ÚNICA COISA...
+
+
+
+
+
+VC NÃO QUER RODAR 1 TEST QUE 
+
+'''TESTA 3 DIFERENTES ASPECTOS DE 1 FUNCTION'',
+
+
+ou 
+
+
+''TESTA 3 DIFERENTES FUNCTIONS POR VEZ''...
+
+
+
+
+
+
+
+
+
+
+--> CADA TEST __ 'DEVE TESTAR APENAS 1 ÚNICA UNIT,
+
+E APENAS 
+
+1 
+ÚNICO BEHAVIOR/EXPECTED RESULT DAQUELA FUNCTION/UNIT'...
+
+
+
+
+
+
+
+
+
+
+--> POR EXEMPLO,
+
+
+OS CÓDIGOS DE 'math.test.js'
+
+
+
+SEMPRE TESTAVAM APENAS 1 ÚNICA COISA,
+
+
+
+
+
+
+COMO PERCEBEMOS POR ESTE CÓDIGO:
+
+
+
+
+  it('should yield a correct sum if an array of numeric string values is provided', () => {
+    // ARRANGE
+
+    const values = ['1', '2', '3'];
+    const expectedResult = values.reduce((prevValue, curValue) => {
+      return +prevValue + +curValue; ///queremos um REAL NUMBER, por isso o '+prevValue' e o '+curValue'...
+    }, 0);
+
+    // ACT
+
+    const result = add(values);
+
+    // ASSERT
+
+    expect(result).toBe(expectedResult);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+  ---------------------
+
+
+
+
+
+
+
+
+
+
+
+  OU SEJA,
+
+
+
+  ESTAMOS TESTANDO 
+
+
+
+  ' O CASE EM QUE O USER PASSA 1 ARRAY COM NÚMEROS NO INTERIOR',
+
+
+
+  E NÃO 
+
+  'O CASE EM QUE 
+
+
+  O USER PASSA 1 ARRAY VAZIO' ------> DEVEMOS TESTAR CADA COISA 
+
+
+  1 POR VEZ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ----> TESTAR 1 COMPORTAMENTO/EXPECTED OUTCOME 
+
+
+  POR TEST....
+
+
+
+
+
+
+
+
+
+
+
+  --> SE VC TESTAR MÚLTIPLAS COISAS EM 1 ÚNICO TEST,
+
+  QUANDO ESSE TEST FALHAR,
+
+
+
+VC NÃO TERÁ IDEIA DE 'QUAL PARTE DO CÓDIGO FEZ ESSE TEST FALHAR'......
+
+
+
+
+
+
+
+
+ISSO VAI GARANTIR QUE SEUS TESTS SERÃO HELPFUL...
+
+
+
+
+
+
+
+
+
+
+
+
+3a REGRA) QUANDO ESCREVEMOS TESTS,
+
+
+
+
+DEVEMOS DEIXÁ-LOS BASIC E SIMPLES,
+
+
+
+
+E FOCAR NA 'ESSENCE'
+
+DA COISA QUE 
+
+VC ESTÁ TESTANDO...
+
+
+
+
+
+
+
+
+
+
+
+isso é algo que o professor mencionou antes... --> quando 
+
+
+
+
+testamos 
+
+
+
+
+o SUMMARIZE DE TODOS OS NUMBERS EM 1 ARRAY:
+
+
+
+
+
+
+  it('should summarize all number values in an array', () => {
+    //   const result = add([1, 2, 3, 4, 5]);
+    //   expect(result).toBe(15);
+    //   expect(result).toBe(6);
+
+    // TODO - DEVEMOS SEGUIR O PADRÃO DE 3 FASES (para deixar o test mais legível e fácil de entender)...):
+
+    // 1 - ARRANGE
+    const numbers = [1, 2, 3];
+    const expectedResult = numbers.reduce((prevValue, curValue) => {
+      return prevValue + curValue;
+    }, 0);
+
+    // 2 - ACT
+    const result = add(numbers);
+
+    // 3 - ASSERT
+    expect(result).toBe(expectedResult);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EU PODERIA COLOCAR mais numbers,
+
+
+MAS ISSO NÃO MUDARIA EM NADA O CONTEÚDO DO TEST...
+
+
+
+
+
+
+--> aqueles 2-3 numbers já bastam, essencialmente...  
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ SE DEIXAMOS NOSSO SETUP MT COMPLEXO,
+
+PODEMOS PENSAR QUE 
+
+''FOI O SETUP COMPLEXO QUE QUEBROU O CÓDIGO'',
+
+
+
+e não 
+
+
+
+
+
+
+o código em si que estava com 1 falha..
+
+
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+
+CERTIFIQUE-SE DE QUE SEUS TESTS SÃO SHORT, CONCISE,
+
+E QUE 
+
+
+FOCAM 
+
+EM APENAS 1 ÚNICA COISA... -->  ISSO TE AJUDARÁ 
+
+
+
+
+_a ENTENDER PQ SEUS TESTS FALHARAM,
+
+SE FALHARAM...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TAMBÉM, RELACIONADO A ISSO,
+
+TEMOS O 
+
+
+
+
+
+
+
+
+
+
+
+
+4a regra)  QUEREMOS TIPICAMENTE DEIXAR NOSSO 'NÚMERO DE ASSERTIONS',
+
+
+de 
+
+'expect().toBe()',
+
+
+
+
+BAIXO...
+
+
+
+
+
+
+
+
+
+
+
+
+--> 1 MESMO TEST DEVE, IDEALMENTE, TER APENAS 1 STATEMENT 
+
+
+'expect().toBe()'
+
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR TENTA MINIMIZAR O NÚMERO DE EXPECT STATEMENTS 
+
+O MÁXIMO POSSÍVEL...
+
+
+
+
+
+
+
+
+
+
+MAS ISSO NÃO É UMA REGRA RÍGIDA, E SIM UMA BOA PRÁTICA...
+
+
+
+
+
+
+
+
+
+
+
+
+--> PODEM EXISTIR TESTS EM QUE TER MÚLTIPLOS EXPECT STATEMENTS 
+
+
+
+FARÁ MT SENTIDO,
+PQ 
+
+
+
+VC PODERÁ 
+TESTAR 
+
+A MESMA COISA,
+
+
+mas com diferentes VALUES, 
+
+
+VALUES QUE 
+
+
+
+
+FAZ SENTIDO TESTARMOS JUNTOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OK... EM ALGUNS CENÁRIOS, ISSO PODE SER FINE,
+
+MAS 
+
+IDEALMENTE VC DEVE MANTER O NÚMERO DE EXPECT STATEMENTS 
+
+BAIXO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ SE VC TIVER MTOS EXPECT STATEMENTS/ASSERTIONS EM 1 MESMO TEST,
+
+
+
+
+É BEM PROVÁVEL QUE VC ESTARÁ TESTANDO NÃO SÓ APENAS 
+
+
+1 ÚNICA COISA,
+
+
+
+
+E VC _ REALMENTE __ DEVE TESTAR APENAS 1 COISA,
+
+PARA QUE 
+
+O SUCCESS/FAIL DOS TESTS FIQUE REALMENTE BEM CLARO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS ESSAS RULES TODAS TRAZEM 1 QUESTÃO IMPORTANTE.... O QUE EXATAEMNTE 
+
+
+
+É 
+
+'ONE THING',
+
+
+
+
+1 __ ÚNICO EXPECTED BEHAVIOR?
