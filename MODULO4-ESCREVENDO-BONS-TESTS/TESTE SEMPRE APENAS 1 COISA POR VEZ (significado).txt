@@ -1,0 +1,322 @@
+
+
+
+
+
+
+
+
+
+
+
+--> OK... DEVEMOS TESTAR APENAS 1 ÚNICA COISA...
+
+
+
+
+
+
+
+
+MAS O QUE É 'APENAS UMA ÚNICA COISA'?
+
+
+
+
+
+
+
+ 
+
+ É POSSÍVEL TER 1 DISCUSSÃO TEÓRICA SOBRE ISSO,
+
+
+
+
+ COM NÍVEIS DE ABSTRAÇÃO (curso clean code),
+
+
+
+
+
+
+
+
+
+
+
+ E O PROFESSOR 
+
+
+ FALA SOBRE ISSO EM OUTRO CURSO,
+
+
+
+
+
+ SOBRE 'FUNCTIONS QUE DEVEM  FAZER APENAS 1 ÚNICA COISA'..
+
+
+
+
+
+
+
+
+
+--> NO ESCOPO 
+
+
+E CONTEXT 
+
+
+DO TESTING,
+
+
+
+
+
+
+
+'1 COISA' SIGNIFICA, PARA O PROFESSOR,
+
+
+
+
+
+
+
+'1 ÚNICA FEATURE',
+
+
+ou 
+
+
+'1 ÚNICO BEHAVIOR' QUE VAMOS 'TEST FOR'.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+
+QUERO TESTAR VALIDATE INPUT..
+
+
+
+
+
+
+quero TESTAR O TRANSFORM DE 1 INPUT..
+
+
+
+
+
+
+
+
+
+
+
+ESSAS SÃO 2 COISAS SEPARADAS,
+
+E NÃO DEVEMOS TESTAR 
+
+
+AS 2 COISAS 
+
+EM 1 ÚNICO TEST..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-->  OK... MAS MESMO QUANDO O ASSUNTO É 'VALIDATION',
+
+NÓS 
+
+TALVEZ 
+
+
+QUEIRAMOS 
+
+
+
+VALIDATE 1 STRING 
+
+
+
+
+QUANTO AO 'empty',
+
+
+
+E QUANTO 
+
+
+À PRESENÇA DE CARACTERES 
+
+
+SUFICIENTES,
+
+
+
+EM MÚLTIPLOS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR TENTA SEMPRE TER 1 ÚNICO  FEATURE/BEHAVIOR POR TEST...
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ VIMOS ISSO, COM 1 EXEMPLO,
+
+
+ LÁ 
+
+
+
+
+ NO ARQUIVO DE 'math.test.js',
+
+
+
+
+
+
+
+
+
+
+
+
+
+ EM QUE __ O PROFESSOR TESTA PELA SUM __ DOS NÚMEROS EM 1 TEST,
+
+
+
+ E EM QUE 
+
+
+ O 
+ PROFESSOR ENTÃO TESTA O PASS DE 1 __ EMPTY ARRAY,
+
+ EM OUTRO TEST (separado)....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ AINDA QUE, AQUI,
+
+ O PROFESSOR TAMBÉM 
+
+
+
+ ESTEJA 'BUILDING THE SUM OF NUMBERS',
+
+
+
+ MAS OS RESULTADOS SÃO DIFERENTES..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> É CLARO QUE 
+
+
+ VC PODE IR NO CAMINHO CONTRÁRIO,
+
+ E 'MERGE'
+ ESSES TESTS....
+
+
+
+
+
+
+
+
+ COMOO TUDO NA PROGRAMAÇÃO,
+ NÃO EXISTE 1 ÚNICO RIGHT OU WRONG...
+
+
+
+
+
+
+
+ MAS É BEM MELHOR TER MÚLTIPLOS TESTS DO QUE 
+
+
+ 1 ÚNICO TEST...;
