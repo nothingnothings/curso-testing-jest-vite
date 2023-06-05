@@ -1,0 +1,774 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... PARA ESSE ARQUIVO 'validation.js',
+
+O PROFESSOR ADICIONOU VÁRIOS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ NÃO É DE TODO INCOMUM TER VÁRIAS 
+FUNCTIONS,
+
+
+MÚLTIPLAS UNITS,
+
+TUDO EM 1 MESMO ARQUIVO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> EM 'numbers.js'
+
+e 
+
+'math.js',
+
+
+TEMOS APENAS 1 FUNCTION EM CADA ARQUIVO,
+
+
+
+
+MAS É CLARO QUE É COMUM TER MÚLTIPLAS FUNCTIONS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEM.... MAS QUANDO TEMOS 
+
+
+1 MONTE DE TESTS ASSIM, 
+
+
+
+
+PODE FICAR 
+
+
+DIFICIL SUA MAINTENANCE.... MAS PIOR DO QUE ISSO,
+
+
+FICA BEM DIFÍCIL 
+
+'REASON ABOUT'
+
+O 
+
+NOSSO OUTUPT, quando rodamos nosso test...
+
+
+
+PQ VEJA O NOSSO OUTPUT:
+
+
+
+
+ DEV  v0.9.0 A:/PROJETO17-TESTING-JEST-E-VITEST/MODULO3-TESTING-BASICS/projects/basic-testing-frontend
+
+ √ src/util/validation.test.js (11)
+   √ should return no value if a non-empty string is provided
+   √ should not throw an error, if a non-empty string is provided 2
+   √ should throw an error upon being called with an empty string as argument
+   √ should throw an error if a long string of blanks is provided
+   √ should throw an undefined error upon being called with no arguments
+   √ should throw an error if any other value than a string is provided
+   √ should throw an error if NaN is provided
+   √ should return no value if a number is provided
+   √ should not throw an error, if a non-empty string is provided
+   √ should throw an undefined error upon being called with no arguments
+   √ should throw an error if the value provided is not a number
+ √ src/util/numbers.test.js (3)
+   √ should transform a string into a number
+   √ should throw an error if no argument is provided
+   √ should yield NaN for non-transformable values
+ √ src/math.test.js (8)
+   √ should summarize all number values in an array
+   √ should yield NaN if at least one invalid number is provided
+   √ should yield a correct sum if an array of numeric string values is provided
+   √ should yield 0 if an empty array is provided
+   √ should throw an error if no argument is passed into the function
+   √ should yield something that is not a string, if numbers in string format are provided   
+   √ should throw an error if provided with multiple arguments instead of an array
+   √ should throw an error if provided with multiple arguments instead of an array
+
+Test Files  3 passed (3)
+     Tests  22 passed (22)
+      Time  734ms (in thread 30ms, 2446.84%)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+FICAMOS COM 1 TONELADA DE TESTS... 
+
+
+
+
+
+
+
+
+
+E NÃO É BEM CLARO 'QUAL TEST PERTENCE A QUAL FUNCTION/UNIT'..
+
+
+
+
+
+
+
+
+
+
+
+
+-> NÃO SABEMOS A QUE UNITS CADA 
+
+TEST PERTENCE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA __ DEIXAR __ TUDO ISSO MAIS CLARO,
+
+É MT COMUM ORGANIZAR SEUS TESTS 
+
+EM 
+
+
+'TEST SUITES'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+' 1 TEST SUITE' ->  ELAS SÃO CRIADAS __ POR MEIO DE OUTRA SPECIAL 
+FUNCTION 
+
+
+PROVIDENCIADA PELO 'VITEST',
+
+
+
+QUE É A FUNCTION 
+
+
+
+DE 'describe()'...
+
+
+
+
+
+
+
+
+
+
+
+--> VC EXECUTA 'describe',
+
+
+E NOVAMENTE COMEÇA 
+
+
+COM 1 ARGUMENT 
+
+QUE É UMA STRING..
+
+
+
+
+
+
+
+
+
+
+
+
+--> NESSA STRING,
+
+SIMPLESMENTE DESCREVEMOS A 'UNIT' 
+
+QUE VAMOS TESTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TIPO ASSIM:
+
+
+
+
+
+
+
+
+describe()...
+
+
+
+
+
+
+-> O PROFESSOR DIZ QUE PODERÍAMOS ESCREVER 1 
+
+
+STRING LONGA, DESCREVENDO,
+
+
+
+
+
+
+
+
+
+
+MAS ELE __ DIZ QUE __ PREFERE 
+
+
+COLOCAR __ 
+
+
+APENAS O NOME DA FUNCTION QUE VC QUER TESTAR,
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+describe('validateStringNotEmpty', () => {
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> NO SEGUNDO ARGUMENTO, PASSAMOS 1 ANON FUNCTION,
+
+E DENTRO DESSA ANON FUNCTION COLOCAMOS __ TODOS OS TESTS QUE PERTENCEM 
+
+A ESSA UNIT,
+
+TIPO ASSIm:
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  import { it, expect, describe } from 'vitest';
+
+import { validateNumber, validateStringNotEmpty } from './validation';
+/// * exemplo de 'TEST SUITE' (com 'describe')
+describe('validateStringNotEmpty', () => {
+  it('should return no value if a non-empty string is provided', () => {
+    //ARRANGE
+    const value = '1';
+    //ACT
+    const result = validateStringNotEmpty(value);
+    //ASSERT
+    expect(result).toBeUndefined(); // * 'toBeUndefined' é usado em casos em que FUNCTIONS NÃO RETORNAM COISA ALGUMA (tipo esta function, nos casos de success)...
+  });
+
+  it('should not throw an error, if a non-empty string is provided 2', () => {
+    // professor...
+    const input = 'valid';
+    const validationFn = () => validateStringNotEmpty(input);
+    expect(validationFn).not.toThrow();
+  });
+
+  it('should throw an error upon being called with an empty string as argument', () => {
+    //ARRANGE
+    const value = '';
+    //ACT
+    const resultFn = () => {
+      validateStringNotEmpty(value);
+    };
+    //ASSERT
+    expect(resultFn).toThrowError('Invalid input - must not be empty.');
+  });
+
+  it('should throw an error if a long string of blanks is provided', () => {
+    const input = '   ';
+    const validationFn = () => validateStringNotEmpty(input);
+    expect(validationFn).toThrowError('Invalid input - must not be empty.');
+  });
+
+  it('should throw an undefined error upon being called with no arguments', () => {
+    //ARRANGE
+
+    //ACT
+    const resultFn = () => {
+      validateStringNotEmpty();
+    };
+    //ASSERT
+    expect(resultFn).toThrowError(/undefined/); // * regex - "undefined" pode estar em qualquer lugar da mensagem de erro (no caso, 'value is undefined')
+  });
+
+  it('should throw an error if any other value than a string is provided', () => {
+    const inputNum = 1;
+    const inputBool = true;
+    const inputObj = {};
+
+    const validationFnNum = () => validateStringNotEmpty(inputNum);
+    const validationFnBool = () => validateStringNotEmpty(inputBool);
+    const validationFnObj = () => validateStringNotEmpty(inputObj);
+
+    expect(validationFnNum).toThrow();
+    expect(validationFnBool).toThrow();
+    expect(validationFnObj).toThrow();
+  });
+});
+
+describe('validateNumber', () => {
+  it('should throw an error if NaN is provided', () => {
+    const input = NaN;
+    const validationFn = () => validateNumber(input);
+    expect(validationFn).toThrow();
+  });
+
+  it('should return no value if a number is provided', () => {
+    //ARRANGE
+    const value = 1;
+    //ACT
+    const result = validateNumber(value);
+    //ASSERT
+    expect(result).toBeUndefined();
+  });
+
+  it('should not throw an error, if a non-empty string is provided', () => {
+    //professor...
+    const input = 'valid';
+    const validationFn = () => validateStringNotEmpty(input);
+    expect(validationFn).not.toThrow();
+  });
+
+  it('should throw an undefined error upon being called with no arguments', () => {
+    //ARRANGE
+    //ACT
+    const resultFn = () => {
+      validateNumber();
+    };
+    //ASSERT
+    expect(resultFn).toThrowError(/No value provided/);
+  });
+
+  it('should throw an error if the value provided is not a number', () => {
+    //ARRANGE
+    const value = 'exemplo';
+    const value2 = '2';
+    //ACT
+    const resultFn = () => {
+      validateNumber(value);
+    };
+    const resultFn2 = () => {
+      validateNumber(value2);
+    };
+    //ASSERT
+    expect(resultFn).toThrowError('Invalid number input.');
+    //   expect(resultFn2).toThrowError('Invalid number input.');
+    expect(resultFn2).toThrow();
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO....
+
+
+
+
+
+
+
+
+
+
+
+AGORA RODAMOS ISSO AÍ,
+
+PARA VER O OUTPUT NO TERMINAL:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DEV  v0.9.0 A:/PROJETO17-TESTING-JEST-E-VITEST/MODULO3-TESTING-BASICS/projects/basic-testing-frontend
+
+ √ src/util/validation.test.js (11)
+   √ validateStringNotEmpty (6)
+     √ should return no value if a non-empty string is provided
+     √ should not throw an error, if a non-empty string is provided 2
+     √ should throw an error upon being called with an empty string as argument
+     √ should throw an error if a long string of blanks is provided
+     √ should throw an undefined error upon being called with no arguments
+     √ should throw an error if any other value than a string is provided
+   √ validateNumber (5)
+     √ should throw an error if NaN is provided
+     √ should return no value if a number is provided
+     √ should not throw an error, if a non-empty string is provided
+     √ should throw an undefined error upon being called with no arguments
+     √ should throw an error if the value provided is not a number
+ √ src/util/numbers.test.js (3)
+   √ transformToNumber (3)
+     √ should transform a string into a number
+     √ should throw an error if no argument is provided
+     √ should yield NaN for non-transformable values
+ √ src/math.test.js (8)
+   √ should summarize all number values in an array
+   √ should yield NaN if at least one invalid number is provided
+   √ should yield a correct sum if an array of numeric string values is provided
+   √ should yield 0 if an empty array is provided
+   √ should throw an error if no argument is passed into the function
+   √ should yield something that is not a string, if numbers in string format are provided   
+   √ should throw an error if provided with multiple arguments instead of an array
+   √ should throw an error if provided with multiple arguments instead of an array
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   OK.... COM ISSO,  FICAMOS  COM OUTPUTS BEM MAIS ORGANIZADOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+   OUTPUT FINAL:
+
+
+
+
+
+
+
+
+
+
+ DEV  v0.9.0 A:/PROJETO17-TESTING-JEST-E-VITEST/MODULO3-TESTING-BASICS/projects/basic-testing-frontend
+
+ √ src/util/validation.test.js (11)
+   √ validateStringNotEmpty (6)
+     √ should return no value if a non-empty string is provided
+     √ should not throw an error, if a non-empty string is provided 2
+     √ should throw an error upon being called with an empty string as argument
+     √ should throw an error if a long string of blanks is provided
+     √ should throw an undefined error upon being called with no arguments
+     √ should throw an error if any other value than a string is provided
+   √ validateNumber (5)
+     √ should throw an error if NaN is provided
+     √ should return no value if a number is provided
+     √ should not throw an error, if a non-empty string is provided
+     √ should throw an undefined error upon being called with no arguments
+     √ should throw an error if the value provided is not a number
+ √ src/util/numbers.test.js (3)
+   √ transformToNumber (3)
+     √ should transform a string into a number
+     √ should throw an error if no argument is provided
+     √ should yield NaN for non-transformable values
+ √ src/math.test.js (8)
+   √ add (8)
+     √ should summarize all number values in an array
+     √ should yield NaN if at least one invalid number is provided
+     √ should yield a correct sum if an array of numeric string values is provided
+     √ should yield 0 if an empty array is provided
+     √ should throw an error if no argument is passed into the function
+     √ should yield something that is not a string, if numbers in string format are provided 
+     √ should throw an error if provided with multiple arguments instead of an array
+     √ should throw an error if provided with multiple arguments instead of an array
+
+Test Files  3 passed (3)
+     Tests  22 passed (22)
+      Time  669ms (in thread 33ms, 2025.79%)
+
+
+ PASS  Waiting for file changes...
+       press h to show help, press q to quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... O ÚNICO PROPÓSITO DISSO É DEIXAR O OUTPUT NO TERMINAL MAIS ORGANIZADO,
+
+E O TESTING TAMBÉM...
+
+
+
+
+
+
+
+
+
+COM ISSO, SE RODAMOS 'NPM TEST',
+
+TUDO É EXECUTADO COMO ANTES,
+
+
+
+
+
+
+
+
+MAS AGORA PODEMOS 
+
+DIFERENCIAR MELHOR CADA TEST,
+
+
+VER QUAL TEST 
+
+
+PERTENCE A QUAL FUNCTION/UNIT... ( a cada SUITE)...
+
+
+
+
+
+
+
+
+
+--> E ISSO É BEM ÚTIL 
+
+
+
+
+PARA ENCONTRAR 
+
+'QUAL TEST FALHOU',
+
+
+e em que 
+
+
+
+FILE ESSE TEST FALHOU..
+
+
+
+
+
+
+
+
+
+
+-> E VC PODE FAZER 'NEST'
+
+DE MÚLTIPLOS DESCRIBES, 1 DENTRO DE OUTRO,
+
+SE 
+
+VC 
+PRECISA 
+DE 
+1
+ 
+
+ APPROACH MAIS GRANULAR 
+
+
+ PARA 
+
+
+
+
+
+ DIVIDIR SEUS TESTS...
+
+
+
+
+
+ (AÍ SEU OUTPUT FICARIA COM MAIS E MAIS NÍVEIS DE INDENTATION).
+
+
+
+
+ 
