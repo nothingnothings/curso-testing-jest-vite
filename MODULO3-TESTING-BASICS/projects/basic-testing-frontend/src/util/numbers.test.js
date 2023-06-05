@@ -24,9 +24,15 @@ it('should throw an error if no argument is provided', () => {
 it('should yield NaN for non-transformable values', () => {
   //ARRANGE
   const value = 'EXEMPLO';
+  const value2 = {};
+  const value3 = ['exemplo1', 'exemplo2'];
   //ACT
   const result = transformToNumber(value);
+  const result2 = transformToNumber(value2);
+  const result3 = transformToNumber(value3);
 
   //ASSERT
   expect(result).toBeNaN();
+  expect(result2).toBeNaN();
+  expect(result3).toBeNaN();
 });

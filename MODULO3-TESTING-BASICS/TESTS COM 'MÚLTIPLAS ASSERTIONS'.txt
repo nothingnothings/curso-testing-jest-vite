@@ -1,0 +1,742 @@
+
+
+
+
+
+
+
+
+
+
+OK... ADICIONAMOS MAIS TESTS...
+
+
+
+
+
+
+
+
+
+
+OS TESTS FICARAM ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { transformToNumber } from './numbers';
+
+it('should transform a string into a number', () => {
+  //ARRANGE
+  const value = '1';
+  const expectedResult = +value;
+  //ACT
+  const result = transformToNumber(value);
+  //ASSERT
+  expect(result).toBe(expectedResult);
+});
+
+it('should throw an error if no argument is provided', () => {
+  //ARRANGE AND ACT
+  const resultFn = () => {
+    transformToNumber();
+  };
+  //ASSERT
+  expect(resultFn).toThrowError('No value provided.');
+});
+
+it('should yield NaN for non-transformable values', () => {
+  //ARRANGE
+  const value = 'EXEMPLO';
+  //ACT
+  const result = transformToNumber(value);
+
+  //ASSERT
+  expect(result).toBeNaN();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS ANTES DE PASSARMOS PARA A FILE DE 'VALIDATION', POR EXEMPLO,
+
+
+
+
+O PROFESSOR QUER CONTINUAR 
+
+COM O ARQUIVO DE 'numbers.test.js'
+
+e seus tests...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> O PROFESSOR QUER VER UM POUCO DE 'VARIATION'
+
+SOBRE 
+
+a 'DEFINIÇÃO DE EXPECTATIONS' E 'ARRANGING DE VALUES'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VOCê PODE SE LEMBRAR 
+
+
+QUE O PROFESSOR DISSE QUE 
+
+
+
+''PODEMOS CHECAR POR 'toBeTypeOf('number')',
+
+
+
+MAS QUE TAMBÉM PODERÍAMOS CHECAR 
+
+
+
+
+
+
+POR 
+
+
+'.toBe(1)'...
+
+
+
+
+
+E VC PODERIA ARGUMENTAR QUE ESSAS 2 COISAS, ESSES 2 EXPECTS,
+
+
+NÃO ESTÃO FAZENDO AS MESMAS COISAS...
+
+
+
+
+
+
+
+
+
+
+
+-> OK.. 
+
+
+
+
+
+
+
+
+
+-> ISSO QUER DIZER QUE 'toBeTypeOf('number')'
+
+
+
+SERIA CONSIDERADO 
+
+COMO 'TRUE',
+
+
+E O TEST 
+
+SERIA 
+
+CONSIDERADO 
+
+
+COMO 
+
+1 SUCCESS,
+
+
+
+
+MESMO SE 
+
+
+'NaN'
+
+fosse retornado... -------> isso pq o 'NaN'
+
+
+É DE TYPE NUMBER,
+
+TECNICAMENTE..
+
+
+
+
+
+
+ISSO QUER DIZER QUE O TEST FUNCIONARIA MESMO SE 
+
+
+
+RETORNÁSSEMOS, POR QUALQUER RAZÃO,
+
+
+SEMPRE 
+
+'NaN',
+
+tipo assim:
+
+
+
+
+
+
+
+
+
+
+
+export function transformToNumber(value) {
+  return NaN;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> COM ESSE NEGÓCIO AÍ,
+
+
+NOSSOS TESTS AINDA PASSARIAM --------> E ISSO É UM PROBLEMAO,
+
+
+
+
+
+
+PQ 
+
+VC SEMPRE TEM QUE PENSAR 
+
+
+EM SITUAÇÕES EM QUE VC PENSA EM 
+
+
+
+'''CENÁRIOS QUE __ NEM SEMPRE FAZEM SENTIDO''''...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-. OK... É POR ISSO QUE AQUI TALVEZ 
+
+
+TENHAMOS DE ADICIONAR 
+
+1 NOVO TEST,
+
+
+
+EM QUE 
+
+
+AQUI 
+
+PODEMOS 
+
+
+
+checar se o resultado será '1'...
+
+
+
+
+
+
+
+
+
+
+
+
+hmmm não entendi.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> VOCê BASICAMENTE TEM QUE PENSAR EM SEUS TESTS CRITICAMENTE.. --->
+
+
+VC DEVE PENSAR EM SUAS 'EXPECTATIONS' CRITICAMENTE,
+
+
+
+VC _ TEM QUE SE CERTIFICAR QUE __ SUAS EXPECTATIONS SÃO DESAFIADAS,
+
+QUE 
+
+TODOS OS 
+
+DIFERENTESC CENÁRIOS 
+
+QUE 
+PODEM 
+
+
+OCORRER 
+
+
+ACABEM TESTADOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--->  ok... mas o professor também quer nos mostrar outra coisa...
+
+
+
+
+
+
+
+
+
+
+
+ALÉM DE TENTARMOS PENSAR CRITICAMENTE ('TESTAR O QUE REALMENTE QUEREMOS TESTAR'),
+
+
+
+
+
+
+
+
+
+
+
+PODEMOS OCASIONALMENTE ADICIONAR 
+
+
+'MÚLTIPLAS ASSERTIONS PARA 1 MESMO TEST'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OU SEJA, VC PODE RODAR MÚLTIPLOS 'expect().toBe()'
+
+
+STATEMENTS 
+
+DENTRO DE 1 MESMO  It block....
+
+
+
+
+
+
+
+
+
+
+->  MAS VC DEVE TER CUIDADO COM ISSO -----> PQ É UMA BOA IDEIA 
+
+
+
+
+FAZER COM QUE 1 TEST TESTE APENAS 1 ÚNICA COISA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+------> SE VC DEFINE __MÚLTIPLAS EXPECTATIONS EM  1 IT BLOCK,
+
+
+
+
+
+TODAS ELAS TEM QUE RETORNAR 'TRUE'
+
+
+PARA QUE O OVERALL TEST APAREÇA COMO 'passed'... -----> SE 1 
+
+
+
+EXPECTATION RESULTOU EM FALSE,
+
+O TEST 
+
+INTEIRO TERÁ FALHADO...
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ --> 1 DOS TESTS EM QUE PODEMOS MOSTRAR ISSO É ESTE:
+
+
+
+
+
+
+
+
+
+ it('should yield NaN for non-transformable values', () => {
+  //ARRANGE
+  const value = 'EXEMPLO';
+  //ACT
+  const result = transformToNumber(value);
+
+  //ASSERT
+  expect(result).toBeNaN();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO PQ PODEMOS COLOCAR MÚLTIPLOS 'ARRANGED VALUES'
+
+
+
+NESSE NEGÓCIO...
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO PQ _ ESTAMOS DIZENDO QUE O NEGÓCIO DEVE 
+
+
+
+RETORNAR 'NaN' PARA QUALQUER VALOR QUE NÃO SEJA TRANSFORMÁVEL...
+
+
+
+
+
+
+
+-> MAS PODERÍAMOS TER OUTROS INPUTS,
+
+COMO 1 EMPTY OBJECT,
+
+
+
+OU 1 EMPTY ARRAY... -> ISSO TAMBÉM VAI RETORNAR 1 'NaN',
+
+por isso podemos escrever assim:
+
+
+
+
+
+
+
+it('should yield NaN for non-transformable values', () => {
+  //ARRANGE
+  const value = 'EXEMPLO';
+  const value2 = {};
+  const value3 = ['exemplo1', 'exemplo2'];
+  //ACT
+  const result = transformToNumber(value);
+  const result2 = transformToNumber(value2);
+  const result3 = transformToNumber(value3);
+
+  //ASSERT
+  expect(result).toBeNaN();
+  expect(result2).toBeNaN();
+  expect(result3).toBeNaN();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... AÍ RODAMOS O TEST... FICA ASSIM:
+
+
+
+
+
+
+ √ src/util/numbers.test.js (3)
+   √ should transform a string into a number
+   √ should throw an error if no argument is provided
+   √ should yield NaN for non-transformable values   
+
+Test Files  2 passed (2)
+     Tests  11 passed (11)
+      Time  14ms
+
+
+ PASS  Waiting for file changes...
+       press h to show help, press q to quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       ESSE É UM CASE EM QUE 
+
+       MÚLTIPLAS ASSERTIONS É ALGO QUE FAZ SENTIDO,
+
+
+
+       PQ ESTAMOS TESTANOD 1 MESMA COISA, MAS COM DIFERENTES VALUES...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---> VC PODERIA 
+
+ESCREVER  MÚLTIPLOS TESTS, SIM,
+
+
+MAS 
+
+
+ESSE É UM CASO EM QUE 
+
+É 
+
+BOM TER MÚLTIPLAS 
+ASSERTIONS,
+
+PQ 
+
+ESTAMOS TESTANDO A MESMA COISA, BASICAMENTE....
+
+
+
+
+
+
+
+
+
+
+
+ANTES DE ACABARMOS ESTE MÓDULO, O PROFESSOR QUER QUE TESTEMOS 
+
+
+AS FUNCTIONS EM 'validation.js'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> TEMOS 2 FUNCTIONS, E DEVMOS ESCREVER TESTS PARA AMBAS...
+
+
+
+
+
+
+
+
+
+--> NA PRÓXIMA LIÇÃO, O PROFESSOR NOS MOSTRARÁ A SOLUÇÃO DELE,
+
+E TAMBÉM 
+
+1 OUTRO CONCEITO 
+
+IMPORTANTE,
+
+
+QUE SE TORNARÁ 
+
+IMPORTANTE QUANDO COMEÇARMOS A TESTAR MÚLTIPLAS COISAS EM 1 MESMA FILE...
