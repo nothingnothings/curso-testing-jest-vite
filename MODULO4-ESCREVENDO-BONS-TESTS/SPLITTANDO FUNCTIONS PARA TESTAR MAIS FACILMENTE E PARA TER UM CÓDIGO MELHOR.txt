@@ -1,0 +1,853 @@
+
+
+
+
+
+
+
+
+
+
+
+
+OK... AGORA QUE ESTUDAMOS 1 PUNHADO DE CONCEITOS RELACIONADOS AO WRITE DE BONS 
+
+TESTS,
+
+
+
+DEVEMOS FOCAR NO ARQUIVO DE 'app.js',
+
+
+
+
+
+arquivo 
+
+para qual 
+
+não 
+
+
+
+escrevemos nenhum  test, ainda...
+
+
+
+
+
+
+
+
+
+
+
+-> AQUELA FILE TEM APENAS 1 ÚNICA FUNCTION...
+
+
+
+
+
+
+
+--> ALÉM DESSA 1 ÚNICA FUNCTION,
+
+ESSA FILE 
+
+
+
+
+
+TEM PARTES QUE 
+
+'FAZEM ADD DE ELEMENTS POR MEIO DE SELECTORS',
+
+
+
+E OUTRAS 
+
+PARTES QUE 
+ADICIONAM 
+
+
+EVENT LISTENERS 
+
+
+A ESSES ELEMENTS..
+
+
+
+
+
+
+
+
+
+
+
+--> MAS VAMOS IGNORAR ESSAS PARTES DO CÓDIGO,
+ 
+ PQ 
+
+ ESSAS PARTES INTERAGEM COM O DOM,
+
+
+ E ISSO É ALGO QUE VEREMOS MAIS TARDE, NO CURSO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> AGORA FALAREMOS DA FUNCTION DE 'formSubmitHandler':
+
+
+
+
+function formSubmitHandler(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  let result = '';
+  
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  let resultText = '';
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... TALVEZ SEJA LEGAL SPLITTAR 
+
+AS COISAS 
+
+
+DESSA FUNCTION... PQ TESTAR TUDO ISSO DE UMA SÓ VEZ 
+ 
+
+
+
+SERÁ BEM TRICKY, JUNTAR TUDO EM 1 ÚNICO TEST é ruim...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO PQ, É CLARO,
+
+QUANDO TESTARMOS 
+
+'formSubmitHandler',
+
+
+
+
+SERÁ EXECUTADO TAMBÉM TODO O CÓDIGO DENTRO DESSA FUNCTION -----> ISSO QUER DIZER QUE 
+
+
+
+SE 
+
+O CÓDIGO FALHAR A PARTIR DISSO,
+
+
+
+
+
+
+
+MESMO SE ESTIVERMOS TESTANDO 1 ÚNICO BEHVAIOR,
+
+
+
+ESSE TEST PODERÁ TER FALHADO 
+
+
+PQ __ QUALQUER__ PARTE__ DAQUELE 'OVERALL CODE'
+
+falhou...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... É POR ISSO QUE O QUE DEVEMOS FAZER,
+
+PARA DEIXAR NOSSA VIDA de testing mais fácil,
+
+
+
+
+
+
+
+
+MAS TAMBÉM PARA MELHORAR A LEGIBILIDADE DESSA FUNCTION EM SI,
+
+
+É 
+
+
+'SPLIT THIS FUNCTION UP IN _ MULTIPLE FUNCTIONS'... ---> isso é algo que o professor 
+
+
+
+mostra
+ 
+ no curso 
+
+
+
+ de 
+
+ 'clean code'..
+
+
+
+
+
+
+
+
+
+--> É BEM MELHOR CHAMAR
+
+OUTRAS FUNCTIONS,
+
+NESSA FUNCTION,
+
+
+PARA AÍ 
+
+
+
+REALIZAREM CADA TAREFA QUE PRECISA SER FEITA (outsourcing)...
+
+
+
+
+
+
+
+
+
+
+SE VC FIZER ISSO, 
+
+VC TERÁ O BENEFÍCIO 
+
+DE ESSA FUNCTION FICAR 
+
+
+MAIS READABLE E MAINTAINABLE,
+
+
+
+
+E SEUS TESTS TAMBÉM FICARÃO
+ 
+
+ MAIS READABLE E MAINTAINABLE,
+
+
+ PQ 
+
+ FICARAM MAIS 'GRANULARES'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> ISSO QUER DIZER QUE 
+
+
+
+ '''TESTS TE FORÇAM A ESCREVER APP CODE MAIS LIMPO'' -> é 1 
+
+
+ grande benefício 
+
+ de ter 
+
+
+
+ tests no seu project,
+
+
+
+
+ pq 
+
+ aí vc 
+
+
+
+ vai se forçar a escrever código mais limpo...
+
+
+
+
+
+
+
+
+
+
+
+ --> para fazer o test SER MAIS FÁCIL E LEGÍVEL,
+
+
+
+
+
+ O PROFESSOR VAI SPLITTAR ESSA FUNCTION DE 'formSubmitHandler'
+
+
+ EM VÁRIAS OUTRAS FUNCTIONS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ É CLARO QUE ISSO NÃO É ALGO OBRIGATÓRIO,
+  
+  MAS É FORTEMENTE RECOMENDADO...
+
+
+
+
+
+
+
+
+
+OK... COMEÇAMOS ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function formSubmitHandler(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  let result = '';
+  
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  let resultText = '';
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E PODE FICAR ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+function formSubmitHandler(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  const result = resultConstructor(numberInputs);
+  const resultText = resultTextConstructor(result);
+
+  output.textContent = resultText;
+}
+
+const resultConstructor = (numberInputs) => {
+  let result = '';
+  try {
+    const numbers = [];
+    for (const numberInput of numberInputs) {
+      validateStringNotEmpty(numberInput);
+      const number = transformToNumber(numberInput);
+      validateNumber(number);
+      numbers.push(number);
+    }
+    result = add(numbers).toString();
+  } catch (error) {
+    result = error.message;
+  }
+
+  return result;
+};
+
+const resultTextConstructor = (result) => {
+  let resultText = '';
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  return resultText;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+certo.... fiz um bom outsource dessa function...
+
+
+
+
+
+
+
+
+
+
+MAS POSSO SPLITTAR MAIS AINDA..
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+function formSubmitHandler(event) {
+  const numberInputs = formExtractor(event);
+  const result = resultConstructor(numberInputs);
+  const resultText = resultTextConstructor(result);
+
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSA É A VERSÃO COM A MAIOR QUANTIDADE DE OUTSOURCING POSSÍVEL, PENSO EU..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----> OK... 
+
+
+
+
+
+
+o professor vai linha por linha...
+
+
+
+
+
+
+
+'event.preventDefault()' ------> ELE ACHA QUE 
+
+É MELHOR DEIXAR ISSO NESSA FUNCTION (não há mt benefício em tirar esse negócio dessa function)..
+
+
+
+
+
+
+
+
+
+
+nas linhas 
+
+'''
+
+//   const formData = new FormData(form);
+//   const numberInputs = extractNumbers(formData);
+
+
+'''
+
+
+
+
+
+
+
+ESTAMOS PEGANDO A DATA DO USER,
+
+ NA FORM...
+
+
+
+
+
+
+
+ ISSO É 1 ETAPA...
+
+
+
+
+
+
+
+
+
+ DEPOIS DISSO,
+
+ ESTAMOS VALIDANDO 
+
+
+ E TRANSFORMANDO O INPUT:
+
+
+
+
+
+
+//   let result = '';
+
+
+ //   try {
+//     const numbers = [];
+//     for (const numberInput of numberInputs) {
+//       validateStringNotEmpty(numberInput);
+//       const number = transformToNumber(numberInput);
+//       validateNumber(number);
+//       numbers.push(number);
+//     }
+
+
+
+
+
+
+
+
+
+ASSIM QUE FIZEMOS ISSO,
+
+
+DERIVAMOS 
+
+
+1 
+
+RESULT 
+
+
+
+
+
+DAQUELA TRANSFORMAÇÃO,
+
+
+
+
+por meio do 'add()':
+
+
+
+
+//     result = add(numbers).toString();
+//   } catch (error) {
+//     result = error.message;
+//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> ISSO FEITO,
+
+
+
+
+DERIVAMOS TAMBÉM O 'OUTPUT TEXT',
+
+
+
+QUE É 
+
+
+
+RETRIEVADO COM BASE NO 'RESULT' QUE CALCULAMOS ANTES..
+
+
+
+
+
+
+
+
+
+
+--> POR FIM,
+
+
+OUTPUTTAMOS 
+
+
+O NOSSO 
+
+OUTPUT TEXT NO DOM ,
+
+
+com 
+
+isto:
+
+
+ 
+
+ 
+  output.textContent = resultText;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+// * código COM outsourcing (bom para tests)
+function formSubmitHandler(event) {
+  //? 1 - OBTÉM A DATA CONTIDA NO DOM, NA FORM
+  const numberInputs = formExtractor(event);
+  //? 2 - CONSTRÓI O RESULTADO (por meio de uma adição - transformação dos elementos)
+  const result = resultConstructor(numberInputs);
+  //? 3 - CONSTRÓI A MENSAGEM DE RESULTADO, a partir do resultado
+  const resultText = resultTextConstructor(result);
+  //? 4 - INSERE A MENSAGEM DE RESULTADO NO DOM
+  output.textContent = resultText;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+OK... FICOU LEGAL....
+
+
+
+
+
+
+
+
+
+SÓ DEVEMOS OUTSOURCEAR ESSAS FUNCTIONS EM FILES INDEPENDENTES...
+
+
+
+
+
+
+NA PRÓXIMA LIÇÃO, VEREMOS COMO FAZER ISSO, JUNTOS...
