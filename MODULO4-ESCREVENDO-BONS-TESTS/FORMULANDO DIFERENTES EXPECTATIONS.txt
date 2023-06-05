@@ -1,0 +1,762 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... .AGORA, COM NOSSO  CÓDIGO SPLITTADO,
+
+
+
+TEMOS MAIS 
+
+UNITS,
+
+
+
+MAIS FUNCTIONS QUE PODEMOS TESTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS O PROFESSOR APONTA QUE 
+
+
+
+'HÁ CERTAS FUNCTIONS QUE AINDA NÃO SERÃO TESTADAS'..
+
+
+
+
+
+
+
+
+
+
+
+
+--> POR EXEMPLO,
+
+TEMOS ESTA FUNCTION AQUI:
+
+
+
+
+import { extractNumbers } from '../parser.js';
+
+export const formExtractor = (event, form) => {
+  event.preventDefault();
+  const formData = new FormData(form);
+  const numberInputs = extractNumbers(formData);
+
+  return numberInputs;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+PODEMOS WRITTAR TESTS PARA ISSO,
+
+
+
+MAS ESSA FUNCTION 
+
+REQUER 
+
+
+
+CONHECIMENTO QUE 
+
+ADQUIREMOS MAIS TARDE NO CURSO...
+
+
+
+
+
+
+
+
+
+
+
+
+--> OUTRAS FUNCTIONS,
+
+COMO 
+
+'formSubmitHandler',
+
+
+
+
+TAMBÉM AINDA NÃO TESTAREMOS...
+
+
+
+
+
+
+
+
+
+
+
+--> N VAMOS TESTAR PQ ELA CHAMA 1 MONTE DE OUTRAS FUNCTIONS...
+
+
+
+
+
+
+
+
+
+
+
+
+--> ok... também 
+
+'cleanNumbers' -->  
+
+
+
+
+
+
+
+
+PQ __ ESSA FUNCTION __ TAMBÉM _ CHAMA 1 MONTE DE OUTRAS FUNCTIONS:
+
+
+
+
+
+
+
+//HELPER FUNCTION
+const cleanNumbers = (numberInputs) => {
+  const numbers = [];
+  for (const numberInput of numberInputs) {
+    validateStringNotEmpty(numberInput);
+    const number = transformToNumber(numberInput);
+    validateNumber(number);
+    numbers.push(number);
+  }
+
+  return numbers;
+};
+
+
+
+
+
+
+
+
+
+
+
+E EMBORA SEJA POSSÍVEL ESCREVER TESTS PARA FUNCTIONS QUE 
+
+
+USAM OUTRAS FUNCTIONS,
+
+ESSE 
+
+É UM TÓPICO 
+
+QUE 
+
+
+ 
+
+ VEREMOS MAIS TARDE NO CURSO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS JÁ TEMOS 1 FUNCTION PARA A QUAL JÁ PODEMOS ESCREVER TESTS...
+
+
+
+
+
+
+
+
+
+E EU JÁ FIZ ISSO,
+
+COM ESTE CÓDIGO AQUI:
+
+
+
+
+
+
+
+
+export const resultTextConstructor = (result) => {
+  let resultText = '';
+
+  console.log(resultText);
+
+  if (result === 'invalid') {
+    resultText = 'Invalid input. You must enter valid numbers.';
+  } else if (result !== 'no-calc') {
+    resultText = 'Result: ' + result;
+  }
+
+  return resultText;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O CÓDIGO DE TESTS FICOU ASSIM:
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { resultTextConstructor } from './resultTextConstructor';
+
+describe('resultTextConstructor', () => {
+  it('should always return a string', () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor();
+
+    // ASSERT
+    expect(result).toBeTypeOf('string');
+  });
+
+  it("return 'Result: undefined' upon being called with no arguments", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor();
+
+    // ASSERT
+    expect(result).toBe('Result: undefined');
+  });
+
+  it("return 'Invalid input, you must enter valid numbers.', upon receiving 'invalid' as an argument", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor('invalid');
+
+    // ASSERT
+    expect(result).toBe('Invalid input. You must enter valid numbers.');
+  });
+
+  it("return an empty string upon receiving 'no-calc' as an argument", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor('no-calc');
+
+    // ASSERT
+    expect(result).toBe('');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK...
+
+
+
+
+
+
+
+
+
+
+CRIEI UMA TEST SUITE, COM 'expect()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> os tests...
+
+
+
+
+
+
+
+
+A PRIMEIRA COISA QUE O PROFESSOR 
+
+QUER QUE 
+
+
+
+
+TESTEMOS 
+
+É 
+
+
+
+'''  it('should always return a string', () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor();
+
+    // ASSERT
+    expect(result).toBeTypeOf('string');
+  });
+
+
+''
+
+
+
+
+ISSO 
+
+
+PQ ELA SEMPRE DEVE RETORNAR 1 STRING,
+
+ESSA FUNCTION...
+
+
+
+
+
+
+
+-----------------------------
+
+
+
+
+
+
+
+
+certo...
+
+
+
+MAS O PROFESSOR COLOCA MÚLTIPLAS ASSERTIONS AQUI,
+
+PARA QUE 
+
+SEJA POSSÍVEL DEMONSTRAR QUE O NEGÓCIO REALMENTE SEMPRE RETORNARÁ 
+
+1 STRING..
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+describe('resultTextConstructor', () => {
+  it('should always return a string', () => {
+    // ARRANGE
+    const valueNoArg = resultTextConstructor();
+    const value1 = 1;
+    const value2 = 'invalid';
+    const value3 = 'false';
+
+    // ACT
+    const result1 = valueNoArg;
+    const result2 = value1;
+    const result3 = value2;
+    const result4 = value3;
+    // ASSERT
+    expect(result1).toBeTypeOf('string');
+    expect(result2).toBeTypeOf('string');
+    expect(result3).toBeTypeOf('string');
+    expect(result4).toBeTypeOf('string');
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... AÍ O PROFESSOR RODA OS TESTS...
+
+
+
+
+
+
+
+
+
+--> TODOS ESSES TESTS PASSAM...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS É CLARO QUE QUEREMOS ADICIONAR MAIS TESTS...
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR JÁ PREPAROU ALGUNS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+--> SÃO BASTANTES TESTS...
+
+
+
+
+
+
+FICAMOS COM ESTES TESTS:
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { resultTextConstructor } from './resultTextConstructor';
+
+describe('resultTextConstructor', () => {
+  it('should always return a string', () => {
+    // ARRANGE
+    const valueNoArg = resultTextConstructor();
+    const value1 = 1;
+    const value2 = 'invalid';
+    const value3 = 'false';
+
+    // ACT
+    const result1 = valueNoArg;
+    const result2 = value1;
+    const result3 = value2;
+    const result4 = value3;
+    // ASSERT
+    expect(result1).toBeTypeOf('string');
+    expect(result2).toBeTypeOf('string');
+    expect(result3).toBeTypeOf('string');
+    expect(result4).toBeTypeOf('string');
+  });
+
+  it("return 'Result: undefined' upon being called with no arguments", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor();
+
+    // ASSERT
+    expect(result).toBe('Result: undefined');
+  });
+
+  it('should return a string that contains the calculation result if a number is provided as a result', () => {
+    const result = 5;
+
+    const resultText = generateResultText(result);
+
+    expect(resultText).toContain(result.toString());
+  });
+
+  it("return 'Invalid input, you must enter valid numbers.', upon receiving 'invalid' as an argument", () => {
+    // ARRANGE AND ACT
+    const result = resultTextConstructor('invalid');
+
+    // ASSERT
+    expect(result).toBe('Invalid input. You must enter valid numbers.');
+  });
+
+  it('should return a string that contains "Invalid" if "invalid" is provided as a result', () => {
+    const result = 'invalid';
+
+    const resultText = generateResultText(result);
+
+    expect(resultText).toContain('Invalid');
+  });
+
+  it("return an empty string upon receiving 'no-calc' as an argument", () => {
+    // ARRANGE
+    const value = 'no-calc';
+    //ACT
+    const result = resultTextConstructor(value);
+
+    // ASSERT
+    expect(result).toBe('');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR COLOCOU 1 TEST 
+
+QUE TEM 
+
+
+
+O METHOD  DE 
+
+'expect(resultText).toContain(result.toString());'
+
+
+
+
+
+
+
+----> OK... AÍ O PROFESSOR RODA OS TESTS...
+
+
+
+
+
+
+tudo certo, até aqui...
+
+
+
+
+VC PODE ADICIONAR MAIS TESTS..
+
+
+
+
+
+
+
+
+
+
+
+
+
+esses são apenas alguns 
+
+example tests para nosso refactored code...
+
+
+
+
+
+
+
+
+
+
+An important aspect of testing is to achieve good code coverage. This means, that you want to write tests for the majority of your code (both code files and line of code).
+
+There are tools that help you measure your code coverage - actually Vitest comes with a built-in functionality: https://vitest.dev/guide/features.html#coverage
+
+It is worth noting though, that the goal is not necessarily 100% coverage. There always can be some code that doesn't need any tests (e.g., because it merely calls other functions that are tested already).
+
+In addition, achieving (close to) full code coverage also isn't any guarantee that you wrote good tests. You could cover 100% of your code with meaningless tests after all. Or you could missing important tests (that should test important behaviors). The code would still technically be covered by tests in such scenarios.
+
+So don't see a high amount of code coverage as the ultimate goal!
+
+
+
+
+
+
+
+
+
+
+
+
+MUITO BOA, ESSA COISA DE 'COVERAGE':
+
+
+
+
+
+
+
+
+{
+  "name": "basic-testing-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "vitest --watch --reporter verbose",
+    "test:watch": "vitest",
+    "start": "http-server -c-1",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "c8": "^7.14.0",
+    "http-server": "^14.1.0",
+    "install": "^0.13.0",
+    "npm": "^8.6.0",
+    "vitest": "^0.9.0"
+  }
+}
+
+
+
+
+
+
+
+
+
+queremos sempre cobrir todas nossas linhas de código e 
+
+
+todos nossos arquivos de código...
