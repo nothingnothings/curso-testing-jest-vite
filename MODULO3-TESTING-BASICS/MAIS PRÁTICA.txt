@@ -1,0 +1,653 @@
+
+
+
+
+
+
+
+
+
+OS CÓDIGOS DE TEST DA PRIMEIRA FUNCTION de 'VALIDATION.JS'
+
+
+FICARAM ASSIm:
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { validateNumber, validateStringNotEmpty } from './validation';
+
+it('should validate a non-empty string', () => {
+  //ARRANGE
+  const value = '1';
+  //ACT
+  const result = validateStringNotEmpty(value);
+  //ASSERT
+  expect(result).toBeUndefined();
+});
+
+it('should throw a error upon being called with an empty string as argument', () => {
+  //ARRANGE
+  const value = '';
+  //ACT
+  const resultFn = () => {
+    validateStringNotEmpty(value);
+  };
+  //ASSERT
+  expect(resultFn).toThrowError('Invalid input - must not be empty.');
+});
+
+it('should throw a error upon being called with no arguments', () => {
+  //ARRANGE
+
+  //ACT
+  const resultFn = () => {
+    validateStringNotEmpty();
+  };
+  //ASSERT
+  expect(resultFn).toThrowError(/undefined/); // * regex - "undefined" pode estar em qualquer lugar da mensagem de erro (no caso, 'value is undefined')
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.. AGORA FALTA A SEGUNDA FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FICOU TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { validateNumber, validateStringNotEmpty } from './validation';
+
+it('should return no value if a non-empty string is provided', () => {
+  //ARRANGE
+  const value = '1';
+  //ACT
+  const result = validateStringNotEmpty(value);
+  //ASSERT
+  expect(result).toBeUndefined(); // * 'toBeUndefined' é usado em casos em que FUNCTIONS NÃO RETORNAM COISA ALGUMA (tipo esta function, nos casos de success)...
+});
+
+it('should throw a error upon being called with an empty string as argument', () => {
+  //ARRANGE
+  const value = '';
+  //ACT
+  const resultFn = () => {
+    validateStringNotEmpty(value);
+  };
+  //ASSERT
+  expect(resultFn).toThrowError('Invalid input - must not be empty.');
+});
+
+it('should throw an undefined error upon being called with no arguments', () => {
+  //ARRANGE
+
+  //ACT
+  const resultFn = () => {
+    validateStringNotEmpty();
+  };
+  //ASSERT
+  expect(resultFn).toThrowError(/undefined/); // * regex - "undefined" pode estar em qualquer lugar da mensagem de erro (no caso, 'value is undefined')
+});
+
+it('should return no value if a number is provided', () => {
+  //ARRANGE
+  const value = 1;
+  //ACT
+  const result = validateNumber(value);
+  //ASSERT
+  expect(result).toBeUndefined();
+});
+
+it('should throw an undefined error upon being called with no arguments', () => {
+  //ARRANGE
+  //ACT
+  const resultFn = () => {
+    validateNumber();
+  };
+  //ASSERT
+  expect(resultFn).toThrowError(/No value provided/);
+});
+
+it('should throw an error if the value provided is not a number', () => {
+  //ARRANGE
+  const value = 'exemplo';
+  //ACT
+  const resultFn = () => {
+    validateNumber(value);
+  };
+  //ASSERT
+  expect(resultFn).toThrowError('Invalid number input.');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+TODOS OS TESTS PASSARAM...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR PREPAROU 1 FILE DE 'validation.test.js'....
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR ESCREVEU 1 MONTE DE TESTS...
+
+
+
+
+
+
+
+
+
+
+-> ELES TESTAM DIFERENTES COISAS...
+
+
+
+
+
+
+
+--> SE RODAMOS ESSES TESTS,
+
+ELES ASCTUALLY FALHARÃO...
+
+
+
+
+
+
+
+
+
+
+
+
+--> E ELE FEZ ISSO DE PROPÓSITO -----> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ELE FEZ ISSO PQ....
+
+
+
+
+
+
+
+ELE ADICIONOU FAILING TESTS PQ 
+
+ELE 
+
+
+
+PENSOU EM 1 CENÁRIO 
+
+EM QUE 
+
+
+
+ELE __ MUDARÁ O ARQUIVO DE 'validation.js'
+
+
+
+
+PQ 1 DOS CENÁRIOS
+
+
+
+NÃO ESTÁ SENDO 
+
+
+COBERTO PELAS FUNCTIONS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O CÓDIGO DO PROFESSOR FICOU ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { validateNumber, validateStringNotEmpty } from './validation';
+
+it('should throw an error, if an empty string is provided', () => {
+  const input = '';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).toThrow();
+});
+
+it('should throw an error with a message that contains a reason (must not be empty)', () => {
+  const input = '';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).toThrow(/must not be empty/);
+});
+
+it('should throw an error if a long string of blanks is provided', () => {
+  const input = '';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).toThrow();
+});
+
+it('should throw an error if any other value than a string is provided', () => {
+  const inputNum = 1;
+  const inputBool = true;
+  const inputObj = {};
+
+  const validationFnNum = () => validateStringNotEmpty(inputNum);
+  const validationFnBool = () => validateStringNotEmpty(inputBool);
+  const validationFnObj = () => validateStringNotEmpty(inputObj);
+
+  expect(validationFnNum).toThrow();
+  expect(validationFnBool).toThrow();
+  expect(validationFnObj).toThrow();
+});
+
+it('should not throw an error, if a non-empty string is provided', () => {
+  const input = 'valid';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).not.toThrow();
+});
+
+it('should throw an error if NaN is provided', () => {
+  const input = NaN;
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).toThrow();
+});
+
+it('should throw an error with a message that contains a reason (invalid number)', () => {
+  const input = NaN;
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).toThrow(/Invalid number/);
+});
+
+it('should throw an error if a non-numeric value is provided', () => {
+  const input = '1';
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).toThrow();
+});
+
+it('should not throw an error, if a number is provided', () => {
+  const input = 1;
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).not.toThrow();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO PQ O PROFESSOR TEM 1 CENÁRIO QUE NÃO É COBERTO 
+
+
+
+POR NOSSAS FUNCTIONS...
+
+
+
+
+
+
+É O CENÁRIO DE 'Should throw an error if a non-numeric value is provided':
+
+
+
+
+
+
+
+
+it('should throw an error if the value provided is not a number', () => {
+  //ARRANGE
+  const value = 'exemplo';
+  const value2 = '2';
+  //ACT
+  const resultFn = () => {
+    validateNumber(value);
+  };
+  const resultFn2 = () => {
+    validateNumber(value2);
+  };
+  //ASSERT
+  expect(resultFn).toThrowError('Invalid number input.');
+  //   expect(resultFn2).toThrowError('Invalid number input.');
+  expect(resultFn2).toThrow();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+é esse teste aí...
+
+
+
+
+PQ SE PROVIDENCIAMOS 
+
+
+
+
+'1',
+
+
+
+QUE É UMA STRING... -> É TEORICAMENTE 
+
+1 NUMBER,
+
+MAS É UMA STRING- ---->  E O 'isNaN()'
+
+
+VAI RETORNAR FALSE,
+
+
+
+
+PQ ISSO AÍ 
+
+
+
+
+É CONSIDERADO COMO NUMBER PELO 
+
+
+
+
+
+'isNaN()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- OK... QEURMOS TER 1 ERROR SE 
+
+
+
+
+
+
+
+1 'STRING-NUMBER' É PASSADO...
+
+
+
+
+
+
+
+
+
+--> PARA CORRIGIR ISSO, DEVEMOS ALTERAR O CÓDIGO DE 'validateNumber',
+
+
+Lá em 'validation.js'..
+
+
+
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+export function validateNumber(number) {
+  if (!number) {
+    throw new Error('No value provided');
+  }
+  if (isNaN(number) || typeof number !== 'number') {
+    throw new Error('Invalid number input.');
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> ISSO VAI FAZER NOSSO TEST FUNCIONAR,
+
+
+
+
+PQ __ AÍ TEREMOS 1 'INVALID NUMBER',
+
+
+PQ 
+
+O TYPE DELE NÃO SERÁ DE NUMBER....
+
+
+
+
+
+
+
+
+
+
+
+OK, COM ISSO, TODOS NOSSOS 
+
+
+TESTS PASSAM... -> E ISSO É BOM... .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+certo..
+
+
+
+
+
+
+adicionamos vários tests,
+
+
+que 
+
+
+
+
+
+TESTAM VÁRIAS FLAWS EM NOSSA FUNCTION IMPLEMENTATION..
+
+
+
+
+
+
+
+
+
+
+
+
+
+ISSO FEITO,
+
+
+O PROFESSOR QUER VER OUTRO ASPECTO DO TESTING E ORGANIZATION DE TESTS,
+
+
+NA PRÓXIMA AULA...
