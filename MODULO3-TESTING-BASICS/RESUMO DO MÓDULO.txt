@@ -1,0 +1,274 @@
+
+
+
+
+
+
+ACABAMOS COM ESSA INTRODUCTION..
+
+
+
+
+
+
+
+APRENDEMOS SOBRE O PADRÃO 'TRIPLE A'...
+
+
+
+
+
+
+
+
+
+
+ARRANGE,
+
+
+
+ACT,
+
+
+
+ASSERT...
+
+
+
+
+
+
+
+
+
+
+
+
+--> APRENDEMOS SOBRE AS FUNCTIONS DE 
+
+
+
+it()
+
+
+
+expect().toBe()
+
+
+
+
+e
+
+
+describe()
+
+
+
+
+
+
+
+
+
+
+
+APRENDEMOS SOBRE COMO DEFINIR EXPECTATIONS,
+
+
+
+E APRENDEMOS 
+
+QUE TEMOS 
+
+
+DIFERENTES TIPOS DE 'to' methods a serem chamados,
+ 
+
+PARA CHECAR 
+POR TODO TIPO DE EXPECTED VALUES....
+
+
+
+
+
+
+
+
+
+
+
+
+--> APRENDEMOS SOBRE O '.not',
+
+que vc 
+
+PODE USAR PARA CHECAR 
+
+
+JUSTAMENTE O CONTRÁRIO,..
+
+
+
+
+
+
+
+
+
+
+
+--. APRENDEMOS SOBRE 
+
+
+
+TESTS PROCURANDO POR 'THROW DE ERRORS',
+
+
+
+
+
+
+
+
+
+
+
+
+E 
+
+
+
+
+
+
+
+
+--> APRENDEMOS QUE 'DEVEMOS SER THOROUGH',
+
+MAS QUE 
+
+DEVEMOS ESCREVER 
+
+TESTS QUE 
+
+FAZEM SENTIDO..
+
+
+
+
+
+
+
+
+
+
+--> APRENDEMOS QUE 
+
+
+
+O WRITE DE TESTS´E 1 PROCESSO ITERATIVO,
+
+VC VAI ESCREVENDO MAIS AO LONGO DO TEMPO...
+
+
+
+
+
+
+
+
+
+--> 1 DOS PROPÓSITOS DOS TESTS 
+É 
+
+
+
+ENCONTRAR PROBLEMAS NO SEU  CÓDIGO MAIN,
+
+
+
+QUE 
+FICARÁ
+ 
+ TRANSPARENTE 
+
+
+ QUANDO VC RODAR SEUS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -> VC SEMPRE QUER TESTAR POR COISAS QUE 'THEORETICALLY COULD GO WRONG'...,
+
+
+ PQ 
+
+
+
+
+ QUEREMOS TER CERTEZA DE QUE, QUANDO SEU CÓDIGO MUDAR AO LONGO DO TEMPO,
+
+ SEUS TESTS 
+
+
+
+ _ INFORMEM QUE 
+
+
+
+ AS COISAS VÃO FALHAR, SE ALTERARMOS O SOURCE-CODE ORIGINAL..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -- PODEMOS USAR A FUNCTION DE 'describe()'
+
+ PARA ORGANIZAR SEUS OVERALL TESTS...
+
+
+
+
+
+
+
+
+
+ -- POR FIM, APRENDEMOS QUE PODEMOS 
+
+
+
+ EXECUTAR NOSSOS TESTS COM '--run' ou '--watch',
+
+
+ e com '--verbose'
+
+ ou não...
+
+
+
+
+
+
+ -> OK... AGORA VEREMOS MAIS DETALHES SOBRE TESTS..

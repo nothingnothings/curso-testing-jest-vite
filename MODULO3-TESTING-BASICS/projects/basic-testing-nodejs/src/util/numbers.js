@@ -1,5 +1,6 @@
-function transformToNumber(value) {
+export function transformToNumber(value) {
+  if (!value) {
+    throw new Error('No value provided.');
+  }
   return +value;
 }
-
-exports.transformToNumber = transformToNumber;
