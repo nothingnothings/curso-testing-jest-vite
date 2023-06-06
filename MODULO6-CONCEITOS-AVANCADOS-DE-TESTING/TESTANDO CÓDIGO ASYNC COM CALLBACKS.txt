@@ -1,0 +1,815 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> o que vc precisa fazer, para fazer seu test funcionar, 
+
+quando vc trabalha com CALLBACK FUNCTIONS ASSIM:
+
+
+
+
+
+describe(generateToken, () => {
+    it('should generate a token for a given user email', () => {
+      //ARRANGE
+      const value = 'exemplo@exemplo.com';
+      //ACT
+      // const result = generateToken(); //! ERRADO
+  
+      generateToken(value, (err, token) => { //! ISTO TAMBÉM ESTÁ ERRADO, PQ _ NÃO PODEMOS TESTAR CÓDIGO ASYNC ASSIM, com 1 'EXPECT' DENTRO DE 1 CALLBACK FUNCTION...
+        //ASSERT -- //!  ISSO NÃO FUNCIONARÁ, PQ O 'ASSERT' FICA/FICARÁ DENTRO DA CALLBACK FUNCTION....
+        expect(token).toBeDefined(); // !isso dará como 'PASSED', mas não significa que o test ocorreu corretamente
+        expect(token).toBe(2); /// ! é um resultado __ IMPOSSÍVEL, mas aparecerá como 'passed', justamente pq NÃO É ASSIM QUE ESCREVEMOS TESTS DE ASYNC CODE...
+      });
+    });
+  });
+  ,
+
+
+
+
+
+
+
+
+
+
+
+
+É 
+
+
+
+
+ADICIONAR 1 __ PARAMETER _ EXTRA __ A ESSA INNER TEST FUNCTION....
+
+
+
+
+
+
+
+
+
+
+-> É O PARAMETER DE 'done'... -------> PQ ISSO SERÁ 
+
+
+1 FUNCTION QUE _ VC _ ACTUALLY_ CHAMARÁ 
+
+
+
+QUANDO ESTIVER 'DONE' COM SEU TESTING CODE...
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+describe(generateToken, (done) => { //'done' deve ser adicionado, como parameter extra, quando vc deseja TESTAR CALLBACK FUNCTIONS DENTRO DAS FUNCTIONS QUE VC ESTÁ TESTANDo...
+  it('should generate a token for a given user email', () => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    generateToken(value, (err, token) => {
+      //ASSERT 
+      expect(token).toBeDefined();
+      expect(token).toBe(2);
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC  __PRECISA___ DO 'done'
+
+
+
+JUSTAMENTE PQ O 'JEST' E O 'VITEST'
+
+
+NÃO VÃO 'WAIT' PELO FINISH DE SUAS CALLBACK FUNCTIONS...
+
+
+
+
+
+
+
+
+
+EM VEZ DISSO,
+
+
+eles vão executar a linha de 'generateToken()',
+
+
+SIM,
+
+
+MAS _ NÃO VÃO ESPERAR PELO FINISH 
+
+do 
+
+
+
+'(err, token) => {
+
+    expect(token).toBe(2)
+}'
+
+
+
+,
+
+
+
+
+E, JUSTAMENTE POR ISSO,
+
+
+
+
+
+O TEST INTEIRO  VAI FICAR COMO 'PASSED'
+
+
+PQ __  O _ VITEST NÃO VAI TER ENCONTRADO 
+
+
+NENHUMA ASSERTION NO TEST...
+
+
+
+
+
+
+
+
+
+
+--> MAS SE VC ADICIONA 'done()',
+
+
+
+VC PODERÁ EXECUTAR 'done()'
+
+
+
+NO LUGAR EM QUE __ VC SABE __ QUE VC ESTARÁ 'done'
+
+
+COM TODO SEU TEST RELATED WORK... ------> 
+
+
+
+
+
+
+
+describe(generateToken, (done) => {
+  //'done' deve ser adicionado, como parameter extra, quando vc deseja TESTAR CALLBACK FUNCTIONS DENTRO DAS FUNCTIONS QUE VC ESTÁ TESTANDo...
+  it('should generate a token for a given user email', () => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    generateToken(value, (err, token) => {
+      //ASSERT
+      expect(token).toBeDefined();
+      expect(token).toBe(2);
+      done(); // * isso é o que faz o test funcionar, quando vc está testando 1 CALLBACK FUNCTION DENTRO DE 1 FUNCTION...
+        //'done' significa que 'ESTAMOS DONE COM NOSSO TEST WORK, DENTRO DESSA CALLBACK FUNCTION'.
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK....
+
+
+
+
+
+
+
+COM ISSO,
+
+COM O DONE,
+
+
+
+O VITEST E O JEST VÃO ESPERAR ATÉ 
+
+
+
+ELE SER  CALLED.... E VÃO RECONHECER QUE ESSA CALLBACK FUNCTION É 
+
+EVENTUALMENTE EXECUTADA --> E ENTÃO VÃO EXECUTAR OS 'expect' statements também...
+
+
+
+
+
+
+
+
+
+-> E, ASSIM QUE VC CHAMA 'done()',
+
+ele 
+
+
+vai terminar esse test....
+
+
+
+
+
+
+
+
+
+
+
+--> OK.... COM ESSE TEST SENDO RODADO,
+
+VAMOS GANHAR 
+
+
+
+1 FAIL... E ISSO É MELHOR DO QUE ANTES..
+
+
+
+
+
+
+
+
+
+MAS ELE FALHARÁ COM ESTA MESSAGE:
+
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Unhandled Error ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+
+Unknown Error: undefined
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NÃO ENTENDI O ERROR...
+
+
+
+
+
+
+----------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR COMENTA PARA FORA A ASSERTION ERRADA (de 'toBe(2)'),
+
+
+
+
+PARA AÍ COLOCARMOS A EXPECTATION DE 'toBeDefined()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEM, EU HAVIA COLOCADO O ARGUMENTO 'done' em describe,
+
+quando deve ficar dentro de 'it'... (obviamente).
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+describe(generateToken, () => {
+  //'done' deve ser adicionado, como parameter extra, quando vc deseja TESTAR CALLBACK FUNCTIONS DENTRO DAS FUNCTIONS QUE VC ESTÁ TESTANDo...
+  it('should generate a token for a given user email', (done) => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    generateToken(value, (err, token) => {
+      //ASSERT
+      expect(token).toBeDefined();
+      // expect(token).toBe(2);
+      done(); // * isso é o que faz o test funcionar, quando vc está testando 1 CALLBACK FUNCTION DENTRO DE 1 FUNCTION...
+        //'done' significa que 'ESTAMOS DONE COM NOSSO TEST WORK, DENTRO DESSA CALLBACK FUNCTION'.
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+ok, mas ainda estou recebendo 1 error....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+o erro foi causado, não sei porque razão,
+
+
+por conta do method de 'describe'  que estava EM VOLTA 
+
+
+
+do 'it()' case...
+
+
+
+
+
+
+
+
+
+se eu tiro o describe, a mensagem de error some, e o test é rodado normalmente...
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+it('should generate a token for a given user email', (done) => {
+  //ARRANGE
+  const value = 'test@test.com';
+  //ACT
+  generateToken(value, (err, token) => {
+    //ASSERT
+    expect(token).toBeDefined(); ///este test vai funcionar, depois de 1 tempo, justamente por nosso código ser async...
+    // expect(token).toBe('2'); //este test vai sempre falhar, pq é impossível.
+    done();
+  });
+});
+
+
+
+
+
+
+
+-----------------------------
+
+
+
+
+
+
+
+
+
+
+
+OK.... MAS PQ DIABOS NOSSO TEST 'NÃO FUNCIONA'
+
+
+
+SE TEMOS 
+
+___aSSERTIONS ERRADAS?
+
+
+
+
+
+
+
+
+PQ SE DEIXAMOS  A ASSERTION DE 'toBe(2)',
+
+
+GANHAMOS 1 ERROR, MAS A MENSAGEM DE ERROR 
+
+NÃO FICA BOA:
+
+
+
+
+
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> COMO PODEMOS 'RECEBER 1 MENSAGEM DE ERRO FIDEDIGNA'?
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> a razão para isso é QUE 
+
+__ TODAS ESSAS FUNCTIONS,
+
+
+
+FUNCTIONS COMO 'toBe()',
+
+lá 
+
+
+do vitest/jest,
+
+
+ELAS __ fAZEM THROW _ DE 1 ERROR 
+
+
+SE FALHAM...
+
+
+
+
+
+
+
+
+
+
+--> E, SE POR DEFAULT,
+
+
+SE VC 
+
+
+N TIVER ESSE ASYNC CODE USE-CASE,
+
+
+
+
+O VITEST E O JEST VÃO 'PICK UP' 
+
+
+
+ERRORS COMO ESSES, E VÃO CONSIDERAR QUE O TEST FALHOU,
+
+
+E AÍ 
+
+VÃO MOSTRAR A RAZÃO 
+
+
+PELO TEST TER FALHADO...
+
+
+
+
+
+
+
+
+
+
+
+
+--> ENTRETANTO, SE VC TEM 1 CALLBACK DESSES,
+
+E SE VC 
+ESTÁ 
+
+USANDO 1 CALLBACK FUNCTION E ESTÁ USANDO A FUNCTION DE 'done()',
+
+
+O 
+
+
+__ERROR __ QUE É THROWN PELAS FUNCTIONS de 'toBe()'
+
+
+E SIMILARES _ __
+
+
+NÃO SERÁ CAPTURADO/PEGADO PELO TEST RUNNER --------> É POR ISSO QUE 
+
+
+NESSE CASO,
+
+E SÓ 
+
+NESSE CASO,
+
+
+
+
+
+__ DEVEMOS __ aDICIONAR 1 TRY-CATCH BLOCK 
+
+
+
+
+
+
+DENTRO DO TEST CODE...
+
+
+
+
+
+
+
+
+
+--> tipo assim:
+
+
+
+
+
+
+
+
+it('should generate a token for a given user email', (done) => {
+  //ARRANGE
+  const value = 'test@test.com'
+
+
+  generateToken(value, (err, token) => {
+
+
+    try {
+        expect(token).toBe(2);
+        done();
+    } catch(err) {
+        done(err);
+    }
+
+  })
+
+})
+
+
+
+
+
+
+
+--> É ASSIM QUE PODEMOS CAPTURAR QUAISQUER ERRORS/FAILED TESTS,
+
+
+
+PQ __ AÍ _ _ESSE ERROR/FAIL VAI REALMENTE SER CAPTURADO PELO 
+CATCH BLOCK,
+
+e aí 
+
+será mostrado com 'done(err)'....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... COM ISSO, AGORA MEU TEST FALHOU (o que quer dizer que funcionou):
+
+
+
+
+
+
+
+
+  - Expected   "2"
+  + Received   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2ODYwNTkxNjd…
+
+
+
+
+------------------------
+
+
+
+
+
+
+
+
+
+CERTO...
+ 
+
+
+ no success case,
+
+ não passamos nenhum argumento ao 'done()'...
+
+
+
+
+
+
+
+
+
+
+
+no error case, passamos o error como argumento ao 'done()'......
+
+
+
+
+
+
+AGORA PODEMOS FINALMENTE NOS LIVRAR DE TODO ESSE CÓDIGO....
+
+
+
+
+
+e voltar ao actual code que queremos ter...
+
+
+
+
+do 'expect(token).toBeDefined();
+
+
+
+
+
+
+
+
+
+
+CERTO... É ASSIM QUE PODEMOS LIDAR COM 'ASYNC CODE'
+
+SE TRABALHARMOS COM CALLBACKS...
+
+
+
+
+
+
+
+
+
+
+
+MAS E QUANTO A PROMISES?
