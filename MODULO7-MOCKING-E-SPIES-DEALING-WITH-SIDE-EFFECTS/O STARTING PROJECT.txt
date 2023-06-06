@@ -77,3 +77,441 @@ storeData(data);
 
 
 
+
+ESSE ARQUIVO É BEM SIMPLES,
+
+
+ALGUMAS FUNCTIONS SÃO IMPORTADAS,
+
+
+E AÍ O PROFESSOR RODA A FUNCTION DE 'generateReportData'...
+
+
+
+
+
+
+
+
+
+-_> NESSA FUNCTION, PASSAMOS OUTRA FUNCTION A 'log' FUNCTION --> PASSAMOS ESSA FUNCTION 
+
+COMO ARGUMENTO A OUTRA FUNCTION (pointer)...
+
+
+
+
+
+
+
+
+--> POR FIM, 
+
+A FUNCTION DE 'storeData'
+
+
+
+
+USADA A DATA _ RETORNADA POR 'generateReportData'..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE ANALISAMOS ESSAS FUNCTIONS, TEMOS:
+
+
+
+
+import writeData from './util/io.js';
+
+export function generateReportData(logFn) {
+  const data = 'Some dummy data for this demo app';
+  if (logFn) {
+    logFn(data);
+  }
+
+  return data;
+}
+
+export async function storeData(data) {
+  if (!data) {
+    throw new Error('No data received!');
+  }
+  await writeData(data, 'data.txt');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SÃO FUNCTIONS BEM SIMPLES,
+
+
+DUMMY FUNCTIONS PARA ESSES DEMO... -> ESSAS FUNCTIONS TEM ALGUNS PROBLEMAS,
+
+
+
+QUE 
+
+APRENDEREMOS E RESOLVEREMOS NESSE MÓDULO..
+
+
+
+
+
+
+
+
+
+--> OK...
+
+
+
+
+a function de 'generateReportData'
+
+
+
+vai CHAMAR essa function de 'logFn',
+
+
+SE ELA FOR RECEBIDa como parameter... ->  E ESSA FUNCTION 
+
+RECEBE 
+
+
+A 
+
+DATA 
+QUE 
+
+É 
+
+GERADA (dummy data,
+
+
+de '' 'Some dummy data for this demo app'; ''
+
+
+
+)
+
+
+
+
+
+
+
+
+É CLARO QUE ESSA É UMA DUMMY DATA,
+
+PQ NA VIDA REAL VC RETRIEVARIA UMA DATA ALI...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> BEM... MAS 'storeData '-->  É UMA ASYNC FUNCTION,
+
+
+PQ ELA CHAMA 'writeData',,
+
+
+
+QUE É REALMENTE 1 FUNCTION QUE __ RENDE 1 PROMISE ----> POR ISSO TEMOS 'await'..
+
+
+
+
+ex:
+
+
+
+
+
+export async function storeData(data) {
+  if (!data) {
+    throw new Error('No data received!');
+  }
+  await writeData(data, 'data.txt');
+}
+
+
+
+
+
+
+
+
+
+
+
+OK... ESTAMOS FAZENDO 'AWAIT'
+
+
+
+DA FUNCTION DE 'writeData',
+
+
+E É POR ISSO QUE 
+
+
+'storeData'
+
+É UMA 
+
+
+ASYNC FUNCTION...
+
+
+
+
+
+
+
+
+
+
+--> ok... 
+
+
+e 'writeData'
+
+
+EXIGE 2 PARAMETERS,
+
+
+
+
+
+
+
+
+'data' (a data em si)
+
+
+
+E ENTÃO 
+
+O 
+'file name'( como 'data.txt')...
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO... E SE ANALISAMOS ESSA FUNCTION, EM 'io.js',
+
+
+
+
+
+
+DENTRO DO METHOD ESTAMOS FAZENDO 
+
+
+WRITE NO FILE SYSTEM,
+
+POR MEIO DESTE CÓDIGO:
+
+
+
+export default function writeData(data, filename) {
+  const storagePath = path.join(process.cwd(), 'data', filename);
+  return fs.writeFile(storagePath, data);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... FAZ SENTIDO.
+
+
+
+
+
+
+
+
+--> MAS ESSE CÓDIGO É ASYNC, ESSE É O PROBLEMA..
+
+
+
+
+
+pq 'fs.writeFile' é um ASYNC METHOD...
+
+
+
+em 'logger.js',
+
+TEMOS UMA LOG FUNCTION SIMPLES..
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+export default function log(message) {
+  console.log(message);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... .ESSE É O NOSSO SETUP... MAS O QUE HÁ DE ERRADO COM ELE?
+
+
+
+
+
+
+
+
+
+
+
+NADA, ESSE CÓDIGO ESTÁ CORRETO...
+
+
+
+
+
+
+
+BASTA RODAR 'node app.js'
+
+
+PARA VER ESSA DUMMY DATA PRINTADA NO CONSOLE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO..
+
+
+E ISSO TERÁ CRIADO 1 NOVA FILE,
+
+NA PASTA 'data',
+
+
+
+
+EM QUE 
+TEREMOS 
+
+
+A DATA DE 'some dummy data for this demo app'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ÚNICO PROBLEMA QUE TEREMOS, COM ESSE PROJECT,
+
+É O WRITE DE TESTS..
+
+
+
+
+
+
+
+
+
+É POR ISSO QUE DEVEMOS TENTAR ESCREVER 1 TEST PARA 
+
+
+
+'io.js'...
