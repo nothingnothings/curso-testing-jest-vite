@@ -1,0 +1,355 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... O PROFESSOR COMEÇA O DEEP DIVE COM UMA OUTRA 
+
+
+
+OLHADA EM 'SPIES'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SABEMOS O QUE SÃO SPIES -->  SÃO FREQUENTEMENTE 
+
+
+
+EMPTY FUNCTIONS 
+
+QUE 
+
+
+POSSUEM 1 'TRACKER',
+
+QUE 
+
+
+
+TRACKEIAM SE FORAM EXECUTADAS,
+
+POR EXEMPLO... (e os arguments que foram usados com elas)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS NÃO É SÓ ISSO... --> PQ PODEMOS, EM VEZ DISSO,
+
+FORMULAR DIFERENTES 
+
+EXPECTATIONS 
+
+
+__ QUANDO TRABALHAMOS COM SPIES:
+
+
+
+
+
+
+
+
+
+
+
+
+LUGARES EM QUE ESTAMOS USANDO SPIES:
+
+
+
+
+(um mock-spy):
+
+
+
+
+
+
+
+it('should execute the writeFile method', () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  //   const result = await writeData(testData, testFileName);
+  writeData(testData, testFileName); // ? VAI CHAMAR 'fs.writeFile', no seu interior...
+  //// ACT E ASSERT
+  //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+  
+  //ASSERT
+  //   return expect(result).resolves.toBeUndefined(); //! ISTO NÃO VAI MAIS FUNCIONAR PQ TODAS AS FUNCTIONS DENTRO DE 'fs' (fs.writeFile, por exemplo) FORAM MOCKADAS/TROCADAS POR EMPTY SPY FUNCTIONS...
+  expect(fs.writeFile).toHaveBeenCalled(); // ESSA É A COISA PELA QUAL TESTAMOS DE VERDADE, PQ __ É REALMENTE ISSO QUE IMPORTA (se essa function foi chamada ou não, durante aquela execução)...
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E AQUI:
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest'; //? É COM 'vi' QUE PODEMOS USAR  COISAS COMO o 'vi.fn()', que é usado para CRIAR SPIES (tipo mocks, mas mais simples)...
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log' //! 'logFunctionSpy', que é 'vi.fn()', NÃO FAZ ACTUALLY COISA ALGUMA, MAS NOS DEIXA 'SPY' ESSA FUNCTION, NOS DEIXA 'ESPIONAR' ESSA FUNCTION E CONSTATAR SE ELA FOI EXECUTADA CORRETAMENTE, QUAIS ARGUMENTS FORAM PASSADOS, ETC...
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+
+    expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... VC PODE, POR EXEMPLO,
+
+
+
+
+FAZER MAIS DO QUE 'CHECK SE A SPY FUNCTION FOI EXECUTADA',
+
+
+
+PQ __ VOCÊ TAMBÉM 
+
+PODE 'CHECAR 
+
+SE 
+
+
+__ESSA FUNCTION FOI CHAMADA MÚLTIPLAS VEZES' (vc passa o parameter,
+
+
+de quantas vezes)..
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest'; //? É COM 'vi' QUE PODEMOS USAR  COISAS COMO o 'vi.fn()', que é usado para CRIAR SPIES (tipo mocks, mas mais simples)...
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log' //! 'logFunctionSpy', que é 'vi.fn()', NÃO FAZ ACTUALLY COISA ALGUMA, MAS NOS DEIXA 'SPY' ESSA FUNCTION, NOS DEIXA 'ESPIONAR' ESSA FUNCTION E CONSTATAR SE ELA FOI EXECUTADA CORRETAMENTE, QUAIS ARGUMENTS FORAM PASSADOS, ETC...
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+
+    expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
+    expect(logFunctionSpy).toHaveBeenCalledTimes(1);
+    // expect(logFunctionSpy).toHaveBeenCalledTimes(2); //! ISTO FALHARÁ, É CLARO.
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+ISSO É ALGO QUE VC PODE FAZER, 
+
+E QUE 
+
+ÀS VEZES PODE SER BOM...
+
+
+
+
+
+'' 
+
+ expect(logFunctionSpy).toHaveBeenCalledTimes(1);
+
+
+ ''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ A OUTRA COISA QUE PODEMOS FAZER É 
+
+ usar o method de 
+
+ 'expect(logger).toBeCalledWith()',
+
+ PARA AÍ 
+
+
+
+ CHECARR__ QUAIS ARGUMENTS FORAM PASSADOS A FUNCTION,
+
+ QUANDO ELA FOI CHAMADA...
+
+
+
+
+
+
+
+
+
+ TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+ import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest'; //? É COM 'vi' QUE PODEMOS USAR  COISAS COMO o 'vi.fn()', que é usado para CRIAR SPIES (tipo mocks, mas mais simples)...
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log' //! 'logFunctionSpy', que é 'vi.fn()', NÃO FAZ ACTUALLY COISA ALGUMA, MAS NOS DEIXA 'SPY' ESSA FUNCTION, NOS DEIXA 'ESPIONAR' ESSA FUNCTION E CONSTATAR SE ELA FOI EXECUTADA CORRETAMENTE, QUAIS ARGUMENTS FORAM PASSADOS, ETC...
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+
+    expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
+    expect(logFunctionSpy).toHaveBeenCalledTimes(1);
+    // expect(logFunctionSpy).toHaveBeenCalledTimes(2); //! ISTO FALHARÁ, É CLARO. pq essa function foi chamada apenas 1 única vez...
+    expect(logFunctionSpy).toHaveBeenCalledWith('Some dummy data for this demo app');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+devemos ter em mente essas diferentes maneiras de usar 'toBeCalled()'..

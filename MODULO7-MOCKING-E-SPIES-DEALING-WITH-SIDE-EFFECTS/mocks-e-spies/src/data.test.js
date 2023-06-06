@@ -16,5 +16,8 @@ describe('generateReportData', () => {
     //ASSERT
 
     expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
+    expect(logFunctionSpy).toHaveBeenCalledTimes(1);
+    // expect(logFunctionSpy).toHaveBeenCalledTimes(2); //! ISTO FALHARÁ, É CLARO. pq essa function foi chamada apenas 1 única vez...
+    expect(logFunctionSpy).toHaveBeenCalledWith('Some dummy data for this demo app');
   });
 });
