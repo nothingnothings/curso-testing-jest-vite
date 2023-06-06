@@ -1,0 +1,143 @@
+
+
+
+
+
+
+
+
+
+-> 
+
+NESSA COURSE SECTION,
+
+VAMOS EXPLORAR FUNCTIONS COMO A 'cleanNumbers'...
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+const cleanNumbers = (numberInputs) => {
+  const numbers = [];
+  for (const numberInput of numberInputs) {
+    validateStringNotEmpty(numberInput);
+    const number = transformToNumber(numberInput);
+    validateNumber(number);
+    numbers.push(number);
+  }
+
+  return numbers;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> CERTO...
+
+
+
+
+
+
+
+
+
+NESSA SECTION,
+
+
+VAMOS EXPLORAR ' O QUE É ESPECIAL' SOBRE ESSA FUNCTION,
+
+
+E VAMOS 
+
+APRENDER
+ 
+ 'INTEGRATION TESTS'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> VEREMOS O QUE EXATAMENTE SÃO INTEGRATION TESTS....
+
+
+
+
+
+
+
+
+
+VEREMOS:
+
+
+
+
+
+1) COMO PODEMOS TESTAR UNITS,
+
+FUNCTIONS, POR EXEMPLO, QUE 
+
+
+
+POSSUAM DEPENDENCIES (
+    ou seja,
+
+    que executem outras functions...
+)
+
+
+
+
+
+
+
+
+
+
+2) VEREMOS TAMBÉM COMO PODEMOS 'BALANCEAR'
+
+
+UNIT E INTEGRATION TESTS (
+
+    o quanto escrever de cada tipo...
+)
+
+
+
+
+
+
+
+
+
+
+--> VEREMOS O QUE SIGNIFICA TUDO ISSO PARA NOSSOS TESTS E PARA NOSSO APP CODE
