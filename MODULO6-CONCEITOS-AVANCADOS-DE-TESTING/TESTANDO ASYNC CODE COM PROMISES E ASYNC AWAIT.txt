@@ -1,0 +1,503 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... VC TAMBÉM PODE ESCREVER ASYNC CODE PARA FUNCTIONS QUE 
+
+
+
+FAZEM 'YIELD' DE PROMISES ------> E ISSO É, NA VERDADE,
+
+MAIS FÁCIL 
+
+
+DO QUE 
+
+
+ESCREVER 
+ASYNC CODE PARA FUNCTIONS QUE RETORNAM CALLBACKS...
+
+
+
+
+
+
+
+
+
+
+
+
+-----> é por isso que o professor vai escrever OUTRO TEST,
+
+
+TEST EM QUE VAI TESTAR 
+
+
+
+
+
+BASICAMENTE
+
+
+'''se 1 token value foi gerado''' --> ele escreve assim:
+
+
+
+
+
+
+
+
+
+
+it('should generate a token value', () => {
+
+const value = 'test@test.com';
+
+
+generateTokenPromise(value);
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS AGORA NOSSA FUNCTION RETORNA 1 PROMISE, E NÃO 1 CALLBACK:
+
+
+
+
+
+
+
+export function generateTokenPromise(userEmail) {
+  const promise = new Promise((resolve, reject) => {
+    jwt.sign({ email: userEmail }, 'secret123', (error, token) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(token);
+      }
+    });
+  });
+
+  return promise;
+}
+
+
+
+
+
+
+
+
+
+
+ok...
+
+
+
+
+
+
+
+COMO PODEMOS FAZER O TEST COM ESSE ASYNC CODE?
+
+
+
+
+
+
+
+
+
+
+--> HÁ VÁRIAS MANEIRAS DE FAZER 1 PROMISE-BASED TEST FUNCIONAR...
+
+
+
+
+1a COISA) O 'expect'
+
+SUPORTA 
+
+
+
+'promises'
+
+
+
+OUT OF THE BOX.. ------> BASTA ___ WRAPPAR_ _ 
+
+
+
+O FUNCTION CALL, O FUNCTION CALL QUE RETORNA 1 PROMISE,
+
+
+COM O 'expect()'..
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+it('should generate a token value', () => {
+
+const value = 'test@test.com';
+
+
+expect(generateTokenPromise(value))
+
+})
+
+
+
+
+
+
+
+
+
+
+
+ISSO FEITO,
+
+
+
+
+
+
+
+
+
+EM VEZ DE ESCREVER '.toBe()'
+
+ OU QUALQUER OUTRA COISA,
+
+
+
+
+
+
+
+ VC 
+
+
+ __dEVE _ CHAINAR 2 OUTRAS KEYWORDS,
+
+
+
+ o 'rejects'
+
+
+
+ e 
+
+ 'resolves'...
+
+
+
+
+
+
+
+
+ ex:
+
+
+
+
+
+
+ 
+// TODO - EXEMPLO DE TEST ASYNC COM __ THEN-CATCH (promises, sem callbacks)
+it('should generate a token value', () => {
+  const value = 'test@test.com';
+
+  //  PARA TESTAR 1 FUNCTION QUE RETORNA 1 PROMISE, NÃO PRECISAMOS DO 'done'... --> precisamos WRAPPAR nossa function com o 'EXPECT', e aí CHAINAR OS METHODS DE 'resolve' e 'rejects'...
+  expect(generateTokenPromise(value)).resolves.toBeDefined()
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+ESPERAMOS QUE O 'RESOLVED VALUE' DA PROMISE RETORNADA 
+
+
+POR ESSA FUNCTION CALL _ SEJA _ ALGUMA COISA...
+
+
+
+
+
+
+
+-> O PROFESSOR COLOCA O toBe de 'defined()'...
+
+
+
+
+
+
+
+
+
+-----> E SE VC ESTÁ ESCREVENDO 1 TEST EM QUE 
+
+VC ESTÁ TESTANDO 
+
+
+PELO 'REJECT'
+
+
+
+DE SUA PROMISE,
+
+VC PODE USAR o 'rejects',
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+// TODO - EXEMPLO DE TEST ASYNC COM __ THEN-CATCH (promises, sem callbacks)
+it('should generate a token value', () => {
+  const value = 'test@test.com';
+
+  //  PARA TESTAR 1 FUNCTION QUE RETORNA 1 PROMISE, NÃO PRECISAMOS DO 'done'... --> precisamos WRAPPAR nossa function com o 'EXPECT', e aí CHAINAR OS METHODS DE 'resolve' e 'rejects'...
+  expect(generateTokenPromise(value)).resolves.toBeDefined();
+  // expect(generateTokenPromise(value)).resolves.toBe(2);
+  expect(generateTokenPromise()).rejects.toBeDefined(); // * 'no email provided'
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+TESTAR COM PROMISES __ É MT MAIS FÁCIL DO QUE TESTAR COM CALLBACK FUNCTIONS...
+
+
+
+
+
+
+
+
+
+
+-> MAS É CLARO QUE ESSA É APENAS 1 MANEIRA DE TESTAR ISSO...
+
+
+
+
+
+
+
+PODEMOS  TESTAR PROMISES DE MANEIRA DIFERENTE, TAMBÉM...
+
+
+
+
+(MAS ESTE APPROACH É ÓTIMO, É CONCISO, FUNCIONA, É PERFEITO)
+
+
+
+
+
+
+
+-> TEMOS 1 APPROACH ALTERNATIVO, COM O 'ASYNC AWAIT'..
+
+
+
+
+
+
+
+
+
+
+
+
+
+PARA CONSEGUIR USAR O ASYNC AWAIT, COLOQUE 'async'
+
+DENTRO DE SUA TESTING FUNCTION, TIPO ASSIM:
+
+
+
+
+
+
+
+it('should generate a token value', async () => {
+  const value = 'test@test.com';
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO FEITO, FAÇA O 'await' DA FUNCTION DE 'generateTokenPromise':
+
+
+
+
+
+
+
+
+
+it('should generate a token value', async () => {
+  const value = 'test@test.com';
+
+    const token = await generateTokenPromise(value);
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO FEITO, 
+
+
+DEVEMOS USAR 'expect' COMO USAMOS ANTES,
+
+
+com 
+
+'expect(token).toBeDefined()'
+
+
+
+
+
+
+EX:
+
+
+
+
+
+it('should generate a token value', async () => {
+  const value = 'test@test.com';
+
+    const token = await generateTokenPromise(value);
+
+    expect(token).toBeDefined();
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+certo... continuando:
+
+
+
+
+
+
+

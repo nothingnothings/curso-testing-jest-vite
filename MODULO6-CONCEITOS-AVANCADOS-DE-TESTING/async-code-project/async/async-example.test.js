@@ -50,6 +50,7 @@ import { generateToken, generateTokenPromise } from './async-example';
 
 // describe(generateToken, () => { //a princípio, NÃO PODEMOS ENVELOPAR NOSSOS IT CASES/TESTS _ COM DESCRIBE, SE ESTAMOS TESTANDO CALLBACK FUNCTIONS...
 
+// TODO - EXEMPLO DE TEST ASYNC COM __ CALLBACKS___....
 it('should generate a token for a given user email', (done) => {
   //ARRANGE
   const value = 'test@test.com';
@@ -67,6 +68,51 @@ it('should generate a token for a given user email', (done) => {
   });
 });
 // });
+
+// TODO - EXEMPLO DE TEST ASYNC COM __ THEN-CATCH (promises, sem callbacks) --> este approach é bem melhor.... é conciso, funciona, é perfeito.
+it('should generate a token value', () => {
+  const value = 'test@test.com';
+
+  //  PARA TESTAR 1 FUNCTION QUE RETORNA 1 PROMISE, NÃO PRECISAMOS DO 'done'... --> precisamos WRAPPAR nossa function com o 'EXPECT', e aí CHAINAR OS METHODS DE 'resolve' e 'rejects'...
+  return expect(generateTokenPromise(value)).resolves.toBeDefined();
+  // expect(generateTokenPromise(value)).resolves.toBe(2);
+  // expect(generateTokenPromise('error')).rejects.toBeDefined(); // * 'no email provided'
+});
+
+// TODO - EXEMPLO DE TEST ASYNC COM __ ASYNC/AWAIT (promises, sem callbacks) --> este approach é bem melhor... é o approach de cima, mas com async/await....
+it('should generate a token value', async () => {
+  //adicione 'async' aqui...
+  //ARRANGE
+  const value = 'test@test.com';
+
+  //ACT
+  ///success case
+  const result1 = await generateTokenPromise(value);
+  ///failure/error2 case
+  // const result2 = await generateTokenPromise('error');
+
+  //ASSERT
+  expect(result1).toBeDefined();
+  // expect(result2); // * 'no email provided'
+  // expect(result2).toBeDefined();
+});
+
+// TODO - EXEMPLO DE TEST ASYNC COM __ ASYNC/AWAIT (promises, sem callbacks) --> este approach é bem melhor... é o approach de cima, mas com async/await....
+it('should return a string, even if "error" is provided as a value', async () => {
+  //ARRANGE
+  const value = 'error';
+
+  //ACT
+  ///success case
+  const result2 = await generateTokenPromise(value);
+  ///failure/error2 case
+  // const result2 = await generateTokenPromise('error');
+
+  //ASSERT
+  expect(result2).toBeDefined();
+  // expect(result2); // * 'no email provided'
+  // expect(result2).toBeDefined();
+});
 
 // describe(generateTokenPromise, () => {
 //   it('should generate a token for a given user email', () => {
