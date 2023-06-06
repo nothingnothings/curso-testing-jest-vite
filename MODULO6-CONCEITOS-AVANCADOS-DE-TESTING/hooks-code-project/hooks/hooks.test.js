@@ -2,8 +2,37 @@ import { it, expect } from 'vitest';
 
 import { User } from './hooks';
 
-const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
-const user = new User(testEmail); //já isto é 1 EXEMPLO DE HOOK...
+import { beforeAll, beforeEach, afterEach, afterAll } from 'vitest'; ///SÃO OS HOOKS QUE PODEMOS IMPORTAR, LÁ DO VITEST (para ter 'prep work' e 'clean up work')....
+
+// const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+// const user = new User(testEmail); // * VAMOS UTILIZAR ESSE OBJECT PARA DEMONSTRAR OS HOOKS (beforeAll, beforeEach, afterEach, afterAll)...
+
+let user;
+let testEmail;
+
+beforeAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de TODOS os tests)...
+  console.log('BEFORE ALL');
+  user = new User(testEmail);
+});
+
+beforeEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de CADA test)...
+  // * É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+  console.log('BEFORE EACH');
+  user = new User(testEmail);
+  testEmail = 'test@test.com';
+});
+
+afterAll(() => { /// TODO - VOCê PODE USAR ESSE TEST PARA 'CLEANUP WORK', para limpar 1 database que vc criou em 'beforeAll', por exemplo...
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de TODOS os tests)...
+  console.log('AFTER ALL');
+});
+
+afterEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de CADA test)...
+  console.log('AFTER EACH');
+});
 
 it('should have an email property', () => {
   //ARRANGE
@@ -53,3 +82,31 @@ it('should still have an email property after clearing the email', () => {
   ///ASSERT
   expect(user).toHaveProperty('email');
 });
+
+// SE VC TIVER 1 FILE COM MÚLTIPLOS 'TESTING SUITES' (describe),
+
+// vc ___
+
+// PODE __ TAMBÉM COLOCAR
+
+// SEUS HOOKS EM
+
+// 1 'SUITE' LEVEL... (dentro de
+
+// cada suite..
+// )
+
+// --> SE VC COLOCA ESSES HOOKS DENTRO DE 1 SUITE,
+
+// ESSES HOOKS VÃO SER APLICADOS NA SUITE ONLY ...
+
+// --> já se vc COLOCAR SEUS HOOKS NO 'ROOT LEVEL' DE SEU ARQUIVO
+// DE
+
+// TEST,
+
+// A LÓGICA DOS HOOKS VAI SER APLICADA EM 1 GLOBAL LEVEL,
+
+// VAI SER APLICADA
+
+// __ EM TODOS OS TESTS NA FILE...

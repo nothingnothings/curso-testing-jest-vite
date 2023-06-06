@@ -1,0 +1,1430 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+MAS COMO HOOKS PODEM NOS AJUDAR?
+
+
+
+
+
+
+
+
+
+BEM, HOOKS SÃO SPECIAL FUNCTIONS PROVIDENCIADAS PELO JEST/VITEST..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E TEMOS 4 TIPOS DE HOOKS QUE PODEM SER USADOS..
+
+
+
+
+
+
+
+
+
+
+
+--> 
+
+são eles:
+
+
+
+
+
+
+beforeAll
+
+beforeEach 
+
+
+afterEach 
+
+
+
+afterAll
+
+
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { expect, it } from 'vitest';
+
+import { beforeAll, beforeEach, afterEach, afterAll } from 'vitest'; ///SÃO OS HOOKS QUE PODEMOS IMPORTAR, LÁ DO VITEST (para ter 'prep work' e 'clean up work')....
+
+import { generateToken, generateTokenPromise } from './async-example';
+
+it('should generate a token value', (done) => {
+  const testUserEmail = 'test@test.com';
+
+  generateToken(testUserEmail, (err, token) => {
+    // expect(token).toBeDefined();
+
+    try {
+      expect(token).toBeDefined();
+      // expect(token).toBe(2);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+});
+
+it('should generate a token value', () => {
+  const testUserEmail = 'test@test.com';
+
+  expect(generateTokenPromise(testUserEmail)).resolves.toBeDefined();
+});
+
+it('should generate a token value', async () => {
+  const testUserEmail = 'test@test.com';
+
+  const token = await generateTokenPromise(testUserEmail);
+
+  expect(token).toBeDefined();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSES HOOKS, NO CASO,
+
+
+
+
+
+
+PODEM SER EXECUTADOS PARA:
+
+
+
+
+
+
+1) REGISTRAR OUTRAS __ FUNCTIONS__ QUE __ DEVEM 
+
+SER EXECUTADAS ______ ANTES __ dE TODOS 
+
+OS TESTS RODAREM (
+    'beforeAll'
+),
+
+
+
+ANTES DE 
+
+
+CADA SINGLE TEST RODAR (
+    'beforeEach'
+),
+
+
+
+
+
+
+
+DEPOIS DE ___ TODOS OS TESTS RODAREM (
+    'afterAll'
+)
+
+
+
+E 
+
+
+
+
+DEPOIS DE CADA TEST (
+
+    'afterEach'...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA VER COMO CADA 1 DESSES HOOKS FUNCIONA,
+
+
+
+ANTES DE OS UTILIZARMOS,
+
+
+DEVEMOS OS ADICIONAR 
+
+
+NO NOSSO 
+
+
+
+CÓDIGO DE TEST,
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+import { beforeAll, beforeEach, afterEach, afterAll } from 'vitest'; ///SÃO OS HOOKS QUE PODEMOS IMPORTAR, LÁ DO VITEST (para ter 'prep work' e 'clean up work')....
+
+const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+const user = new User(testEmail); // * VAMOS UTILIZAR ESSE OBJECT PARA DEMONSTRAR OS HOOKS (beforeAll, beforeEach, afterEach, afterAll)...
+
+beforeAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de todos os tests)...
+  console.log('BEFORE ALL');
+});
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... ESSE CÓDIGO REALMENTE SERÁ EXECUTADO ANTES DE TODOS OS TESTS SEREM RODADOS..
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> DEPOIS DISSO, TEMOS 'beforeEach':
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+..
+
+
+
+
+
+
+
+TODOS ELES FICAM ASSIM:
+
+
+
+
+
+
+
+
+
+
+beforeAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de TODOS os tests)...
+  console.log('BEFORE ALL');
+});
+
+beforeEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de CADA test)...
+  console.log('BEFORE EACH');
+});
+
+afterAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de TODOS os tests)...
+  console.log('AFTER ALL');
+});
+
+afterEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de CADA test)...
+  console.log('AFTER EACH');
+});
+
+
+
+
+
+
+
+
+----------------------------------------------
+
+
+
+
+
+
+
+certo... provavelmente usaremos 'beforeEach'
+
+PARA 
+
+
+
+INSTANCIAR 
+NOSSO OBJECT
+
+
+ANTES DE CADA TEST...
+
+
+
+
+
+
+
+
+
+TALVEZ ESTE SEJA 1 CÓDIGO APROPRIADO:
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+import { beforeAll, beforeEach, afterEach, afterAll } from 'vitest'; ///SÃO OS HOOKS QUE PODEMOS IMPORTAR, LÁ DO VITEST (para ter 'prep work' e 'clean up work')....
+
+// const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+// const user = new User(testEmail); // * VAMOS UTILIZAR ESSE OBJECT PARA DEMONSTRAR OS HOOKS (beforeAll, beforeEach, afterEach, afterAll)...
+
+let user;
+
+
+
+beforeAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de TODOS os tests)...
+  console.log('BEFORE ALL');
+});
+
+beforeEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de CADA test)...
+  console.log('BEFORE EACH');
+  const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+  user = new User(testEmail); // * VAMOS UTILIZAR ESSE OBJECT PARA DEMONSTRAR OS HOOKS (beforeAll, beforeEach, afterEach, afterAll)...
+});
+
+afterAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de TODOS os tests)...
+  console.log('AFTER ALL');
+});
+
+afterEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de CADA test)...
+  console.log('AFTER EACH');
+});
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FICOU TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+import { beforeAll, beforeEach, afterEach, afterAll } from 'vitest'; ///SÃO OS HOOKS QUE PODEMOS IMPORTAR, LÁ DO VITEST (para ter 'prep work' e 'clean up work')....
+
+// const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+// const user = new User(testEmail); // * VAMOS UTILIZAR ESSE OBJECT PARA DEMONSTRAR OS HOOKS (beforeAll, beforeEach, afterEach, afterAll)...
+
+let user;
+let testEmail;
+
+beforeAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de TODOS os tests)...
+  console.log('BEFORE ALL');
+});
+
+beforeEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de CADA test)...
+  // * É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+  console.log('BEFORE EACH');
+  user = new User(testEmail);
+  testEmail = 'test@test.com';
+});
+
+afterAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de TODOS os tests)...
+  console.log('AFTER ALL');
+});
+
+afterEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de CADA test)...
+  console.log('AFTER EACH');
+});
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+------------------------------
+
+
+
+
+
+
+
+
+
+
+
+É ASSIM QUE __ ADICIONAMOS OS HOOKS NOS NOSSOS ARQUIVOS..
+
+
+
+
+
+
+DIRETAMENTE 
+
+
+NA TESTING FILE...
+
+
+
+
+
+
+
+
+
+
+ENTRETANTO,
+
+SE VC TIVER 1 FILE COM MÚLTIPLOS 'TESTING SUITES' (describe),
+
+
+vc ___ 
+
+
+PODE __ TAMBÉM COLOCAR 
+
+
+
+
+SEUS HOOKS EM 
+
+
+
+1 'SUITE' LEVEL... (dentro de 
+
+cada suite..
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC COLOCA ESSES HOOKS DENTRO DE 1 SUITE,
+
+ESSES HOOKS VÃO SER APLICADOS NA SUITE ONLY ... 
+
+
+
+
+
+
+
+
+
+
+--> já se vc COLOCAR SEUS HOOKS NO 'ROOT LEVEL' DE SEU ARQUIVO
+DE 
+
+TEST,
+
+
+A LÓGICA DOS HOOKS VAI SER APLICADA EM 1 GLOBAL LEVEL,
+
+
+
+
+VAI SER APLICADA 
+
+
+__ EM TODOS OS TESTS NA FILE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... 
+
+
+
+
+
+
+
+O PROFESSOR RODA O TEST,
+
+E AÍ 
+
+VEREMOS 
+
+
+CONSOLE.LOGS PARA CADA 1 DOS TESTS..
+
+
+
+ex:
+
+
+
+
+
+
+PASS  Waiting for file changes...
+       press h to show help, press q to quit
+
+ RERUN  hooks/hooks.test.js
+
+stdout | unknown test
+BEFORE ALL
+
+stdout | hooks/hooks.test.js > should have an email property        
+BEFORE EACH
+AFTER EACH
+
+stdout | hooks/hooks.test.js > should update the email
+BEFORE EACH
+AFTER EACH
+
+stdout | hooks/hooks.test.js > should store the provided email value
+BEFORE EACH
+AFTER EACH
+
+stdout | hooks/hooks.test.js > should clear the email
+BEFORE EACH
+AFTER EACH
+
+stdout | hooks/hooks.test.js > should still have an email property after clearing the email  
+BEFORE EACH
+AFTER EACH
+
+stdout | unknown test
+AFTER ALL
+
+
+
+
+
+
+
+
+
+
+--------------------------
+
+
+
+
+
+
+
+
+
+
+certo.... isso nos mostra que todos esses hooks são realmente executados.
+
+
+
+
+
+
+
+
+
+e agora PODEMOS VER COMO CONSERTAR O PROBLEMA 
+
+
+
+
+DO USER QUE É UPDATADO,
+
+
+com esses hooks aí,...
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR DIZ QUE 
+
+'FAZ SENTIDO RESETTAR O USER APÓS 
+
+CADA 1 DOS TESTS'...
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR USOU O 'afterEach'
+
+PARA ISSO....
+
+
+
+
+
+
+
+
+MAS EU FIZ DE FORMA DIFERENTE,
+
+
+EU 
+
+
+
+FIZ COM 'beforeEach'...
+
+
+
+
+
+
+
+
+--> É A MESMA COISA, BASICAMENTE, MAS COM O 'afterEach' é mais elegante...
+
+
+
+
+
+
+
+
+
+
+
+
+
+mas vou deixar como estava.... é melhor...
+
+
+
+
+
+AGORA, COMO NOSSOS USERS ESTÃO SENDO RESETTADOS ADEQUADAMENTE,
+
+
+
+
+
+não precisamos fazer isso..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR DIZ QUE PODERÍAMOS 
+
+
+
+
+TER FEITO O CAMINHO OPOSTO (que é o que fiz),
+
+
+
+
+
+FAZER 1 USER SER CRIADO __ PARA __ cADA 1  DE NOSSOS TEST...
+
+
+
+
+
+
+
+
+
+-> CERTO... OS 2 CAMINHOS FUNCIONAM...
+
+
+
+
+
+
+
+
+É ASSIM QUE PODEMOS USAR 'beforeEach'
+
+
+e 
+
+
+'afterEach'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS PODERÍAMOS, AINDA, USAR 
+
+
+
+'beforeAll'
+
+
+
+PARA _ ALGUMA 'OVERALL INITIALIZATION' -----> não há nada 
+
+de 
+
+ERRADO 
+
+
+em definir 
+
+
+o user 
+
+
+globalmente,
+
+
+
+
+
+
+MAS 
+
+
+
+
+
+
+
+
+
+1 PROBLEMA É QUE 
+
+ÀS VEZES 
+
+VC TERÁ MÚLTIPLAS SUITES EM 1 ARQUIVO,
+
+
+
+E AÍ 
+
+
+
+VC 
+
+
+
+
+VAI QUERER 
+
+
+
+
+
+QUE 
+
+CADA SUITE 
+
+TENHA 
+
+
+
+
+
+1 VALUE LOCAL,
+ 
+
+ PARA SUAS PRÓPRIAS SUITES...
+
+
+
+
+
+
+
+
+
+
+ --> para isso, vc teria 
+
+
+
+ de 
+
+DECLARAR 1 USER GLOBALMENTE,
+com 
+
+'let user;',
+
+
+
+e aí 
+
+
+
+DEFINIR 
+
+
+
+
+
+
+
+
+1 beforeAll()  DENTRO DE CADA SUITE...
+
+
+
+
+
+
+
+
+NESSE NOSSO ARQUIVO ISSO NÃO INTERESSA,
+
+MAS 
+
+
+
+
+___ VC PODE USAR O 'beforeAll'
+
+
+
+
+
+
+dessa forma, tipo assim:
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+import { beforeAll, beforeEach, afterEach, afterAll } from 'vitest'; ///SÃO OS HOOKS QUE PODEMOS IMPORTAR, LÁ DO VITEST (para ter 'prep work' e 'clean up work')....
+
+// const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+// const user = new User(testEmail); // * VAMOS UTILIZAR ESSE OBJECT PARA DEMONSTRAR OS HOOKS (beforeAll, beforeEach, afterEach, afterAll)...
+
+let user;
+let testEmail;
+
+beforeAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de TODOS os tests)...
+  console.log('BEFORE ALL');
+  user = new User(testEmail);
+});
+
+beforeEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar antes de CADA test)...
+  // * É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+  console.log('BEFORE EACH');
+  user = new User(testEmail);
+  testEmail = 'test@test.com';
+});
+
+afterAll(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de TODOS os tests)...
+  console.log('AFTER ALL');
+});
+
+afterEach(() => {
+  // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de CADA test)...
+  console.log('AFTER EACH');
+});
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+// SE VC TIVER 1 FILE COM MÚLTIPLOS 'TESTING SUITES' (describe),
+
+// vc ___
+
+// PODE __ TAMBÉM COLOCAR
+
+// SEUS HOOKS EM
+
+// 1 'SUITE' LEVEL... (dentro de
+
+// cada suite..
+// )
+
+// --> SE VC COLOCA ESSES HOOKS DENTRO DE 1 SUITE,
+
+// ESSES HOOKS VÃO SER APLICADOS NA SUITE ONLY ...
+
+// --> já se vc COLOCAR SEUS HOOKS NO 'ROOT LEVEL' DE SEU ARQUIVO
+// DE
+
+// TEST,
+
+// A LÓGICA DOS HOOKS VAI SER APLICADA EM 1 GLOBAL LEVEL,
+
+// VAI SER APLICADA
+
+// __ EM TODOS OS TESTS NA FILE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO....
+
+
+
+
+
+
+
+
+
+
+
+E 'afterAll()'
+
+É BOM 
+
+PARA 
+
+CLEANUP WORK EM GERAL... ------> 
+
+
+
+
+
+
+
+
+
+
+
+EXEMPLO:::: DIGAMOS QUE VC TEM ALGUNS TESTS EM QUE 
+
+VC 
+
+CRIA 
+
+
+
+
+ALGUMA 'TEST DATABASE'
+
+
+
+
+___ ANTES DE TODOS SEUS TESTS SEREM EXECUTADOS..
+
+
+
+
+
+
+
+
+
+
+
+ASSIM QUE SEUS TESTS TIVEREM ACABADO,
+
+VC VAI QUERER 'ERASE' 
+ESSA DATABASE, 
+
+
+JUSTAMENTE 
+
+
+
+
+PARA __ QUE NADA FIQUE SALVO NO FILESYSTEM/DATABASE.... --> nesses casos, vc usa o 'afterAll()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+
+
+--> ESSES SÃO OS 4 HOOKS QUE TE AJUDAM 
+
+
+
+COM INITIALIZATION E CLEANUP WORK... TANTO 
+
+
+'BEFORE EACH AND AFTER EACH TEST'
+
+
+
+COMO 
+
+'BEFORE ALL AND AFTER ALL TEST'...
