@@ -18,6 +18,26 @@ describe('generateReportData', () => {
     expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
     expect(logFunctionSpy).toHaveBeenCalledTimes(1);
     // expect(logFunctionSpy).toHaveBeenCalledTimes(2); //! ISTO FALHARÁ, É CLARO. pq essa function foi chamada apenas 1 única vez...
-    expect(logFunctionSpy).toHaveBeenCalledWith('Some dummy data for this demo app');
+    expect(logFunctionSpy).toHaveBeenCalledWith(
+      'Some dummy data for this demo app'
+    );
+  });
+});
+
+describe('generateReportData 2', () => {
+  it('should call the log function, if it has been provided as an argument 2', () => {
+    //ARRANGE
+    const logFunctionSpy = vi.fn(() => {}); //? ISTO É UM SPY com 1 FUNCTION INTERNA SENDO PASSADA COMO PARAMETER...
+    // ? ESSA FUNÇÃO INTERNA, NESSA DUMMY FUNCTION, SERVE PARA VC EXECUTAR ALGUM 'TEST-SPECIFIC BEHAVIOR'...
+    // OK...  QUER DIZER QUE NÓS AINDA TEREMOS UMA FUNCTION DUMMY QUE VAI 'KEEP TRACK' DE EXECUTIONS E ASSIM POR DIANTE, MAS __ QUE TAMBÉM VAI TER ALGUM BEHAVIOR CUSTOMIZAOD...
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+
+    expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
+    expect(logFunctionSpy).toHaveBeenCalledTimes(1);
+    expect(logFunctionSpy).toHaveBeenCalledWith(
+      'Some dummy data for this demo app'
+    );
   });
 });

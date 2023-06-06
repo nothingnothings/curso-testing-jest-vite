@@ -5,6 +5,18 @@ import writeData from './io.js';
 import { promises as fs } from 'fs'; //exatamente o mesmo código importado lá em 'io.js'...
 
 vi.mock('fs'); //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
+vi.mock('path', () => {
+  // TODO - COM ISSO, TENTO SIMPLIFICAR AO MÁXIMO O CÓDIGO QUE EXECUTO NO MEU TEST... (substituo o MÓDULO INTEIRO de 'path' POR ESSA EXECUÇÃO AÍ...)
+  return {
+    default: {
+      join: (...args) => {
+        return args[args.length - 1]; //? com isso, conseguimos retornar APENAS 'fileName'
+      },
+      // basename: ,  //outras propriedades/methods do module de 'path' que podemos customizar...
+      // format: ,
+    },
+  };
+});
 
 // describe('writeData', () => {
 //   it('should write data to a file', async () => {
@@ -51,10 +63,11 @@ it('should execute the writeFile method', () => {
   writeData(testData, testFileName); // ? VAI CHAMAR 'fs.writeFile', no seu interior...
   //// ACT E ASSERT
   //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
-  //ASSERT
 
+  //ASSERT
   //   return expect(result).resolves.toBeUndefined(); //! ISTO NÃO VAI MAIS FUNCIONAR PQ TODAS AS FUNCTIONS DENTRO DE 'fs' (fs.writeFile, por exemplo) FORAM MOCKADAS/TROCADAS POR EMPTY SPY FUNCTIONS...
   expect(fs.writeFile).toHaveBeenCalled(); // ESSA É A COISA PELA QUAL TESTAMOS DE VERDADE, PQ __ É REALMENTE ISSO QUE IMPORTA (se essa function foi chamada ou não, durante aquela execução)...
+  expect(fs.writeFile).toBeCalledWith(testFileName, testData); // vai funcionar por conta do mock de 'fs'...
 });
 
 // OK... DENTRO DO OBJECT 'vi',
