@@ -1,0 +1,994 @@
+
+
+
+
+
+
+
+
+
+
+
+--> OK... AGORA DEVEMOS ESCREVER 1 TEST  
+
+
+
+
+PARA O 'io.js'..
+
+
+
+
+
+
+
+
+
+--> CRIAMOS 1 ARQUIVO io.test.js...
+
+
+
+
+
+
+
+
+
+
+
+--> AÍ IMPORTAMOS TODAS AS COISAS LÁ 
+
+
+DO vitest..
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+
+
+
+
+
+describe()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO.... AÍ VOU ESCREVER O TEST DENTRO DE 'describe()"..
+
+
+
+
+OK,
+
+
+TENTEI ESCREVER ESTE CÓDIGO:
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+
+import { writeData } from './io.js';
+
+describe(writeData, () => {
+  it('should write data to a file', async () => {
+    //ARRANGE
+    const data = 'DUMMY';
+    //ACT
+    const result = await writeData(data, 'data.txt');
+    //ASSERT
+    expect(result).toBe(true);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mas falhou...
+
+
+
+
+
+
+
+GANHEI ESTE ERROR:
+
+
+
+
+
+ FAIL  src/util/io.test.js > should write data to a file
+TypeError: __vite_ssr_import_1__.writeData is not a function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS O PROFESSOR VAI ESCREVER OUTRO TEST,
+
+
+
+DA FUNCTION QUE CONTÉM 'writeTest':
+
+
+
+
+
+
+
+
+
+
+
+
+  it('should execute the writeFile method', async () => {
+      //ARRANGE
+      const testData = 'DUMMY';
+      const testFileName = 'test.txt'
+      //ACT
+      const result = await writeData(testData,  testFileName);
+      //ASSERT
+      expect(result).toBe(true);
+
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  OK... TIPO ASSIM.... 
+
+
+
+
+
+
+
+
+
+  MAS COMO VAMOS TESTAR 
+
+
+
+
+  ''''SE ___ O CALL DE WRITEFILE DEU CERTO...''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  BEM, PARECE QUE ISSO É POSSÍVEL,
+
+  MAS AINDA NÃO SABEMOS COMO FAZÊ-LO...
+
+
+
+
+
+
+
+
+
+
+
+
+  --> O QUE QUEREMOS FAZER, EM VEZ DISSO,
+
+
+
+
+
+
+  É:
+
+
+
+
+
+
+
+
+
+
+  '''EU SEI QUE __ WRITEFILE __ RETORNA 1 PROMISE... (yields a promise)''' 
+
+
+
+
+
+
+
+
+  --> E SE __ ESSA PROMISE __ NÃO É REJECTED,
+  SE ELA FAZ RESOLVE,
+
+
+  EU SEI QUE ELA FOI SUCCESSFUL  --> E ISSO ME DIZ IMPLICITAMENTE QUE 
+
+
+  O 
+
+  'writeFile'
+
+  FOI CHAMADO E FUNCIONOU...
+
+
+
+
+
+
+
+
+
+
+
+  --> PARA ISSO,
+
+
+
+  PARA FAZER ESSE NEGÓCIO FUNCIONAR,
+
+
+
+
+  DEVEMOS  WRAPPAR __ O CALL DE 'writeData' com 'EXPECT()'...
+
+
+
+
+
+
+
+
+
+
+
+o CÓDIGO DO PROFESSOR FICOU ASSIM:
+
+
+
+
+
+
+
+
+
+it('should execute the writeFile method', () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  //   const result = await writeData(testData,  testFileName); //! NÃO FUNCIONA
+  //ASSERT
+ expect(writeData(testData, testFileName)).resolves.toBe(true)
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS ISSO NÃO FUNCIONOU...
+
+
+
+
+
+
+
+MESMO ERRO:
+
+
+
+
+
+
+TypeError: __vite_ssr_import_1__.writeData is not a function
+ ❯ src/util/io.test.js:34:8
+     32|   //   const result = await writeData(testData,  testFileName); //! NÃO FUNCIONA    
+     33|   //ASSERT
+     34|  expect(writeData(testData, testFileName)).resolves.toBe(true)
+       |        ^
+     35| });
+
+
+
+
+
+-----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+-> O PROFESSOR DIZ QUE _ ESSA FUNCTION de 'writeData,
+
+
+QUE RODA 
+
+'fs.writeFile',
+
+
+
+
+
+
+O 'fs.writeFile' FAZ RESOLVE,
+
+
+MAS NÃO FAZ RESOLVE A VALUE NENHUM.. ----> É POR ISSO QUE 
+
+o 
+
+professor deixa assim:
+
+
+
+
+
+
+
+  expect(writeData(testData, testFileName)).resolves.toBeUndefined();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+it('should execute the writeFile method', () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  //   const result = await writeData(testData,  testFileName); //! NÃO FUNCIONA
+  //ASSERT
+  return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
+});
+
+
+
+
+
+
+
+A VERSÃO DO PROFESSOR PASSOU, POR ALGUMA RAZÃO BIZARRA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ERA 1 PROBLEMA NO IMPORT... JÁ CONSERTEI...
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+it('should execute the writeFile method', async () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  const result = await writeData(testData, testFileName);
+   //// ACT E ASSERT
+  //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+  //ASSERT
+  expect(result).toBeUndefined(); // isto funciona.
+});
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR REMOVE O FOLDER DE 'data'... --> SÓ PARA VER SE O TEST VAI FALHAR...
+
+
+
+
+
+
+
+
+--> SE O TEST FALHAR, SIGNIFICA QUE O TEST ESTÁ FUNCIONANDO... --> ELE ESTÁ TESTANDO O QUE DEVE TESTAR...
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+ ❯ src/util/io.test.js (1)
+   × should execute the writeFile method
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/util/io.test.js > should execute the writeFile method
+Error: ENOENT: no such file or directory, open 'A:\PROJETO17-TESTING-JEST-E-VITEST\MODULO7-MOCKING-E-SPIES-DEALING-WITH-SIDE-EFFECTS\mocks-e-spies\data\test.txt'
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+->  nosso test capturou o erro... 
+
+
+
+
+
+
+
+
+
+--> COM O FOLDER READICIONADO, ISSO PASSA A FUNCIONAR MAIS UMA VEZ...
+
+
+
+
+
+
+
+
+
+
+
+
+OK, MAS QUAL É O PROBLEMA, AQUI?
+
+
+
+
+
+
+
+
+
+NOSSO TEST FUNCIONA... E TVZ 
+
+VC 
+
+ESTEJA 'FINE' COM ESSE APPROACH...
+
+
+
+
+
+
+
+
+
+
+
+ENTRETANTO, TEMOS 1 DESVANTAGEM,... 
+
+
+
+
+
+
+
+SEMPRE _ QUE _ RODAMOS _eSSE TEST,
+
+ELE __ REALMENTE FAZ 
+
+'WRITE'
+
+DE ALGO NO NOSSO FILE SYSTEM...
+
+
+
+
+
+
+
+
+
+
+
+--> E __ O ARQUIVO DE 'test.txt'
+
+REALMENTE É CRIADO... --> E ISSO NÃO SERÁ SEMPRE NECESSARIAMENTE 
+
+1 
+
+PROBLEMA,
+
+
+MAS 
+
+FREQUENTEMENTE 
+
+
+SERÁ...
+
+
+
+
+
+
+
+
+
+-_> QUER DIZER QUE NOSSO __ TEST, AQUI,
+
+
+TEM 1 SIDE EFFECT...
+
+
+
+
+
+
+
+
+
+
+O WRITE DE DATA PODE SER ACEITÁVEL,
+
+
+MAS àS VEZES NÃO É (
+
+
+pq talvez vc esteja SUBSTITUINDO DATA QUE 
+
+N DEVERIA SER SUBSTITUÍDA...
+
+)
+
+
+
+
+
+
+
+
+
+
+
+-> MAS, ESPECIALMENTE SE VC PENSA SOBRE O 'ERASE DE DATA'
+
+
+OU QUALQUER COISA DO GÊNERO,
+
+
+
+
+VC __ PODERIA __ 
+TER PROBLEMAS ---------> ISSO SE NOSSOS TESTS REALMENTE APAGAREM 
+
+
+
+DATA _ QUE NÃO DEVE/NÃO PODE SER DELETADA,
+
+
+
+COMO 
+
+'PRODUCTION' OU 'LIVE DATA'...
+
+
+
+
+
+
+
+
+
+
+--> E VC __ VAI ENFRENTAR ESSE PROBLEMA NÃO SÓ 
+
+
+COM FILESYSTEM METHODS,
+
+
+
+
+
+
+COMO WRITE E DELETE DE FILES,
+
+
+
+PQ 
+
+VC 
+
+
+TAMBÉM TERÁ 
+
+
+
+PROBLEMAS MT SIMILARES 
+
+
+__ SE __ VC _ PENSAR SOBRE 'SENDING DE HTTP REQUESTS 
+
+A BACKEND APIs' 
+
+
+
+
+
+
+OU __ TRABALHO COM DATABASES, OU QUALQUER COISA DO GÊNERO...
+
+
+
+
+
+
+
+
+
+
+--> TODAS ESSAS COISAS SÃO SIDE EFFECTS PQ __ VC _ INTERAGE COM 
+
+ALGUM OUTRO SISTEMA ------> VC TEM UMA DEPENDÊNCIA EXTERNA --> VC __ ESTÁ 
+
+INTERAGINDO COM O HARD DRIVE,
+
+ESTÁ INTERAGINDO COM A DATABASE,
+
+
+
+ESTÁ 
+
+INTERAGINDO COM ALGO 
+
+EXTERNO AO SEU CÓDIGO E AO SEU PROGRAMA..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TALVEZ VC __ FIQUE 'FINE' 
+
+COM ISSO,
+
+MAS TIPICAMNETE,
+
+QUANDO 
+ESCREVEMOS 
+TESTS,
+
+QUEREMOS 
+
+EVITAR ISSO,
+
+PARA QUE 
+
+
+PRODUCTION DATA 
+NÃO 
+
+
+
+
+SEJA ACIDENTALMENTE ALTERADA,
+
+OU 
+VC 
+
+
+
+INSIRA 
+
+
+DATA ACIDENTALMENTE EM 1 PRODUCTION DATABASE,
+
+
+OU 
+
+VC 
+'CLUTTER UP'
+
+SEU LOCAL FILESYSTEM... 
+
+
+
+
+
+
+
+
+
+
+
+
+--> OU, ENTAÕ,
+
+
+VC 
+
+TEM 1 TEST QUE TESTA 
+
+
+SE 
+
+1 
+FILE FOI REMOVIDA 
+
+COM SUCESSO,
+
+QUE 
+
+VAI FALHAR PQ A FILE JÁ DEIXOU DE TER EXISTIDO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC NÃO QUER FAZER ISSO... -> PQ VC NÃO QUER 
+
+TESTAR SE O 'WRITE DA FILE EM 1 SISTEMA VAI FUNCIONAR' --> PQ É CLARO QUE 
+
+ESSE METHOD 
+DEVE 
+FUNCIONAR,
+
+PQ 
+
+O 
+'fs.writeFile'
+
+
+É UM METHOD PROVIDENCIADO PELO NODEJS,
+
+
+
+E É __ RESPONSABILIDADE DELES__ ASSEGURAR QUE 
+
+ESSE METHOD FUNCIONE...
+
+
+
+
+
+
+
+
+
+
+--> QUEREMOS TESTAR __ SE O NOSSO PRÓPRIO CÓDIGO 
+
+
+FAZ SEU PRÓPRIO TRABALHO..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O QUE QUEREMOS SABER É SE 
+
+'writeData'
+
+
+
+FOI 
+
+
+CHAMADO COM SUCESSO,
+
+
+
+
+
+
+MAS NÃO POSSUÍMOS INTERESSE EM SABER SE 'A FILE REALMENTE FOI ESCRITA 
+NO FILE SYSTEM'..
+
+
+
+
+
+
+
+
+-> É POR ISSO QUE GERALMENTE VAMOS QUERER 
+
+NOS LIVRAR 
+
+
+
+DESSES SIDE EFFECTS... 

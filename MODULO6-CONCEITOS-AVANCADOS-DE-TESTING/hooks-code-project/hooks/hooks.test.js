@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { it, expect, describe } from 'vitest';
 
 import { User } from './hooks';
 
@@ -35,66 +35,66 @@ afterEach(() => {
   console.log('AFTER EACH');
 });
 
-it('should have an email property', () => {
-  //ARRANGE
-  // const testEmail = 'test@test.com';
-  //ACT
-  // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
-  //ASSERT
-  expect(user).toHaveProperty('email');
-});
+describe('User', () => {
+  it('should have an email property', () => {
+    //ARRANGE
+    // const testEmail = 'test@test.com';
+    //ACT
+    // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
+    //ASSERT
+    expect(user).toHaveProperty('email');
+  });
 
-it('should update the email', () => {
-  //ARRANGE
-  // const testEmail = 'test@test.com';
-  const newTestEmail = 'test2@test.com';
-  //ACT
-  // const user = new User(testEmail);
-  user.updateEmail(newTestEmail);
-  //ASSERT
-  expect(user.email).toBe(newTestEmail);
-});
+  it('should update the email', () => {
+    //ARRANGE
+    // const testEmail = 'test@test.com';
+    const newTestEmail = 'test2@test.com';
+    //ACT
+    // const user = new User(testEmail);
+    user.updateEmail(newTestEmail);
+    //ASSERT
+    expect(user.email).toBe(newTestEmail);
+  });
 
+  // 'describe.concurrent()' // TODO - ESTE É UM EXEMPLO DE COMO VC PODE RODAR TODOS OS TESTS EM 1 DESCRIBE BLOCK EM PARALELO (se vc tiver 1 test que demora muito, vc pode rodar ele em paralelo com outros tests, para ganhar tempo)...
 
-// 'describe.concurrent()' // TODO - ESTE É UM EXEMPLO DE COMO VC PODE RODAR TODOS OS TESTS EM 1 DESCRIBE BLOCK EM PARALELO (se vc tiver 1 test que demora muito, vc pode rodar ele em paralelo com outros tests, para ganhar tempo)...
+  // it.concurrent('should update the email', () => { /// TODO - ESTE É UM EXEMPLO DE COMO VC PODE RODAR SEUS TESTS EM PARALELO (se vc tiver 1 test que demora muito, vc pode rodar ele em paralelo com outros tests, para ganhar tempo)...
+  //   ARRANGE
+  //   const newTestEmail = 'test2@test.com';
+  //   ACT
+  //   user.updateEmail(newTestEmail);
+  //   ASSERT
+  //   expect(user.email).toBe(newTestEmail);
+  // });
 
+  it('should store the provided email value', () => {
+    //ARRANGE
+    // const testEmail = 'test@test.com';
+    //ACT
+    // const user = new User(testEmail);
+    //ASSERT
+    expect(user.email).toBe(testEmail);
+  });
 
-// it.concurrent('should update the email', () => { /// TODO - ESTE É UM EXEMPLO DE COMO VC PODE RODAR SEUS TESTS EM PARALELO (se vc tiver 1 test que demora muito, vc pode rodar ele em paralelo com outros tests, para ganhar tempo)...
-//   ARRANGE
-//   const newTestEmail = 'test2@test.com';
-//   ACT
-//   user.updateEmail(newTestEmail);
-//   ASSERT
-//   expect(user.email).toBe(newTestEmail);
-// });
+  it('should clear the email', () => {
+    //ARRANGE
+    // const testEmail = 'test@test.com';
+    //ACT
+    // const user = new User(testEmail);
+    user.clearEmail();
+    //ASSERT
+    expect(user.email).toBe('');
+  });
 
-it('should store the provided email value', () => {
-  //ARRANGE
-  // const testEmail = 'test@test.com';
-  //ACT
-  // const user = new User(testEmail);
-  //ASSERT
-  expect(user.email).toBe(testEmail);
-});
-
-it('should clear the email', () => {
-  //ARRANGE
-  // const testEmail = 'test@test.com';
-  //ACT
-  // const user = new User(testEmail);
-  user.clearEmail();
-  //ASSERT
-  expect(user.email).toBe('');
-});
-
-it('should still have an email property after clearing the email', () => {
-  //ARRANGE
-  // const testEmail = 'test@test.com';
-  //ACT
-  // const user = new User(testEmail);
-  user.clearEmail();
-  ///ASSERT
-  expect(user).toHaveProperty('email');
+  it('should still have an email property after clearing the email', () => {
+    //ARRANGE
+    // const testEmail = 'test@test.com';
+    //ACT
+    // const user = new User(testEmail);
+    user.clearEmail();
+    ///ASSERT
+    expect(user).toHaveProperty('email');
+  });
 });
 
 // SE VC TIVER 1 FILE COM MÚLTIPLOS 'TESTING SUITES' (describe),
