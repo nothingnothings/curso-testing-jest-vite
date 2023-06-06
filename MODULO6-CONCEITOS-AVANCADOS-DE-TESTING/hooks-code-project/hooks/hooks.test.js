@@ -24,7 +24,8 @@ beforeEach(() => {
   testEmail = 'test@test.com';
 });
 
-afterAll(() => { /// TODO - VOCê PODE USAR ESSE TEST PARA 'CLEANUP WORK', para limpar 1 database que vc criou em 'beforeAll', por exemplo...
+afterAll(() => {
+  /// TODO - VOCê PODE USAR ESSE TEST PARA 'CLEANUP WORK', para limpar 1 database que vc criou em 'beforeAll', por exemplo...
   // * ESTE É UM HOOK DE TEST (é um hook que vai rodar depois de TODOS os tests)...
   console.log('AFTER ALL');
 });
@@ -53,6 +54,19 @@ it('should update the email', () => {
   //ASSERT
   expect(user.email).toBe(newTestEmail);
 });
+
+
+// 'describe.concurrent()' // TODO - ESTE É UM EXEMPLO DE COMO VC PODE RODAR TODOS OS TESTS EM 1 DESCRIBE BLOCK EM PARALELO (se vc tiver 1 test que demora muito, vc pode rodar ele em paralelo com outros tests, para ganhar tempo)...
+
+
+// it.concurrent('should update the email', () => { /// TODO - ESTE É UM EXEMPLO DE COMO VC PODE RODAR SEUS TESTS EM PARALELO (se vc tiver 1 test que demora muito, vc pode rodar ele em paralelo com outros tests, para ganhar tempo)...
+//   ARRANGE
+//   const newTestEmail = 'test2@test.com';
+//   ACT
+//   user.updateEmail(newTestEmail);
+//   ASSERT
+//   expect(user.email).toBe(newTestEmail);
+// });
 
 it('should store the provided email value', () => {
   //ARRANGE
