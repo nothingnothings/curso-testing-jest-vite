@@ -1,0 +1,79 @@
+
+
+
+
+
+
+
+O PROFESSOR ANEXOU 1 PROJETO A ESTA AULA...
+
+
+
+
+
+
+
+
+
+
+
+QUAIS SÃO OS PROBLEMAS DOS SIDE EFFECTS,
+
+E QUAIS SÃO OS SIDE EFFECTS,
+PARA INÍCIO DE CONVERSA?
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VAMOS TREINAR TUDO COM 1 NODE PROJECT (backend),
+
+
+
+MAS NÃO INTERESSA,
+
+PODEMOS 
+TER SIDE 
+
+EFFECTS 
+
+
+
+TANTO NO BACKEND COMO NO FRONTEND...
+
+
+
+
+
+
+
+
+
+
+
+--> O CÓDIGO DE 'app.js'
+É BEM SIMPLES:
+
+
+
+
+import { generateReportData, storeData } from './src/data.js';
+import log from './src/util/logger.js';
+
+const data = generateReportData(log);
+storeData(data);
+
+
+
+
+
+
+
