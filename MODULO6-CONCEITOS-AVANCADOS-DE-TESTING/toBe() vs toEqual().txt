@@ -1,0 +1,340 @@
+
+
+
+
+
+
+
+
+
+ANTES DE ESTUDARMOS TESTS ASYNC E ESSES HOOKS DO VITEST,
+
+
+
+
+
+O PROFESSOR QUER NOS MOSTRAR 1 PEQUENA COISA...
+
+
+
+
+
+
+
+VEJA ESTE CÓDIGO:
+
+
+
+
+
+
+
+///ISTO PODE SER CONSIDERADO 1 EXEMPLO DE INTEGRATION TEST (pq ''resultConstructor'' chama ''cleanNumbers'', que é uma function que POSSUI VÁRIAS FUNCTIONS NO SEU INTERIOR)
+describe('cleanNumbers', () => {
+  it('should return an array of numbers if an array of numbers in string format is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const value = ['1', '2'];
+
+    //ACT
+    const result = cleanNumbers(value);
+
+    // ASSERT
+    expect(result[0]).toBeTypeOf('number);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AQUI, ESTAMOS 
+
+
+
+
+
+TESTANDO SE ESTAMOS CONSEGUINDO 1 ARRAY DE VOLTA,
+
+1 ARRAY QUE CONTÉM 'NUMERIC VALUES'...
+
+
+
+
+
+
+
+
+
+
+ESTAMOS TESTANDO ISSO ASSIM, SIM,
+
+E ISSO ESTÁ FUNCIONANDO..
+
+
+
+
+
+
+
+
+MAS PODERÍAMOS EXECUTAR 
+
+
+
+NOSSA 
+
+EXPECTATION DE FORMA DIFERENTE, TIPO ASSIM:
+
+
+
+
+
+
+///ISTO PODE SER CONSIDERADO 1 EXEMPLO DE INTEGRATION TEST (pq ''resultConstructor'' chama ''cleanNumbers'', que é uma function que POSSUI VÁRIAS FUNCTIONS NO SEU INTERIOR)
+describe('cleanNumbers', () => {
+  it('should return an array of numbers if an array of numbers in string format is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const value = ['1', '2'];
+
+    //ACT
+    const result = cleanNumbers(value);
+
+    // ASSERT
+    expect(result).toBe([1, 2]);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+ESTA EXPECTATION:
+
+
+
+
+    expect(result).toBe([1, 2]);
+
+
+
+
+
+
+
+
+
+
+
+
+OK... SE RODAMOS ESSE NEGÓCIO ASSIM,
+
+
+
+_ ELE _ VAI FALHAR....
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+describe('cleanNumbers', () => {
+  it('should return an array of numbers if an array of numbers in string format is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const value = ['1', '2'];
+
+    //ACT
+    const result = cleanNumbers(value);
+
+    // ASSERT
+    //! ISTO VAI FALHAR... VAI FALHAR pq '[1, 2]' é um _ REFERENCE VALUE, e não um _ PRIMITIVE VALUE (todos os objects no javascript são ÚNICOS, e existem em algum lugar na memória do app) -> É POR ISSO QUE DEVEMOS USAR 'toBeEqual()'...
+    expect(result).toBe([1, 2]);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EU ACHO QUE ESSA É A RAZÃO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> A RAZÃO PARA O ERRO É QUE 
+
+
+
+'[1, 2]' É UM REFERENCE VALUE, E NÃO UM PRIMITIVE VALUE...
+
+
+
+
+
+
+
+
+
+
+
+
+--> ok.... com 'toBe()',
+
+DEVEMOS 
+
+
+ESPECIFICAR __ O VALUE _ EXATO _ QUE 
+
+QUEREMOS 
+
+QUE 
+
+SEJA RETORNADO... (e o value, aqui, não foi exato)...
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC QUER COMPARAR OS _ VALUES 'PRIMITIVOS' DE ARRAYS E OBJECTS,
+
+VC 
+
+DEVE USAR 
+
+
+
+O METHOD DE 'toEqual()'... ESSE É O PROPÓSITO 
+
+DESSE METHOD....
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+///ISTO PODE SER CONSIDERADO 1 EXEMPLO DE INTEGRATION TEST (pq ''resultConstructor'' chama ''cleanNumbers'', que é uma function que POSSUI VÁRIAS FUNCTIONS NO SEU INTERIOR)
+describe('cleanNumbers', () => {
+  it('should return an array of numbers if an array of numbers in string format is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const value = ['1', '2'];
+
+    //ACT
+    const result = cleanNumbers(value);
+
+    // ASSERT 
+    /// 'toEqual', AO CONTRÁRIO DE 'toBe', FAZ __ 1 CHECK NÃO POR 'EXACT EQUALITY', E SIM VAI POR DENTRO DOS VALUES QUE VC COLOCA EM 'toEqual' E FAZ 1 DEEP COMPARISON DESSE VALUE __ COM O VALUE QUE VC ESTÁ EVALUATING.... 
+    expect(result).toEqual([1, 2]);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> É POR ISSO QUE DEVEMOS USAR 'toEqual' em vez de 'toBe',
+
+
+com ARRAYS E OBJECTS...
+
+
+
+
+
+
+
+
+-> o 'toEqual' CHECA PELOS ''MESMOS SHAPES E VALUES'' de arrays e objects,
+
+mas 
+
+
+
+NÃO 'PELO MESMO OBJECT/ARRAY NA MEMORY DO APP'...
