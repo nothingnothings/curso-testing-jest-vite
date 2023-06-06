@@ -1,0 +1,355 @@
+
+
+
+
+
+
+
+
+PARA NOS LIVRARMOS DE SIDE EFFECTS 
+
+E FOCAR NO NOSSO CÓDIGO,
+
+
+
+EM VEZ DE _ TESTAR __ THIRD PARTY CODE,
+
+
+HÁ 
+
+2 DIFERENTES APPROACHES:
+
+
+
+
+
+
+
+
+
+
+
+
+1) SPIES 
+
+
+
+
+
+
+
+
+2) MOCKS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> TEORICAMENTE,
+
+HÁ 'STUBS' E 'FAKES'...
+
+
+
+
+
+
+
+
+
+--> PODEMOS LER AS NUANCES SOBRE OS 2 LÁ NO STACKOVERFLOW...
+
+
+
+
+
+
+
+
+
+
+
+--> A DIFERENCIAÇÃO ENTRE SPIES E MOCKS É TUDO O QUE 
+PRECISAMOS...
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR MOSTRARÁ OS KEY APPROACHES PARA SE LIVRAR 
+
+DOS SIDE EFFECTS QUANDO TESTAMOS O CÓDIGO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O QUE SÃO?
+
+
+
+
+
+
+
+
+
+
+
+SPIES ----->  SÃO, NO FINAL DAS CONTAS,
+
+
+WRAPPERS EM VOLTA DE SUAS FUNCTIONS,
+
+OU 
+
+'
+EMPTY REPLACEMENT FUNCTIONS'  PARA _ FUNCTIONS EM QUE 
+
+VC 
+
+ESTÁ 
+
+
+INTERESSADO APENAS 
+  
+  EM 'SE A FUNCTION FOI CHAMADA'
+
+  E 
+
+  EM 'QUE ARGUMENTOS ELA RECEBEU'... 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  --> OS SPIES TE PERMITEM '''TRACK''' __ ""SE"" 1 FUNCTION FOI CHAMADA,
+
+
+  E ___ ""COMO"" (argumentos) __ FOI CHAMADA..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... QUER DIZER QUE VC PODE USAR 
+
+
+SPIES 
+
+
+
+
+__ SE VC _ NÃO SE IMPORTA COM __ O QUE  FUNCTION FAZ,
+
+
+
+
+E SIM 
+
+SE IMPORTA APENAS SE ELA FOI EXECUTADA..
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC PODE WRAPPAR A _ FUNCTION ___ ORIGINAL COM 1 SPY DESSES,
+
+
+1 SPY OBJECT,
+
+
+OU ENTÃO 
+
+VC PODE __ SUBSTITUIR __ 
+
+
+A FUNCTION INTEIRA ---------> ISSO É BEM MAIS COMUM,
+
+
+SUBSTITUIR A FUNCTION,
+
+PQ _ AÍ VC SUBSTITUI 
+
+
+O SIDE EFFECT INTEIRO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> MOCKS -----> TAMBÉM SÃO SOBRE 'REPLACEMENTS' --> TAMBÉM
+
+
+
+SUBSTITUÍMOS FUNCTIONS,... MAS, com mocks,
+
+
+VC GERALMENTE SUBSTITUÍ 
+
+
+PARTES MAIORES 
+
+
+DE 1 API , 
+
+
+
+
+ou de 1 certo módulo ou code... --------> E, COM MOCKS,
+
+
+VC FREQUENTEMENTE TEM DE IMPLEMENTAR 
+
+ALGUMA 
+
+
+LÓGICA ESPECÍFICA A TESTS,
+
+
+
+
+NA REPLACEMENT FUNCTION,
+
+QUE 
+
+FAZ 
+
+
+__ ALGO __ _DIFERENTE DA FUNCTION ORIGINAL,
+
+MAS QUE 
+
+TE AJUDA 
+
+
+
+
+A TESTAR DIFERENTES CENÁRIOS...
+
+
+
+
+
+
+(
+
+    'A REPLACEMENT FOR AN API THAT MAY PROVIDE 
+    SOME TEST-SPECIFIC BEHAVIOR INSTEAD' -------> exemplo disso é 
+
+
+    a 
+
+    API DO GUPSHUP, QUE TINHA 1 MÓDULO DE TESTS..
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VAMOS APRENDER MAIS SOBRE ISSO..
+
+
+
+
+EX:
+
+
+
+
+
+
+
+Stub - stubs are minimal implementations of interfaces or base classes
+
+Spy - a spy will record which members were invoked
+
+Fake - more complex, a fake may resemble a production implementation
+
+Mock - A mock is usually dynamically created by a mock library and depending on its configuration, a mock can behave like a dummy, a stub, or a spy
+
+
+-------------------------------------------
+
+
+
+
