@@ -1,0 +1,679 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO.... COM TODO O CONHECIMENTO QUE TEMOS,
+
+
+
+
+
+
+AGORA É HORA DE 1 NOVO CONCEITO... 1 PROBLEMA NOVO,
+
+QUE VAMOS ENCONTRAR QUANDO 
+
+
+ESTIVERMOS TESTANDO...
+
+
+
+
+
+
+
+
+
+-> O PROFESSOR ADICIONA 1 NOVO EXEMPLO,
+
+
+1 PROJETO BEM MENOR,
+
+
+BEM MAIS FOCUSED,
+
+PQ 
+
+O PROFESSOR QUER FOCAR EM 1 PROBLEM ESPECÍFICO,
+
+
+
+PROBLEMA COM 'ASYNC CODE'... 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OK... TEMOS 1 CÓDIGO, NO PROJETO, ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+import jwt from 'jsonwebtoken';
+
+export function generateToken(userEmail, doneFn) {
+  jwt.sign({ email: userEmail }, 'secret123', doneFn);
+}
+
+export function generateTokenPromise(userEmail) {
+  const promise = new Promise((resolve, reject) => {
+    jwt.sign({ email: userEmail }, 'secret123', (error, token) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(token);
+      }
+    });
+  });
+
+  return promise;
+}
+
+// generateToken('test@test.com', (err, token) => {
+//   console.log(token);
+// });
+
+// generateTokenPromise('test@test.com').then((token) => console.log(token));
+
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+TEMOS 1 CÓDIGO QUE 'DEMORA 1 POUCO MAIS PARA TERMINAR'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É 1 CÓDIGO QUE NÃO DEVE 'BLOCK' OUTRAS OPERATIONS,
+
+
+BLOCK OUTRAS OPERATIONS DE SEREM EXECUTADAS ANTES....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E, NO JAVASCRIPT,
+
+ASYNC CODE 
+GERALMENTE É EXECUTADO COM:
+
+
+
+
+
+
+1) CALLBACK FUNCTIONS 
+
+
+
+
+
+2) PROMISES --> É A MANEIRA MAIS 'MODERN' DE LIDAR COM ASYNC CODE (
+    com 'then' e 'catch',
+
+    e com 
+
+
+
+    'async' e 'await' --> TUDO ISSO É PROMISES...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> NO ARQUIVO DE 'async-example.js',
+
+TEMOS AMBAS AS COISAS:
+
+
+
+1) FUNCTION QUE USA 1 CALLBACK (generateToken)
+
+
+
+2) OUTRA FUNCTION, que usa uma PROMISE (generateTokenPromise)
+
+
+
+
+
+
+
+
+
+
+--> OK... A FUNCTION SEMPRE FAZ A MESMA COISA:
+
+
+
+
+
+
+ELA GERA 
+
+
+1 
+
+'JSONWEBTOKEN'
+
+
+A PARTIR 
+
+DE 
+
+1  INPUT de 'email',
+
+encodado na token,
+
+
+
+e aí 
+
+1 
+
+SECRET USANDO PARA SIGNING....
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... TEMOS ESSAS 2 FUNCTIONS, E QUEREMOS AS TESTAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--. COMO SEMPRE, PODEMOS ESCREVER NOSSOS ARQUIVOS DE TEST...
+
+
+
+
+
+
+
+
+
+
+
+
+
+COMEÇAMOS ESCREVENDO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+
+import { generateToken, generateTokenPromise } from './async-example';
+
+describe(generateToken, () => {
+  it('should generate a token for a given user email', () => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    const result = generateToken();
+    //ASSERT
+    
+  });
+});
+
+describe(generateTokenPromise, () => {
+  it('should generate a token for a given user email', () => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    const result = generateTokenPromise();
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR QUER TESTAR QUE 'ESSA FUNCTION DEVE GENERATE 1 TOKEN VALUE'...
+
+
+
+
+
+
+
+
+
+
+
+
+-> OK... DENTRO DO NOSSO TESTING CODE,
+
+VAMOS COLOCAR 1 EMAIL ADDRESS, COM DUMMY VALUE..
+(pq esse é o primeiro parameter de nossa function...)
+
+
+
+
+
+
+
+
+
+
+
+
+A FUNCTION DE generateToken:
+
+
+export function generateToken(userEmail, doneFn) {
+  jwt.sign({ email: userEmail }, 'secret123', doneFn);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+O PROBLEMA É QUE PRECISAMOS DE 1 CALLBACK, AQUI....
+
+
+
+
+MAS QUE CALLBACK VAMOS COLOCAR?
+
+
+
+
+
+
+
+
+
+NÃO PODEMOS COLOCAR, NA FASE DE 'ACT',
+
+
+
+1 linha como 
+
+
+
+'const token = generateToken(userEmail)',
+
+
+
+
+
+
+
+
+
+
+PQ ESSE FUNCTION CALL NÃO É SYNC... -> EM VEZ DISSO,
+
+
+PRECISAMOS PASSAR 1 SEGUNDO PARAMETER A 'generateToken'...
+
+
+
+
+
+
+
+
+
+
+--> ESSE SEGUNDO PARAMETER SERÁ UMA CALLBACK FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+--> ANTES, MAIS CEDO NO CURSO,
+
+O PROFESSOR FALOU QUE 
+
+
+
+VC N DEVE TESTAR THIRD PARTY PACKAGES --> MAS AQUI NÃO ESTAMOS TESTANDO THIRD PARTY 
+
+PACKAGES... E SIM, AQUI,
+
+ESTAMOS TESTANDO SE _ COM NOSSOS INPUT VALUES VAMOS EVENTUALMENTE 
+
+
+GANHAR 1 TOKEN DE VOLTA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+
+É POR ISSO QUE VAMOS PASSAR 1 CALLBACK FUNCTION AO generateToken',
+
+tipo assim:
+
+
+
+describe(generateToken, () => {
+  it('should generate a token for a given user email', () => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    // const result = generateToken(); //! ERRADO
+
+    generateToken(value, (err, token) => {
+    });
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+VAMOS RECEBER OU 1 'ERROR'
+
+OU O 'TOKEN' EM SI,
+
+a partir 
+
+
+do run 
+
+dessa function...
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... COM ISSO, VAMOS COLOCAR 'expect',
+
+PQ 
+
+
+VAMOS QUERER FAZER 'EXPECT'
+
+DE QUE 
+
+ESSA TOKEN SERÁ 'DEFINED' -> E COLOCAMOS ESSE 
+
+
+'expect'
+
+dentro da CALLBACK FUNCTION, TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+describe(generateToken, () => {
+  it('should generate a token for a given user email', () => {
+    //ARRANGE
+    const value = 'exemplo@exemplo.com';
+    //ACT
+    // const result = generateToken(); //! ERRADO
+
+    generateToken(value, (err, token) => {
+      //ASSERT -- //? AQUI TEMOS ALGO 1 POUCO DIFERENTE, PQ O 'ASSERT' FICA/FICARÁ DENTRO DA CALLBACK FUNCTION....
+      expect(token).toBeDefined();
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... O PROFESSOR RODA 'npm test',
+
+PARA VER SE ISSO FUNCIONA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+E FUNCIONA... 
+
+
+
+OK, É ASSIM QUE PODEMOS 
+
+
+
+
+TESTAR CÓDIGO QUE É ASYNC..., NÉ?
+
+
+
+
+
+
+
+
+
+
+ERRADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR COLOCA 1 OUTRO EXPECT,
+
+
+1 EXPECT 
+
+
+de  QUE 'O NÚMERO SERÁ NUMBER 2'... ----> SABEMOS QUE ISSO SERÁ IMPOSSÍVEL... MAS 
+
+FUNCIONA, MESMO ASSIM ------> ISSO ACONTECE 
+
+
+PQ __ NOSSO TEST __ 
+
+'IS NOT ACTUALLY WORKING'...
+
+
+
+
+
+
+
+
+
+
+
+MAS VC PODE FAZER SEUS TESTS ACTUALLY FUNCIONAR, MESMO SENDO ASYNC CODE..
