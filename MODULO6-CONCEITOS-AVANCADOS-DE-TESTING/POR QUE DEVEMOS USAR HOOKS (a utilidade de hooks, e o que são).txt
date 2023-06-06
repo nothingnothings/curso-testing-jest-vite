@@ -1,0 +1,963 @@
+
+
+
+
+
+
+
+
+
+
+--> OK... AGORA DEVEMOS VER 'HOOKS'...
+
+
+
+
+
+
+
+
+
+--> ANALISEI TODOS OS TESTS...
+
+
+
+
+
+
+
+
+ESTAMOS TESTANDO A CLASS DE 'User':
+
+
+
+
+
+
+export class User {
+  constructor(email) {
+    this.email = email;
+  }
+
+  updateEmail(newEmail) {
+    this.email = newEmail;
+  }
+
+  clearEmail() {
+    this.email = '';
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+É UMA CLASS BEM SIMPLES...
+
+
+
+
+
+
+
+MAS 1 COISA VC DEVE TER PERCEBIDO, NESSES TESTS:
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+it('should update the email', () => {
+  //ARRANGE
+  const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should have an email property', () => {
+  //ARRANGE
+  const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEMOS MT REPETIÇÃO, NESSES TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> EM TODOS ESSES TESTS, ESTAMOS:
+
+
+
+
+
+1) CRIANDO NOVOS OBJECTS 'user'..
+
+
+
+
+2) TAMBÉM ESTAMOS SEMPRE SETTANDO ESSE EMAIL DE 'test@test.com' como propriedade de 'email'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E O REPEAT DE CÓDIGO NÃO É RUIM,
+
+E HÁ CERTAS PESSOAS QUE ADVOGAM QUE 
+
+
+
+__ CADA _ TEST __ DEVE SER 'STANDALONE',
+
+
+E QUE 
+
+CDA 
+
+
+
+
+
+
+TEST DEVE TER TUDO QUE PRECISA... -----> MAS SE VC QUER 
+
+
+REDUZIR 
+
+1 POUCO A CODE DUPLICATION,
+
+
+EXISTEM 
+
+MANEIRAS DE FAZER ISSO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO,
+
+VC PODE 
+
+PEGAR 
+
+
+
+A CONSTANTE DE 
+
+
+
+
+''
+
+const testEmail = 'test@test.com'
+
+
+''
+
+
+E A ADICIONAR 
+
+COMO 
+
+CONSTANTE GLOBAL 
+
+
+
+NESSA FILE... -> E AÍ SE LIVRAR DE TODAS AS DECLARAÇÕES 
+
+
+
+DESSA CONSTANTE, EM CADA TEST...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE QUISERMOS FAZER ISSO, FICARÁ ASSIM:
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+const testEmail = 'test@test.com';
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+COMO ISSO AGORA SERÁ UMA GLOBAL CONSTANT, 
+
+
+
+
+ELA VAI SER USADA EM TODOS ESSES TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO NÃO É ALGO OBRIGATÓRIO,
+
+E ALGUMAS PESSOAS VÃO ACHAR ERRADO,
+
+
+
+MAS É ALGO QUE PODEMOS FAZER...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POSSÍVEL TER ESSES GLOBAL VALUES, 
+
+PORTANTO..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> eX:
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... E AGORA QUE TEMOS 
+
+
+
+ESSE VALUE GLOBAL DE 'testEmail',
+
+
+
+
+
+
+
+pdemos 
+
+TENTAR FAZER A MESMA COISA COM NOSSO USER...
+
+
+
+
+
+
+
+
+
+
+
+-> podemos colocar 
+
+
+
+'const user = new User(email)',
+
+
+NO CONTEXTO GLOBAL...
+
+
+
+
+
+
+
+
+
+
+
+
+COM ISSO,
+
+VOU REDUZIR BASTANTE A REPETIÇÃO NO NOSSO CÓDIGO....
+
+
+
+
+
+
+
+
+
+
+
+MAS SE RODARMOS ISSO AÍ,
+
+VAMOS GANHAR __ 1 TEST DE 'FAIL'...
+
+
+
+
+
+
+
+ANTES, TODOS OS TESTS ESTAVAM FUNCIONANDO...
+
+
+
+
+
+
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+const testEmail = 'test@test.com'; // ISTO NÃO É UM HOOK DE TEST, MAS __ É UM EXEMPLO DE COMO PODEMOS DEFINIR E USAR 'GLOBAL CONSTANTS' NOS NOSSOS TESTS (aí não precisamos reescrever isso toda hora, em todos os tests)...
+const user = new User(testEmail); //já isto é 1 EXEMPLO DE HOOK...
+
+it('should have an email property', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail); // TODO - EXEMPLO DE UTILIZAÇÃO DE HOOK (pq sempre vamos instanciar 'User', pq todos os tests envolvem a criação desse object)...
+  //ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  //ASSERT
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.clearEmail();
+  ///ASSERT
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO.... ENTRETANTO, AQUI TEREMOS 1 FAILING TEST...
+
+
+
+
+
+
+
+
+
+É O TEST 
+
+DE 
+
+
+'updateEmail':
+
+
+
+
+
+
+
+
+
+
+
+it('should store the provided email value', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  //ASSERT
+  expect(user.email).toBe(testEmail);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO.... MAS PQ __ ESSE TEST FALHOU?
+
+
+
+
+
+
+
+-> FALHOU PQ 'ESPERÁVAMOS QUE O EMAIL ORIGINAL DESSA CLASS,
+
+
+"testEmail", ficasse armazenado...
+'... 
+
+
+
+
+
+
+
+
+
+---> MAS COMO __ RODAMOS 1 CÓDIGO DE TEST COM 
+
+
+ESTA LÓGICA:
+
+
+
+
+
+
+it('should update the email', () => {
+  //ARRANGE
+  // const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+  //ACT
+  // const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+  //ASSERT
+  expect(user.email).toBe(newTestEmail);
+});
+
+
+
+
+
+
+
+
+
+
+-> COMO RODAMOS ESSA LÓGICA,
+
+
+
+NOSSO OBJECT DE 'user' FOI ATUALIZADO,
+
+
+
+
+E AÍ _ FOI ALTERADA A PROPRIEDADE DE 'email',
+
+que 
+
+antes era 'test@test.com',
+
+
+agora 
+
+ficou 'test2@test.com' (
+     
+     que é incompatível com 'test@test.com'...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... BASICAMENTE, NOSSO TEST FALHA ___ PQ __ 
+
+
+
+
+
+OS CÓDIGOS DE TEST,
+NOSSAS TESTING FILES,
+
+
+SÃO 'STANDARD JAVASCRIPT FILES',
+
+
+E TODO O CO´DIGO CONTIDO NELAS É EXECUTADO DE ACORDO COM 
+
+AS 
+'STANDARD JAVASCRIPT RULES'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> E, NO FINAL DAS CONTAS,
+
+
+COM TODAS AS IT FUNCTIONS,
+
+ESTAMOS 
+
+APENAS 
+
+REGISTRANDO 1 MONTE DE TESTS QUE 
+
+
+'''SÃO REGISTRADOS 1 APÓS O OUTRO''''...
+
+
+
+
+
+
+
+
+
+
+
+
+-----> ISSO QUER DIZER QUE AGORA QUE TEMOS 
+
+
+
+OS GLOBAL USER E testEmail,
+
+
+
+
+
+ELES SÃO COMPARTILHADOS COM TODOS OS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE FALHA...
+
+(
+    não estamos usando 'standalone' users 
+    para 
+
+    cada 
+
+
+
+    test individual..
+)
+
+
+
+
+
+
+
+
+
+
+--> CERTO... ISSO É RUIM...
+
+
+
+
+
+
+
+--> É POR ISSO QUE É UMA BOA IDEIA 
+
+
+INSTANCIAR 
+
+
+CADA CLASS _  EM __ 
+
+
+
+
+CADA TEST.... -------> ALTERNATIVAMENTE,
+
+PODEMOS USAR HOOKS...
+
+
+
+
+
+
+
+
+
+
+-_>  E O PROFESSOR NOS MOSTRARÁ COMO PODEMOS FAZER ISSO...
+
+
+
+
+
+
+
+
+
+
+
+
+-> PQ O NOSSO TESTING CODE FICOU 'BAD'... e não pq a lógica de nosso main 
+
+app é ruim...
