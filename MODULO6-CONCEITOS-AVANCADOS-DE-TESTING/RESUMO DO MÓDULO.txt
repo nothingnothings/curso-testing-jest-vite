@@ -1,0 +1,150 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.... ACABAMOS COM ESSA COURSE SECTION...
+
+
+
+
+
+
+APRENDEMOS ALGUMAS FEATURES MAIS AVANÇADAS...
+
+
+
+
+
+
+APRENDEMOS:
+
+
+
+1) SOBRE O TEST DE ASYNC CODE, COM CALLBACKS E PROMISES...
+
+
+
+
+
+
+2) DIFERENTES APPROACHES PARA O TEST DESSES CODES ASYNC...
+
+
+
+
+
+
+
+3) vimos também os hooks de 'beforeEach', 'beforeAll', 'afterEach' e 'afterAll'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+APRENDEMOS QUAIS PROBLEMAS PODEM SER CONSERTADOS COM ESSES HOOKS,
+
+
+
+
+COMO ESSES HOOKS SÃO USADOS E EXECUTADOS PELO VITEST/JEST...
+
+
+
+
+
+
+
+
+
+
+ALÉM DISSO,
+
+VIMOS O METHOD DE '.concurrent()',
+
+
+que 
+
+PODE SER USADO 
+
+
+COM 
+
+
+
+'it()' 
+
+e 
+
+'describe()',
+
+
+
+PARA FAZER COM QUE TODOS OS TESTS 
+
+
+
+
+
+COM ISSO _ RODEM EM PARALELO (o que pode acelerar o tempo de seu test)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR RECOMENDA QUE LEIAMOS 
+
+
+
+A OFFICIAL API REFERENCE...
+
+
+
+
+
+
+
+
+
+-> ler todos os use-cases...
+
+
+
+
+
+
+
+
+--> ESSE CURSO NOS AJUDA COM O GET STARTED DO UNIT TESTING...
+
+
+
+
+
+
+
