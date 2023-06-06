@@ -9,13 +9,13 @@ export const resultConstructor = (numberInputs) => {
     result = add(numbers).toString();
   } catch (error) {
     result = error.message;
-  }
+}
 
   return result;
 };
 
 //HELPER FUNCTION - EXAMPLE OF INTEGRATION TESTS
-const cleanNumbers = (numberInputs) => {
+export const cleanNumbers = (numberInputs) => {
   const numbers = [];
   for (const numberInput of numberInputs) {
     validateStringNotEmpty(numberInput);
