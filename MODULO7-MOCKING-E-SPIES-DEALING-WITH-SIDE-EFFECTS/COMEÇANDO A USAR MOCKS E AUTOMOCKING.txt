@@ -1,0 +1,1190 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> os SPIES FORAM APENAS 1  DOS 2 APPROACHES QUE O PROFESSOR 
+
+MENCIONOU ANTERIORMENTE....
+
+
+
+
+
+
+
+
+
+A OUTRA SOLUÇÃO É OS 'MOCKS'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> O PROFESSOR VOLTA EM 'io.test.js'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> CERTO...
+
+
+
+
+
+
+TEMOS ESTE CÓDIGO:
+
+
+
+
+export default function writeData(data, filename) {
+  const storagePath = path.join(process.cwd(), 'data', filename);
+  return fs.writeFile(storagePath, data);
+}
+
+
+
+
+
+
+
+
+
+
+AQUI, TEMOS O PROBLEMA QUE 
+
+'''O PROFESSOR NÃO QUER EXECUTAR O METHOD ORIGINAL DE 'fs.writeFile'...'''
+
+
+
+
+
+
+
+
+
+
+
+
+--> EM VEZ DISSO,
+
+
+
+SÓ QUEREMOS SABER 
+
+
+SE ESSE METHOD FOI EXECUTADO.... -> MAS ELE NÃO DEVE FAZER O TRABALHO SUJO 
+
+DE REALMENTE FAZER WRITE NO FILE SYSTEM --> ELE NÃO DEVE FAZER ISSO DURANTE 
+
+NOSSOS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... ISSO SERIA 1 CASO BOM PARA SPIES, NÃO?
+
+
+
+
+
+
+
+
+--> PODERÍAMOS SUBSTITUIR ISSO POR 1 
+
+
+
+
+EMPTY FUNCTION, E AÍ 
+APENAS 
+
+_vERIFICAR__ SE ESSE METHOD FOI CHAMADO ------> OK... ISSO É VERDADE...
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS ESSA FUNCTION DE 'fs.writeFile'
+
+
+É __ MAIS DIFÍCIL DE SER TESTADA,
+
+
+
+É MAIS DIFÍCIL DE SER 'REPLACED' 
+
+
+
+PQ _ NÓS __ NÃO 
+
+
+
+
+
+'SOMOS DONOS de fs.writeFile' (
+
+
+    PQ, ANTERIORMENTE,
+
+    NÓS USAMOS 
+
+
+    O SPY DE 'logFunctionSpy'
+
+    JUSTAMENTE 
+
+
+    PARA MOCKAR 
+
+
+    A FUNCTION DE 'logFn',
+
+
+    que 
+
+
+    era só 1 function que chamava 1 console.log... aqui a situação é outra,
+
+
+
+
+    PQ NÓS NÃO VAMOS MOCKAR 1 FUNCTION QUE É PASSADA A OUTRA,
+
+
+    E SIM 
+
+    __ VAMOS MOCKAR__ 
+
+
+    1 FUNCTION CALL 
+    _DE FUNCTION __ BUILT-IN, QUE NÃO É NOSSA,
+
+    DENTRO DE OUTRA FUNCTION...
+)
+
+
+
+
+
+
+
+
+
+-> ENTÃO, AQUI, NÓS NÃO PODEMOS USAR SPY, PQ NÃO SOMOS DONOS DE 'fs.writeFile'...
+
+
+
+
+
+
+
+
+
+
+-->  É AÍ QUE 'mocks' ENTRAM NA JOGADA ---> COM MOCKS,
+
+PODEMOS 
+
+FACILMENTE 
+
+
+SUBSTITUIR 
+
+
+
+FUNCIONALIDADES QUE SÃO DEFINIDAS EM MODULES,
+
+NÃO IMPORTA 
+
+
+
+SE SOMOS DONOS DESSAS FUNCTIONALITIES OU NÃO...
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+import { vi } from 'vi'; // usamos 'vi' para ter coisas como SPIES (vi.fn()) E MOCKS...
+
+import writeData from './io.js';
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+//  ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação. --> para SOLUCIONAR ESTE PROBLEMA, DEVEMOS USAR SPIES/MOCKS (neste caso, MOCKS, pq nós NÃO SOMOS 'DONOS' da function de 'fs.writeFile', que roda quando 'writeData' é executada)...
+// it('should execute the writeFile method', async () => {
+//   //ARRANGE
+//   const testData = 'DUMMY';
+//   const testFileName = 'test.txt';
+//   //ACT
+//   const result = await writeData(testData, testFileName);
+//    //// ACT E ASSERT
+//   //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+//   //ASSERT
+//   expect(result).toBeUndefined(); // isto funciona.
+// });
+
+// ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação.
+it('should execute the writeFile method', async () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  const result = await writeData(testData, testFileName);
+  //// ACT E ASSERT
+  //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+  //ASSERT
+  expect(result).toBeUndefined(); // isto funciona.
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... DENTRO DO OBJECT 'vi',
+
+TEMOS 
+
+O METHOD DE '.mock()'...
+
+
+
+
+
+
+
+A ESSE METHOD,
+
+VC DEVE __ PASSAR __ O 'NOME DO MODULE/PATH AO MODULE' 
+
+
+QUE _ DEVE SER MOCKADO...
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... E ISSO AÍ FUNCIONA COM:
+
+
+
+
+1) THIRD-PARTY MODULES 
+
+
+2) NATIVE MODULES (como 'fs' e 'path')...
+
+
+
+
+3) SEUS PRÓPRIOS MODULES (seus próprios arquivos)....
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OK... AQUI VAMOS MOCKAR 'fs'...
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+vi.mock('fs')
+
+
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+import { vi } from 'vi'; // usamos 'vi' para ter coisas como SPIES (vi.fn()) E MOCKS... (com vi.mock())...
+
+import writeData from './io.js';
+
+vi.mock('fs') //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+//  ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação. --> para SOLUCIONAR ESTE PROBLEMA, DEVEMOS USAR SPIES/MOCKS (neste caso, MOCKS, pq nós NÃO SOMOS 'DONOS' da function de 'fs.writeFile', que roda quando 'writeData' é executada)...
+// it('should execute the writeFile method', async () => {
+//   //ARRANGE
+//   const testData = 'DUMMY';
+//   const testFileName = 'test.txt';
+//   //ACT
+//   const result = await writeData(testData, testFileName);
+//    //// ACT E ASSERT
+//   //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+//   //ASSERT
+//   expect(result).toBeUndefined(); // isto funciona.
+// });
+
+
+
+
+// ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação.
+it('should execute the writeFile method', async () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  const result = await writeData(testData, testFileName);
+  //// ACT E ASSERT
+  //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+  //ASSERT
+  expect(result).toBeUndefined(); // isto funciona.
+});
+
+// OK... DENTRO DO OBJECT 'vi',
+
+// TEMOS
+
+// O METHOD DE '.mock()'...
+
+// A ESSE METHOD,
+
+// VC DEVE __ PASSAR __ O 'NOME DO MODULE/PATH AO MODULE'
+
+// QUE _ DEVE SER MOCKADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK...
+
+
+SE VC RODAR 
+
+'vi.mock('fs')',
+
+
+
+VC 
+
+
+
+VAI 
+
+RODAR 
+
+O ALGORITMO DE AUTO-MOCKING 
+
+DO 
+
+
+
+JEST/VITEST,
+
+
+
+QUE VAI BASICAMENTE ENCONTRAR ESSE MODULE 
+
+E SUBSTITUIR 
+
+
+
+__ TODAS AS FUNCTIONS DENTRO DESSE MODULE 
+
+
+__ COM _ EMPTY SPY FUNCTIONS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... SE AGORA o 'writeData'
+
+
+FOR EXECUTADO, DURANTE NOSSO TEST,
+
+
+ELE NÃO VAI MAIS FAZER 'WRITE'
+
+DESSA TEXT FILE NA PASTA DE 'data',
+
+
+
+
+
+
+
+PQ _ NOS NOSSOS TESTS,
+
+
+
+O FILE SYSTEM, PROVIDENCIADO PELO NODE,
+
+
+
+FOI SUBSTITUÍDO POR ESSA VERSÃO 'MOCK',
+
+QUE 
+
+CONTÉM
+VERSÕES 
+VAZIAS QUE 
+
+
+'DONT DO ANYTHING'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.. AGORA NOSSO CÓDIGO VAI RODAR,
+
+
+E MESMO ASSIM NENHUM ARQUIVO DE TEXTO SERÁ CRIADO NA PASTA DE 'data'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E ISSO NOS PROVA QUE O MOCK FUNCIONOU...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ, CASO CONTRÁRIO,
+
+
+
+
+
+
+COMO _ NÓS AINDA CHAMAMOS 
+
+'writeData',
+
+
+
+
+O METHOD DE 'writeFile'
+
+TERIA SIDO CHAMADO,
+
+
+
+
+
+E 1 ARQUIVO 
+
+TERIA SIDO 
+
+
+
+GRAVADO NO FILE SYSTEMN...
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+import { vi } from 'vitest'; // usamos 'vi' para ter coisas como SPIES (vi.fn()) E MOCKS... (com vi.mock())...
+
+import writeData from './io.js';
+
+vi.mock('fs'); //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+//  ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação. --> para SOLUCIONAR ESTE PROBLEMA, DEVEMOS USAR SPIES/MOCKS (neste caso, MOCKS, pq nós NÃO SOMOS 'DONOS' da function de 'fs.writeFile', que roda quando 'writeData' é executada)...
+// it('should execute the writeFile method', async () => {
+//   //ARRANGE
+//   const testData = 'DUMMY';
+//   const testFileName = 'test.txt';
+//   //ACT
+//   const result = await writeData(testData, testFileName);
+//    //// ACT E ASSERT
+//   //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+//   //ASSERT
+//   expect(result).toBeUndefined(); // isto funciona.
+// });
+
+// ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação.
+it('should execute the writeFile method', async () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  const result = await writeData(testData, testFileName);
+  //// ACT E ASSERT
+  //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+  //ASSERT
+
+//   expect(result).resolves.toBeUndefined(); //! ISTO NÃO VAI MAIS FUNCIONAR PQ TODAS AS FUNCTIONS DENTRO DE 'fs' (fs.writeFile, por exemplo) FORAM MOCKADAS/TROCADAS POR EMPTY SPY FUNCTIONS...
+  expect(result).toBeUndefined(); // isto funciona.
+});
+
+// OK... DENTRO DO OBJECT 'vi',
+
+// TEMOS
+
+// O METHOD DE '.mock()'...
+
+// A ESSE METHOD,
+
+// VC DEVE __ PASSAR __ O 'NOME DO MODULE/PATH AO MODULE'
+
+// QUE _ DEVE SER MOCKADO...
+
+/// ------------
+
+// --> OK...
+
+// SE VC RODAR
+
+// 'vi.mock('fs')',
+
+// VC
+
+// VAI
+
+// RODAR
+
+// O ALGORITMO DE AUTO-MOCKING
+
+// DO
+
+// JEST/VITEST,
+
+// QUE VAI BASICAMENTE ENCONTRAR ESSE MODULE
+
+// E SUBSTITUIR
+
+// __ TODAS AS FUNCTIONS DENTRO DESSE MODULE
+
+// __ COM _ EMPTY SPY FUNCTIONS...
+
+// ---------------
+
+// OK... SE AGORA o 'writeData'
+
+// FOR EXECUTADO, DURANTE NOSSO TEST,
+
+// ELE NÃO VAI MAIS FAZER 'WRITE'
+
+// DESSA TEXT FILE NA PASTA DE 'data',
+
+// PQ _ NOS NOSSOS TESTS,
+
+// O FILE SYSTEM, PROVIDENCIADO PELO NODE,
+
+// FOI SUBSTITUÍDO POR ESSA VERSÃO 'MOCK',
+
+// QUE
+
+// CONTÉM
+// VERSÕES
+// VAZIAS QUE
+
+// 'DONT DO ANYTHING'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS TAMBÉM SERIA MELHOR ESCREVER, EM VEZ DE 
+
+
+'''
+  expect(result).toBeUndefined(); // isto funciona.
+'',
+
+
+
+1 expectation 
+
+checando se O MODULE REALMENTE FOI CHAMADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO, TEMOS O METHOD DE 
+
+'expect().toHaveBeenCalled()'...
+
+
+
+
+
+
+
+
+
+
+-> MAS O QUE DEVEMOS PASSAR A ESSE METHOD?
+
+--> O PROFESSOR NOS EXPLICA QUE 
+
+DEVEMOS 
+
+
+PASSAR 
+
+
+'import { promises as fs} from 'fs'' ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ VAMOS QUERER SABER 'SE A FUNCTION ORIGINÁRIA REALMENTE FOI CHAMADA'...
+
+
+
+
+
+
+
+
+
+
+
+--> para isso,
+
+
+
+precisamos a IMPORTAR, E ENTÃO A PASSAR AO 'expect().toHaveBeenCalled()'...
+
+
+
+
+
+tipo assim:
+
+
+
+
+import { promises as fs } from 'fs'; //exatamente o mesmo código importado lá em 'io.js'...
+
+vi.mock('fs'); //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
+
+
+
+
+
+
+E ASSIM:
+
+
+
+
+
+  expect(fs.writeFile).toHaveBeenCalled();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FICOU ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+import { vi } from 'vitest'; // usamos 'vi' para ter coisas como SPIES (vi.fn()) E MOCKS... (com vi.mock())...
+
+import writeData from './io.js';
+import { promises as fs } from 'fs'; //exatamente o mesmo código importado lá em 'io.js'...
+
+vi.mock('fs'); //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+// describe('writeData', () => {
+//   it('should write data to a file', async () => {
+//     //ARRANGE
+//     const data = 'DUMMY';
+//     //ACT
+//     const result = await writeData(data, 'data.txt');
+//     //ASSERT
+//     expect(result).toBe(true);
+//   });
+// });
+
+//  ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação. --> para SOLUCIONAR ESTE PROBLEMA, DEVEMOS USAR SPIES/MOCKS (neste caso, MOCKS, pq nós NÃO SOMOS 'DONOS' da function de 'fs.writeFile', que roda quando 'writeData' é executada)...
+// it('should execute the writeFile method', async () => {
+//   //ARRANGE
+//   const testData = 'DUMMY';
+//   const testFileName = 'test.txt';
+//   //ACT
+//   const result = await writeData(testData, testFileName);
+//    //// ACT E ASSERT
+//   //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+//   //ASSERT
+//   expect(result).toBeUndefined(); // isto funciona.
+// });
+
+// ? NOSSO TEST, AQUI, TEM 1 SIDE EFFECT -----> ELE FAZ WRITE DE DATA AO HARD DRIVE --> e isso é ruim, dependendo da situação.
+it('should execute the writeFile method', () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  //   const result = await writeData(testData, testFileName);
+  writeData(testData, testFileName); // ? VAI CHAMAR 'fs.writeFile', no seu interior...
+  //// ACT E ASSERT
+  //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
+  //ASSERT
+
+  //   expect(result).resolves.toBeUndefined(); //! ISTO NÃO VAI MAIS FUNCIONAR PQ TODAS AS FUNCTIONS DENTRO DE 'fs' (fs.writeFile, por exemplo) FORAM MOCKADAS/TROCADAS POR EMPTY SPY FUNCTIONS...
+  expect(result).toBeUndefined(); // isto funciona.
+  expect(fs.writeFile).toHaveBeenCalled(); // ESSA É A COISA PELA QUAL TESTAMOS DE VERDADE, PQ __ É REALMENTE ISSO QUE IMPORTA (se essa function foi chamada ou não, durante aquela execução)...
+});
+
+// OK... DENTRO DO OBJECT 'vi',
+
+// TEMOS
+
+// O METHOD DE '.mock()'...
+
+// A ESSE METHOD,
+
+// VC DEVE __ PASSAR __ O 'NOME DO MODULE/PATH AO MODULE'
+
+// QUE _ DEVE SER MOCKADO...
+
+/// ------------
+
+// --> OK...
+
+// SE VC RODAR
+
+// 'vi.mock('fs')',
+
+// VC
+
+// VAI
+
+// RODAR
+
+// O ALGORITMO DE AUTO-MOCKING
+
+// DO
+
+// JEST/VITEST,
+
+// QUE VAI BASICAMENTE ENCONTRAR ESSE MODULE
+
+// E SUBSTITUIR
+
+// __ TODAS AS FUNCTIONS DENTRO DESSE MODULE
+
+// __ COM _ EMPTY SPY FUNCTIONS...
+
+// ---------------
+
+// OK... SE AGORA o 'writeData'
+
+// FOR EXECUTADO, DURANTE NOSSO TEST,
+
+// ELE NÃO VAI MAIS FAZER 'WRITE'
+
+// DESSA TEXT FILE NA PASTA DE 'data',
+
+// PQ _ NOS NOSSOS TESTS,
+
+// O FILE SYSTEM, PROVIDENCIADO PELO NODE,
+
+// FOI SUBSTITUÍDO POR ESSA VERSÃO 'MOCK',
+
+// QUE
+
+// CONTÉM
+// VERSÕES
+// VAZIAS QUE
+
+// 'DONT DO ANYTHING'...
+
+
+
+
+
+
+
+-------------------------
+
+
+
+
+
+
+
+
+AGORA TODOS NOSSOS TESTS PASSAM,
+
+PQ 
+o 
+
+
+'fs.writeFile'
+
+foi realmente chamado...
+
+
+
+
+
+
+
+
+
+
+E, PELO MOCK DO MODULE DE 'fs',
+
+
+
+
+
+PODEMOS USAR, SIM, 
+
+
+O AUTO-CREATED MOCK-SPY FUNCTION AQUI,
+
+
+SEM TER O RISCO DE TER ARQUIVOS ESCRITOS NO FILE SYSTEM...
+
+
+
