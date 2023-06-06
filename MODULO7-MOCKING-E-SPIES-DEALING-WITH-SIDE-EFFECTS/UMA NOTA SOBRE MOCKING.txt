@@ -1,0 +1,292 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... NA ÚLTIMA LIÇÃO,
+
+APRENDEMOS SOBRE MOCKING... 
+
+
+
+
+
+
+
+
+
+
+
+
+--> É UMA TÉCNICA MT USADA PARA __ EVITAR _SIDE EFFECTS...
+
+
+
+
+
+
+
+
+
+
+
+
+ANTES DE CONTINUARMOS COM SEU ESTUDO E O DE SPIES,
+
+DEVEMOS 
+
+
+
+
+
+
+
+
+ENTENDER 1 COISINHA SOBRE O MOCKING... (tanto com o jest como o vitest)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC __ RODAR 'vi.mock('fs')',
+
+
+
+ISSO 
+
+
+
+VAI IMPACTAR _ APENAS _SEUS TESTS... -----> IMPORTANTE -----> SEU PRODUCTION 
+
+CODE NÃO SERÁ IMPACTADO,
+
+PQ 
+
+
+ESSE 
+
+MODULE SÓ VAI SER MOCKADO DURANTE SEUS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO....
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS TAMBÉM É IMPORTANTE SABER QUE 
+
+O 
+
+'vi.mock('fs');'
+
+
+
+
+
+
+
+
+
+
+é 'HOISTED'
+
+
+AO TOPO 
+
+DO ARQUIVO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> COM O JEST 
+
+
+NÃO 
+
+É A MESMA COISA... ----> O VITEST É MAIS 'INTELIGENTE'... ----> ELE 
+
+JÁ 
+MOVE ESSE CÓDIGO PARA CIMA, AUTOMATICAMENTE...
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK...
+
+
+
+
+
+
+
+
+A OUTRA COISA QUE É IMPORTANTE ENTENDER 
+
+
+
+É QUE 
+
+
+
+
+O MOCK 
+
+
+DE 1 MODULE 
+
+
+
+É APLICADO _ APENAS __ PARA OS TESTS _ NA MESMA FILE EM QUE É CHAMADO.... ISSO 'KIND OF',
+
+
+PQ SE VC 
+
+TIVER 
+
+
+TESTS EM OUTRA FILE 
+
+
+
+
+
+___ QUE USAM ESSE MODULE TAMBÉM,
+
+
+O 
+
+
+VITEST AUTOMATICAMENTE 
+
+
+
+FAZ 'SORT'
+ 
+
+ DOS TESTS 
+
+ DE MODO QUE 
+
+ 
+
+
+
+
+
+ AS FILES QUE 
+
+
+ __NÃO __ USAM ESSE MOCK __ SÃO 
+
+
+ __CHAMADAS ANTERIORMENTE (elas conseguem o 'UNMOCKED MODULE')...
+
+
+
+
+
+
+
+
+
+É POR ISSO QUE CHAMAR 
+
+
+'vi.mock()' 
+
+
+
+
+
+
+EM _ TODAS AS FILES _ EM QUE _ 
+
+
+VC QUER _ QUE _ O MOCK FIQUE ATIVO _É UMA BOA IDEIA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC DEVE SE LIGAR NESSE BEHAVIOR...
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... ESSAS ERAM IMPORTANT NOTES SOBRE O ASSUNTO...
+
+
+
+
