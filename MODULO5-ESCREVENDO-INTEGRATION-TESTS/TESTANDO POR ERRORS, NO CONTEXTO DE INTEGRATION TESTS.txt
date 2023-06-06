@@ -1,0 +1,288 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.. É CLARO QUE PODEMOS ADICIONAR MAIS TESTS PARA 'cleanNumbers'...
+
+
+
+
+
+
+
+
+
+
+--> o professor vai adicionar apenas mais 1 test..
+
+
+
+
+
+
+
+
+
+
+--> ele vai testar 
+
+
+o cenário  
+
+em que 
+'PASSAMOS 1 VALUE INVÁLIDo',
+
+
+
+PARA TESTAR SE VAMOS CONSEGUIR 1 ERROR:
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+  it('should return an error if an array of numbers is provided as an argument', () => {
+    // ARRANGE AND ACT
+    const result = resultConstructor([1, 2]);
+
+    // ASSERT
+    expect(result).toBe('value.trim is not a function');
+  });
+
+
+
+
+
+
+
+
+
+
+  o professor quer CHECAR 
+
+  SE ESTAMOS 
+
+   
+   USANDO AQUELAS 'VALIDATION FUNCTIONS'
+
+
+
+
+CORRETAMENTE, DENTRO DAQUELE 
+
+
+'cleanNumbers':
+
+
+
+
+
+
+
+
+
+//HELPER FUNCTION - EXAMPLE OF INTEGRATION TESTS
+export const cleanNumbers = (numberInputs) => {
+  const numbers = [];
+  for (const numberInput of numberInputs) {
+    validateStringNotEmpty(numberInput);
+    const number = transformToNumber(numberInput);
+    validateNumber(number);
+    numbers.push(number);
+  }
+
+  return numbers;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+oK... .ELE QUER TESTAR SE 'validateStringNotEmpty'
+
+
+e 'validateNumber'
+
+ESTÃO FUNCIONANDO --> ELE QUER TESTAR 
+
+
+
+SE 
+
+
+RECEBEMOS 1 VALUE DE ERROR,
+
+SE 
+
+
+VALUES INVÁLIDOS SÃO PASSADOS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tipo ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+it('should throw an error if an array with at least one empty string is provided', () => {
+  // ARRANGE
+  const numberInputs = ['1', '2', ''];
+
+  // ACT
+  const resultFn = () => {
+    cleanNumbers(numberInputs);
+  };
+
+  // ASSERT
+  expect(resultFn).toThrow();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... TESTAMOS PELO 'THROW DE ERRORs' (POR MEIO DAQUELA ANON FUNCTION)..
+
+
+
+
+
+
+
+
+
+
+
+poderíamos testar por 1 specific error  message,
+
+
+mas 
+
+o professor deixa assim...
+
+
+
+
+
+
+
+e o test passa...
+
+
+
+
+
+
+
+--> OK.. ESSE É APENAS 1 EXEMPLO DE TEST QUE PODEMOS COLOCAR AQUI...
+
+
+
+
+
+
+
+
+MAS AGORA O PROFESSOR QUER MOSTRAR 
+
+
+
+NOVOS CONCEPTS...
+
+
+
+
+
+
+
+
+
+
+--> MAS ESSE CONCEITO DE 'TESTS QUE TESTAM MÚLTIPLAS FUNCTIONS DE 1 SÓ VEZ',
+
+
+e tests QUE TESTAM A CORRETA COMBINAÇÃO ENTRE FUNCTIONS,
+
+
+
+
+ESSE É UM CONCEITO IMPORTANTE...
+
+
+
+
+
+
+
+
+--> ESSES SÃO TESTS QUE VC TBM DEVE ESCREVER,
+
+PQ 
+A COMBINAÇÃO 
+
+DE FUNCTIONS É ALGO QUE DEVE SER RODADO CORRETAMENTE,
+
+
+
+
+
+E DEVEM SER TESTADAS AS INTERAÇÕES QUE _ DEVERÃO FUNCIONAR...

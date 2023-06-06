@@ -27,6 +27,19 @@ describe('resultConstructor', () => {
   });
 });
 
+it('should throw an error if an array with at least one empty string is provided', () => {
+  // ARRANGE
+  const numberInputs = ['1', '2', ''];
+
+  // ACT
+  const resultFn = () => {
+    cleanNumbers(numberInputs);
+  };
+
+  // ASSERT
+  expect(resultFn).toThrow();
+});
+
 ///ISTO PODE SER CONSIDERADO 1 EXEMPLO DE INTEGRATION TEST (pq ''resultConstructor'' chama ''cleanNumbers'', que é uma function que POSSUI VÁRIAS FUNCTIONS NO SEU INTERIOR)
 describe('cleanNumbers', () => {
   it('should return an array of numbers if an array of numbers in string format is provided as an argument', () => {
