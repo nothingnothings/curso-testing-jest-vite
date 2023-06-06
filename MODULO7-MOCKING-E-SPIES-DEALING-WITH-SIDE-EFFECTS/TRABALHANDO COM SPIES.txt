@@ -1,0 +1,1060 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.... PARA ESTUDARMOS 'SPIES' E 'MOCKS',
+
+
+VAMOS COMEÇAR COM SPIES...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO, O PROFESSOR N VAI FOCAR NO CÓDIGO DE 
+
+
+''io.js',
+
+
+e sim 
+
+em 
+
+
+'data.js'...
+
+
+
+
+
+
+
+
+
+
+
+
+-> DENTRO DE 'data.js',
+
+
+TEMOS OUTRO CENÁRIO 
+
+
+EM QUE 
+
+
+VAMOS __ NOS IMPORTAR __ SE ALGUMA FUNCTION FOI CHAMADA:
+
+
+
+
+
+
+
+
+import writeData from './util/io.js';
+
+export function generateReportData(logFn) {
+  const data = 'Some dummy data for this demo app';
+  if (logFn) {
+    logFn(data);
+  }
+
+  return data;
+}
+
+export async function storeData(data) {
+  if (!data) {
+    throw new Error('No data received!');
+  }
+  await writeData(data, 'data.txt');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> NO CASO,
+
+em 'generateReportData',
+
+
+
+ESTAMOS GERANDO ALGUMA DATA,
+
+
+
+
+MAS ISSO VAI FUNCIONAR... -> MAS O QUE QUEREMOS TESTAR É 
+
+
+
+''SE A LOG FUNCTION SERÁ __ CHAMADA__ SE 1 LOG FUNCTION FOR PROVIDENCIADA''' --->
+
+
+
+
+
+
+
+
+PQ O CÓDIGO É ESTE:
+
+
+
+
+
+export function generateReportData(logFn) {
+  const data = 'Some dummy data for this demo app';
+  if (logFn) {
+    logFn(data);
+  }
+
+  return data;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE ALGUÉM REMOVESSE O IF BLOCK,
+
+tipo assim:
+
+
+
+
+
+
+export function generateReportData(logFn) {
+  const data = 'Some dummy data for this demo app';
+
+
+  return data;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE ALGUÉM FIZESSE ISSO,
+
+GOSTARÍAMOS QUE O TEST 'FOUND OUT'
+
+
+E INDICASSE 
+
+QUE 
+
+
+O ARGUMENT __ FOI IGNORADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PORTANTO, O PROFESSOR ADICIONA data.test.js..
+
+
+
+
+
+
+
+
+
+
+
+
+TIPO ALGO ASSIM:
+
+
+
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+
+import { generateReportData } from './data';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO... ISSO FEITO,
+
+VAMOS EXECUTAR A FUNCTION DE 'generateReportData()'...
+
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+
+import { generateReportData } from './data';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {});
+});
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+
+import { generateReportData } from './data';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = xxx
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS O QUE DEVO PASSAR, COMO PARÂMETRO, para 'generateReportData()' ? 
+
+
+
+
+
+
+
+
+
+
+
+--> PRECISO PASSAR ESSE 'spy' que o professor mencionou...
+
+
+
+
+
+
+
+
+MAS COMO...
+
+
+
+
+
+
+
+
+
+
+
+
+A FUNCTION DE 
+
+
+
+'log'
+
+É ESTA:
+
+
+
+
+
+
+export default function log(message) {
+  console.log(message);
+}
+
+
+
+
+
+
+
+
+
+---> CONSOLE.LOGS __ TAMBÉM _ SÃO 
+
+
+
+SIDE EFFECTS,
+
+
+
+
+PQ __ ELES __ INTERAGEM __ COM O SYSTEM CONSOLE ---> E O SYSTEM CONSOLE É UM 
+
+EXTERNAL SYSTEM...
+
+
+
+
+
+
+
+
+
+
+--> o console.log não é um side effect ruim,
+
+
+mas ainda é um SIDE EFFECT... --> VC TALVEZ QUEIRA SE LIVRAR DELE...
+
+
+
+
+
+
+
+--> VC N QUER TESTAR SE o 'console.log' funciona tecnicamente,
+
+
+
+
+e sim 
+
+SE SUA MESSAGE ('message')
+
+
+ESTÁ SENDO  USADA...
+
+
+
+
+  
+
+  --> É POR ISSO QUE NAÕ VAMOS QUERER PASSAR A function de 
+
+
+  'log'
+
+  COMO 1 PARÂMETRO,
+
+  E SIM 
+
+
+  1 'SPY REPLACEMENT'...
+
+
+
+
+
+
+
+
+
+  EX:
+
+
+
+
+
+
+
+
+
+  import { describe, it, expect } from 'vitest';
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = xxx;
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log'
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA TERMOS ESSE 'SPY REPLACEMENT',
+
+PRECISAMOS DE 1 OBJECT ESPECIAL,
+IMPORTADO LÁ 
+
+
+DA LIBRARY 
+
+DO 
+
+'vitest',
+
+QUE É 
+
+O 
+
+OBJECT 
+
+'vi'..
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest'; //? É COM 'vi' QUE PODEMOS USAR  COISAS COMO o 'spyOn()', que é usado para CRIAR SPIES (tipo mocks, mas mais simples)...
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = xxx;
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log'
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO....
+
+
+
+
+
+
+
+
+
+
+E TEMOS TAMBÉM 1 OBJECT PARECIDO NO JEST,
+
+QUE É O 'jest.fn()'... (object 'jest', importado lá do 'jest/globals')...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO...
+
+
+
+
+
+PARA USAR ESSE SPY,
+
+
+CHAMAMOS 
+
+
+
+
+A FUNCTION '.fn()'
+
+dentro do vi,
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest'; //? É COM 'vi' QUE PODEMOS USAR  COISAS COMO o 'vi.fn()', que é usado para CRIAR SPIES (tipo mocks, mas mais simples)...
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log'
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ex:
+
+
+
+
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log'
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+QUER DIZER QUE 
+
+
+
+'vi.fn()'
+
+
+
+VAI __ CRIAR __ 1 EMPTY FUNCTION, QUE 
+
+
+VAI __ 'KEEP TRACK' __ DE QUAISQUER FUNCTION
+ EXECUTIONS DESSA FUNCTION (e também ANOTA 
+ OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----> OK... AGORA TEMOS ESSE REPLACEMENT OBJECT VAZIO,
+
+COM ESSA FUNCTIONALITY DE 'SPY'...
+
+
+
+
+
+-_>  E É ESSA FUNCTION DE 'logger'
+QUE PASSAMOS 
+
+
+AO 'generateReportData':
+
+
+
+
+
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log'
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS AINDA NÃO ACABAMOS....
+
+
+
+
+
+
+
+NOSSA FUNCTION ESTÁ ASSIM:
+
+
+
+
+
+
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log' //! 'logFunctionSpy', que é 'vi.fn()', NÃO FAZ ACTUALLY COISA ALGUMA, MAS NOS DEIXA 'SPY' ESSA FUNCTION, NOS DEIXA 'ESPIONAR' ESSA FUNCTION E CONSTATAR SE ELA FOI EXECUTADA CORRETAMENTE, QUAIS ARGUMENTS FORAM PASSADOS, ETC...
+    //ACT
+    const result = generateReportData(logFunctionSpy);
+    //ASSERT
+
+    
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+-> E AINDA PRECISAMOS DO 'expect'...
+
+
+
+
+
+
+
+
+
+NO CASO,
+
+
+VAMOS ESCREVER 1 EXPECT __ PARA __a FUNCTION DE 'logFn',
+
+
+
+
+
+o expect().toBeCalled(),
+
+
+PQ REALMENTE QUEREMOS SABER SE ESSA FUNCTION/SPY FOI CHAMADA OU NÃO...
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest'; //? É COM 'vi' QUE PODEMOS USAR  COISAS COMO o 'vi.fn()', que é usado para CRIAR SPIES (tipo mocks, mas mais simples)...
+
+import { generateReportData } from './data';
+// import { log } from '../util/logger';
+
+describe('generateReportData', () => {
+  it('should call the log function, if it has been provided as an argument', () => {
+    //ARRANGE
+    // ? EXEMPLO DE SPY...
+    const logFunctionSpy = vi.fn(); //? ISTO É UM SPY...
+    // TODO - 'vi.fn()' É UM METHOD QUE __ CRIA UMA EMPTY FUNCTION; EMPTY FUNCTION QUE 'KEEPS TRACK'  DE QUAISQUER FUNCTION EXECUTIONS DESSA FUNCTION (e também ANOTA OS ARGUMENTS QUE FORAM PROVIDENCIADOS NESSAS CALLS )
+    //usaremos 'logFunctionSpy' EM VEZ DE 'log' //! 'logFunctionSpy', que é 'vi.fn()', NÃO FAZ ACTUALLY COISA ALGUMA, MAS NOS DEIXA 'SPY' ESSA FUNCTION, NOS DEIXA 'ESPIONAR' ESSA FUNCTION E CONSTATAR SE ELA FOI EXECUTADA CORRETAMENTE, QUAIS ARGUMENTS FORAM PASSADOS, ETC...
+    //ACT
+    generateReportData(logFunctionSpy);
+    //ASSERT
+
+    expect(logFunctionSpy).toHaveBeenCalled(); //? ISTO É UM SPY, E NÃO UMA FUNCTION, E POR ISSO NÃO TEMOS DE USAR '()'
+  });
+});
+
+
+
+
+
+
+-----------------------------
+
+
+
+
+
+
+
+
+
+
+OK... E ISSO AGORA SÓ VAI 'PASS'
+
+SE O 'logFunctionSpy' FOR CHAMADO...
+
+
+
+
+
+
+
+
+OK... 
+
+
+
+
+
+O TEST VAI PASSAR...
+
+
+
+
+
+MAS SE REMOVÊSSEMOS 
+
+
+o 
+
+
+
+código de 
+
+
+
+
+'''
+
+
+
+
+  if (logFn) {
+    logFn(data);
+  }
+
+'''
+
+
+
+
+DENTRO 
+
+
+
+DA FUNCTION DE 
+
+
+
+
+export function generateReportData(logFn) {
+  const data = 'Some dummy data for this demo app';
+  if (logFn) {
+    logFn(data);
+  }
+
+  return data;
+},
+
+
+
+
+
+
+
+
+
+
+
+AÍ 
+
+
+
+
+
+
+
+NOSSO TEST FALHARIA... (se algum colega fizer isso, já vai receber o FAIL NO TEST,
+O QUE É BOM)..
+
+
+
+
+
+
+
+
+
+
+
+
+---> OK... É ASSIM QUE PODEMOS USAR/CRIAR 1 SPY FUNCTION,
+
+
+
+
+
+
+E É BEM ÚTIL...
+
+
+
+
+
+
+
+
+
+
+EM MTOS CENÁRIOS TEREMOS 
+
+INTERESSE EM APENAS 'SE ALGO 
+
+FOI REALMENTE CHAMADO',
+
+
+
+
+
+e não em alguma outra funcionalidade... --> E SPY OBJECTS SÃO PERFEITOS PARA ESSES 
+
+MOMENTOS...
