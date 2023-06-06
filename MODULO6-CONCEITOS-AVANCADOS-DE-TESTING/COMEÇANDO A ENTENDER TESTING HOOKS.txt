@@ -1,0 +1,349 @@
+
+
+
+
+
+
+
+
+CHEGA SOBRE ASYNC CODE...
+
+
+
+
+
+
+
+DEVEMOS VER OUTRA FEATURE PROVIDENCIADA PELO VITEST E PELO JEST..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> HOOKS --> OS HOOKS AQUI NÃO TEM NADA A VER COM 'REACT HOOKS'..
+
+
+
+
+
+
+
+
+
+
+
+HOOKS --> SÃO SIMPLESMENTE FUNCTIONS _ QUE SÃO EXECUTADAS, AUTOMATICAMENTE,
+
+PELO TEST RUNNER,
+
+EM CERTOS PONTOS NO TEMPO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SÃO ESSAS FUNCTIONS QUE ESTUDAREMOS, AGORA...
+
+
+
+
+
+
+
+
+
+--> BASTA BAIXAR O NOVO PROJETO....
+
+
+
+
+
+
+
+
+
+
+
+--> AGORA TEMOS 1 PASTA DE 'HOOKS'...
+
+
+
+
+
+
+
+
+
+
+--> DENTRO DESSA PAST,
+
+
+TEMOS ARQUIVO  'hoos.js',
+
+
+
+
+
+E 1 ARQUIVO 'hooks.test.js'...
+
+
+
+
+
+
+
+
+
+
+--> O ARQUIVO DE 'hooks.js'
+
+CONTÉM UMA CLASS,
+
+
+QUE É 
+
+'User'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ATÉ ESTE MOMENTO,
+
+SEMPRE TESTAMOS FUNCTIONS,
+
+MAS PODEMOS __ 
+
+
+TESTAR TAMBÉM 
+
+
+CLASSES...
+
+
+
+
+
+
+
+
+
+
+
+--> CLASSES TAMBÉM SÃO UNITS, SÃO BUILDING BLOCKS DE SEU APP...
+
+
+
+
+
+E O PROFESSOR ESCREVEU ALGUNS TESTS PARA ESSA CLASS, como podemos observar:
+
+
+
+
+
+
+
+import { it, expect } from 'vitest';
+
+import { User } from './hooks';
+
+it('should update the email', () => {
+  const testEmail = 'test@test.com';
+  const newTestEmail = 'test2@test.com';
+
+  const user = new User(testEmail);
+  user.updateEmail(newTestEmail);
+
+  expect(user.email).toBe(newTestEmail);
+});
+
+it('should have an email property', () => {
+  const testEmail = 'test@test.com';
+
+  const user = new User(testEmail);
+
+  expect(user).toHaveProperty('email');
+});
+
+it('should store the provided email value', () => {
+  const testEmail = 'test@test.com';
+
+  const user = new User(testEmail);
+
+  expect(user.email).toBe(testEmail);
+});
+
+it('should clear the email', () => {
+  const testEmail = 'test@test.com';
+
+  const user = new User(testEmail);
+  user.clearEmail();
+
+  expect(user.email).toBe('');
+});
+
+it('should still have an email property after clearing the email', () => {
+  const testEmail = 'test@test.com';
+
+  const user = new User(testEmail);
+  user.clearEmail();
+
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+
+
+
+it('should have an email property', () => {
+  const testEmail = 'test@test.com';
+
+  const user = new User(testEmail);
+
+  expect(user).toHaveProperty('email');
+});
+
+
+
+
+
+
+
+  
+
+ISTO É NOVO...
+
+
+
+
+
+
+
+-------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... O PROFESSOR ESTÁ EVALUATING A EXISTÊNCIA 
+
+DA PROPERTY DE 'email'... e isso passa...
+
+
+
+
+
+
+
+
+também está 'evaluating' o value dessa property... e isso passa também...:
+
+
+
+EX:
+
+
+
+
+it('should clear the email', () => {
+  const testEmail = 'test@test.com';
+
+  const user = new User(testEmail);
+  user.clearEmail();
+
+  expect(user.email).toBe('');
+});
+
+
+
+
+
+
+
+-------------------------------------
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+ESSE METHOD SIMPLESMENTE CHECA SE 1 OBJECT,
+
+ESSE OBJECT AÍ,
+
+
+
+
+
+
+TEM 1 PROPERTY COM 1 CERTO NOME....
+
+
+
+
+
+
+
+
+DEVEMOS ENTENDER ESSES TESTS....
+
+
+
+
+
+
+
+-_> ISSO FEITO, PODEMOS PROSSEGUIR COM OS HOOKS..
