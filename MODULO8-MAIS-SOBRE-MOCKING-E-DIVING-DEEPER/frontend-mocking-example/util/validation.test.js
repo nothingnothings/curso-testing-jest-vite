@@ -1,4 +1,4 @@
-import { it, expect, describe, beforeAll, beforeEach } from 'vitest';
+import { it, expect, describe } from 'vitest';
 
 import { validateNotEmpty } from './validation';
 
@@ -31,9 +31,9 @@ describe('validateNotEmpty', () => {
     expect(validationFunction).toThrowError(ValidationError);
   });
 
-  it('should not throw any error if a non-empty string is provided as a parameter', () => {
+  it('should throw a ValidationError if textValue parameter consists of only blanks', () => {
     //ARRANGE
-    const textValue = 'example';
+    const textValue = '    ';
     const errorMessage = 'Text is empty';
 
     //ACT
@@ -42,6 +42,34 @@ describe('validateNotEmpty', () => {
     };
 
     //ASSERT
+    expect(validationFunction).toThrowError(ValidationError);
+  });
+
+  it('should not throw any error if a non-empty string is provided as a parameter', () => {
+    //ARRANGE
+    const textValue = 'example';
+    // const errorMessage = 'Text is empty';
+
+    //ACT
+    const validationFunction = () => {
+      return validateNotEmpty(textValue);
+    };
+
+    //ASSERT
     expect(validationFunction).not.toThrow();
+  });
+
+  it('should throw an error with the provided error message, should an error occur', () => {
+    //ARRANGE
+    const textValue = '';
+    const errorMessage = 'Text is empty';
+
+    //ACT
+    const validationFunction = () => {
+      return validateNotEmpty(textValue, errorMessage);
+    };
+
+    //ASSERT
+    expect(validationFunction).toThrowError(errorMessage);
   });
 });

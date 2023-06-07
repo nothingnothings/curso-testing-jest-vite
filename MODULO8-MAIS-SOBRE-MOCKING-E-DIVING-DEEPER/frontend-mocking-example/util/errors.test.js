@@ -13,7 +13,7 @@ let httpError;
 let validationMessage;
 let validationError;
 
-describe('HttpError', () => {
+describe('class HttpError', () => {
   beforeAll(() => {
     httpError = new HttpError(statusCode, message, data);
   });
@@ -69,7 +69,7 @@ describe('HttpError', () => {
   });
 });
 
-describe('ValidationError', () => {
+describe('class ValidationError', () => {
   beforeAll(() => {
     validationError = new ValidationError(validationMessage);
   });
@@ -88,7 +88,7 @@ describe('ValidationError', () => {
     expect(validationError.message).toBeUndefined();
   });
 
-  it('should instantiate object with string property equal to the message passed as paremeter', () => {
+  it('should instantiate object with string property equal to the message passed as parameter', () => {
     //ACT
     validationError = new ValidationError(validationMessage);
     //ASSERT
