@@ -75,4 +75,16 @@ describe('showError', () => {
     //ASSERT
     expect(errorParagraph).not.toBeNull();
   });
+
+  it('should output the provided message in the error paragraph', () => {
+    //ARRANGE
+    const message = 'some message';
+    const errorsElement = document.getElementById('errors');
+    let errorParagraph;
+    //ACT
+    showError(message);
+    errorParagraph = errorsElement.firstElementChild;
+    //ASSERT
+    expect(errorParagraph.innerHTML).toBe(message); //verificamos SE O CONTEÚDO DO ELEMENTO PARAGRAPH É O MESMO DA MENSAGEM QUE PASSAMOS PARA A FUNÇÃO...
+  });
 });

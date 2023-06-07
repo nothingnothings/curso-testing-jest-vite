@@ -1,0 +1,148 @@
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... NAS ÚLTIMAS LIÇÕES,
+
+VIMOS COMO PODEMOS 
+
+TESTAR COMPORTAMENTOS NESSE VIRTUAL DOM...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR QUER ESCREVER 1 ÚLTIMO TEST....
+
+
+
+
+
+
+
+-> ELE VAI ESCREVER 1 OUTRO TEST PARA A FUNCTION DE 'showError'...
+
+
+
+
+
+
+
+
+
+-> será o test de 
+
+
+
+'it('should output the provided message in the error paragraph', () => {
+
+
+})'
+
+
+
+
+
+
+
+
+
+
+
+
+OK... COMEÇAMOS ASSIM:
+
+
+
+
+
+
+
+  it('should output the provided message in the error paragraph', () => {
+    //ARRANGE
+    const message = 'some message';
+    const errorsElement = document.getElementById('errors');
+    let errorParagraph;
+    //ACT
+    showError(message);
+    errorParagraph = errorsElement.firstElementChild;
+    //ASSERT
+    expect(errorParagraph.innerHTML).toBe(message); //verificamos SE O CONTEÚDO DO ELEMENTO PARAGRAPH É O MESMO DA MENSAGEM QUE PASSAMOS PARA A FUNÇÃO...
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  CONSEGUI, O CÓDIGO FUNCIONOU...
+
+
+
+
+
+
+
+
+
+
+
+  -> MINHA ERROR MESSAGE FOI RESPEITADA, FOI PASSADA PARA DENTRO DESSE ELEMENTO...
+
+
+
+
+
+
+  -> mas o professor usou '.textContent' em vez de 'innerHTML' (mas dá na mesma)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  --> E ESSE É O DOM TESTING, CLARO...
+
+
+
+
+
+
+
+
+
+
+
+  --> HÁ MT MAIS QUE PODEMOS TESTAR, É CLAOR...
