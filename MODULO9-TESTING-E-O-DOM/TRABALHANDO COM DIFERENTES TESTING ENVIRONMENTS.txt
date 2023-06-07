@@ -1,0 +1,554 @@
+
+
+
+
+
+
+
+PARA SERMOS PRECISOS,
+
+
+QUANDO TRABALHAMOS COM O VITEST OU O JEST,
+
+
+PODEMOS 
+
+
+ESCOLHER 1 'TESTING ENVIRONMENT'
+
+
+EM QUE 
+
+
+NOSSO TEST CODE SERÁ EXECUTADO..
+
+
+
+
+
+
+
+
+
+
+
+
+VC PODE ESCOLHER:
+
+
+
+
+
+
+
+1) 'NODEJS' --> ESSE É O DEFAULT, TANTO PARA O VITEST COMO O JEST....
+
+
+
+SE VC CONTINUA COM ESSE DEFAULT,
+
+VC 
+
+TEM ACESSO A TODAS AS APIS E MODULES DO NODEJS,
+
+dentro 
+
+de suas 
+
+test files,
+
+
+
+como o 'FILE SYSTEM MODULE' (fs),
+
+
+
+DENTRO DO SEU TESTING CODE E DENTRO DO CÓDIGO QUE É EXECUTADO POR SEU TESTING CODE...
+
+
+
+
+
+
+
+
+----------> CERTO, MAS __ VC N PODE INTERAGIR COM O BROWSER OU BROWSER-SPECIFIC 
+
+APIs... --> VC __ NÃO PODE CHAMAR A FUNCTION DE 'FETCH'
+
+
+OU O 
+
+
+'DOCUMENT' OBJECT... -> SE VC QUER INTERAGIR COM ESSAS COISAS,
+
+VC 
+
+PRECISA 
+
+CRIAR SEU PRÓPRIO 'MOCK' OBJECT...
+
+
+
+
+
+
+
+
+
+-> MAS CRIAR SEU PRÓPRIO MOCK OBJECT NEM SEMPRE É UMA OPÇÃO...
+
+
+
+
+
+
+
+
+
+
+
+
+2) É POR ISSO QUE O VITEST E O JEST 
+
+
+SUPORTAM OUTRO ENVIRONMENT,
+
+
+QUE É O 'JSDOM'... ----------> O JSDOM ------> É UM VIRTUAL DOM ENVIRONMENT
+
+
+
+
+QUE __ É CRIADO __ PELO TEST RUNNER, POR TRÁS DAS CENAS....
+
+
+
+
+
+
+
+
+
+-> O JSDOM AINDA NÃO USA O 'ACTUAL BROWSER',
+
+MAS ELE 'EMULA'
+ 
+
+
+ __ QUE __ SEU CÓDIGO ESTÁ RODNADO NO BROWSER...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 3) O VITEST TAMBÉM PROVIDENCIA OUTRA ALTERNATIVA,
+
+ CHAMADA DE 
+
+
+ 'HAPPY-DOM' -------> TANTO O HAPPYDOM COMO O JSDOM 
+
+
+ SÃO SIMPLESMENTE 
+
+ ENVIRONMENTS 
+
+
+
+
+
+ EM QUE SEU CÓDIGO DE TEST PODE RODAR,
+
+
+
+
+ E QUE DÃO AO SEU TEST-CODE, E O CÓDIGO RODADO POR ELE, ACESSO 
+
+
+
+ A TODAS AS DOM E BROWSER APIs -----> AINDA QUE NÃO 
+
+ EXISTA 
+
+ 1 
+ 'ACTUAL BROWSER'
+
+
+
+ SENDO USADO ---------> O BROWSER É EMULADO, VIRTUALMENTE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> É ISSO QUE ACONTECE, AQUI..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> E É POR ISSO QUE  O 'JSDOM' E O 
+ 'HAPPYDOM'
+
+
+ SÃO PERFEITOS PARA TESTAR 
+
+ FRONTEND 
+
+ CODE EM PROJECTS.....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> E É EXATAMENTE ISSO QUE FAREMOS, AQUI...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --. COM O VITEST,
+
+ PARA FAZER A TROCA,
+
+ É SUPER SIMPLES..
+
+
+
+
+
+
+
+
+ VC DEVE IR ATÉ SEU 
+
+
+ 'package.json'
+
+
+ E __ MUDAR O ENVIRONMENT 
+
+
+ DE SEUS TESTS...
+
+
+
+
+
+
+
+
+
+ -> coloque a flag '--environment',
+
+
+ E AÍ DEFINA O VALUE DE 'happy-dom'  ou 'jsdom'...
+
+
+
+
+
+
+
+
+
+
+
+
+ --> VAMOS USAR 'happy-dom'... 
+
+
+
+
+
+
+
+
+
+ EX:
+
+
+
+
+
+
+
+
+
+
+
+ {
+  "name": "mocks-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1",
+    "test": "vitest --watch --environment happy-dom"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.0"
+  },
+  "devDependencies": {
+    "happy-dom": "^2.55.0",
+    "vitest": "^0.9.3"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+
+
+NO JEST, NO CASO,
+
+
+PODEMOS TROCAR PARA 1 ENVIRONMENT DIFERENTE... ---> PODEMOS USAR O ENVIRONMENT 
+
+
+DO 'JSDOM' APENAS 
+
+EM FILES ESPECÍFICAS DE TEST... (
+
+    ao contrário do 
+
+    vitest,
+    que roda isso 
+
+    para 
+
+    TODOS OS SEUS TESTS...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- BEM, É CLARO QUE O VITEST TEM 1 MONTE DE FLAGS QUE PODEMOS ADICIONAR...
+
+
+
+
+
+
+
+
+----> o environment default é 
+
+'--environment node'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... SE VC RODAR ISSO,
+
+
+SEUS TESTS VÃO CONTINUAR FALHANDO,
+
+MAS N 
+
+
+PQ 
+
+
+O DOCUMENT NÃO EXISTE,
+
+E SIM 
+
+POR CAUSA 
+
+DE ERROS PERTINENTES...
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+FAZ SENTIDO...
+
+
+NOSSO PACKAGE.JSon:
+
+
+{
+  "name": "mocks-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1",
+    "test": "vitest --watch --environment happy-dom"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.0"
+  },
+  "devDependencies": {
+    "happy-dom": "^2.55.0",
+    "vitest": "^0.9.3"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+O PRÓXIMO PASSO, NO CASO,
+
+
+
+É ASSEGURAR QUE 
+
+
+TENHAMOS A 'ACTUAL PAGE'
+
+
+
+DESSE PROJECT__ DISPONÍVEL QUANDO NOSSOS TESTS RODAREM...
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+ FAIL  util/dom.test.js > first test > first test
+TypeError: Cannot set properties of null (setting 'innerHTML')
+ ❯ Module.showError util/dom.js:5:35
+      3|   const errorMessageElement = document.createElement('p');
+      4|   errorMessageElement.textContent = message;
+      5|   errorContainerElement.innerHTML = '';
+       |                                   ^
+      6|   errorContainerElement.append(errorMessageElement);
+      7| }
+ ❯ util/dom.test.js:6:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+Test Files  1 failed | 4 passed (5)
+     Tests  1 failed | 10 passed (11)
+      Time  28ms
+
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
