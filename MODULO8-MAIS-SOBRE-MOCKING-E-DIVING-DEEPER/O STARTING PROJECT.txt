@@ -1,0 +1,810 @@
+
+
+
+
+
+
+
+
+OK.. O PROFESSOR COLOCA MAIS 1 DEMO PROJECT...
+
+
+
+
+
+
+
+
+
+
+--> É 1 FRONTEND JAVA APP BEM SIMPLES, QUE RODA NO BROWSER...
+
+
+
+
+
+
+
+
+O APP É BEM SIMPLES,
+
+
+1 FORM A SER SUBMITTADA..
+
+
+
+
+
+
+
+MAS TEMOS 1 CÓDIGO JAVASCRIPT QUE HANDLA A FORM SUBMISSION...
+
+
+
+
+
+
+NOSSO CÓDIGO É ESTE:
+
+
+
+
+
+import { extractPostData, savePost } from './posts/posts.js';
+
+const formElement = document.querySelector('form');
+
+export async function submitFormHandler(event) {
+  event.preventDefault();
+
+  const formData = new FormData(formElement);
+  try {
+    const postData = extractPostData(formData);
+    await savePost(postData);
+  } catch (error) {
+    showError(error.message);
+  }
+}
+
+formElement.addEventListener('submit', submitFormHandler);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PARA SERMOS MAIS PRECISOS,
+
+
+O QUE ESTAMOS FAZENDO, AQUI,
+É 
+
+EXTRAINDO
+
+1 
+
+DATA 
+
+
+
+DA FORM,
+
+ 
+
+
+ com a ajuda 
+
+ desta function aqui (definida em 'posts.js'):
+
+
+
+
+
+
+ import { sendDataRequest } from '../util/http.js';
+import { validateNotEmpty } from '../util/validation.js';
+
+export function savePost(postData) {
+  postData.created = new Date();
+  return sendDataRequest(postData);
+}
+
+export function extractPostData(form) {
+  const title = form.get('title');
+  const content = form.get('content');
+
+  validateNotEmpty(title, 'A title must be provided.');
+  validateNotEmpty(content, 'Content must not be empty!');
+
+  return { title, content };
+}
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  --> AÍ, COM ISSO, ESTAMOS USANDO ESSA EXTRACTED DATA 
+
+  PARA 
+
+  CHAMAR 'savePost' ('await savePost(postData)')
+
+
+  QUE 
+
+PARECE RETORNAR 1 PROMISE  (
+
+
+    PQ ELA EXECUTA 
+
+    'return sendDataRequest(postData)' -->  
+
+
+
+    E 
+
+    ESSA 
+
+    'sendDataRequest' É ESTA FUNCTION AQUI:
+
+
+
+
+
+
+
+
+
+
+export async function sendDataRequest(data) {
+  const response = await fetch('https://dummy-site.dev/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new HttpError(response.status, 'Sending the request failed.', responseData);
+  }
+
+  return responseData;
+}
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+ISSO AÍ ENVOLVE CÓDIGO DE HTTP REQUEST --> fetch api --> É UMA FUNCTION QUE 
+
+
+ENVIA DATA A 1 BACKEND QUE NÃO EXISTE... -----> PQ  ISSO AQUI É UM 
+
+
+
+DEMO SITE, 1 DEMO PROJECT PARA PODERMOS ESCREVER TESTS --> E ESSA É A FUNCTION QUE 
+
+SIMULA QUE 
+
+1 HTTP REQUEST SERIA SENT -----> E QUE A RESPONSE SERIA 'PARSED' 
+
+
+e HANDLED...
+
+
+
+
+
+
+
+
+
+
+
+
+--> POR FIM,
+
+
+
+
+
+
+OS ERRORS TAMBÉM SÃO CATCHADOS,
+
+
+
+
+LÁ EM 'submitFormHandler',
+
+
+
+
+COM A AJUDA 
+
+
+
+
+DO METHOD DE 'showError',
+
+
+QUE É OUTRA HELPER FUNCTION:
+
+
+
+
+
+export function showError(message) {
+  const errorContainerElement = document.getElementById('errors');
+  const errorMessageElement = document.createElement('p');
+  errorMessageElement.textContent = message;
+  errorContainerElement.innerHTML = '';
+  errorContainerElement.append(errorMessageElement);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+
+CONFORME MENCIONADO, O APP EM SI NÃO É MT IMPORTANTE...
+
+
+
+
+
+
+
+
+
+
+
+
+PODEMOS INSPECIONAR ESSE APP COM 'npm install' e 'npm start'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-_> OK... DEVEMOS VER OS TESTS QUE VAMOS ESCREVER PARA ESSES TESTS..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO... VEREMOS QUE 
+
+
+
+MTAS DAS FILES SÃO STRAIGHTFORWARD,
+
+
+
+
+
+
+E 
+
+ALGUMAS TESTS 
+
+SERÃO 
+
+
+MAIS CHALLENGING..
+
+
+
+
+
+
+
+
+
+
+
+
+--> COMO 1 PRACTICE, E COMO REFRESHER,
+
+
+
+
+
+DEVEMOS PRIMEIRAMENTE TENTAR ESCREVER 
+
+TESTS PARA 
+
+
+AS FILES 
+
+
+E FUNCTIONS MAIS FÁCEIS...
+
+
+
+
+
+
+
+
+
+
+
+
+ESPECIFICAMENTE,
+
+DEVO ESCREVER TESTS PARA 
+ 
+ AS 2 CLASSES 
+
+
+
+ EM 'errors.js':
+
+
+
+
+
+
+
+
+
+
+
+
+ export class HttpError {
+  constructor(statusCode, message, data) {
+    this.statusCode = statusCode;
+    this.message = message;
+    this.data = data;
+  }
+}
+
+export class ValidationError {
+  constructor(message) {
+    this.message = message;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+TAMBÉM DEVEMOS ESCREVER 1 TEST PARA A FUNCTION DE 
+
+
+
+'validateNotEmpty',
+
+
+LÁ EM 'validation.js':
+
+
+
+
+
+
+import { ValidationError } from './errors.js';
+
+export function validateNotEmpty(text, errorMessage) {
+  if (!text || text.trim().length === 0) {
+    throw new ValidationError(errorMessage);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO... NA PRÓXIMA AULA ESCREVEREMOS ALGUNS TESTS COM O PROFESSOR,
+
+PARA 
+
+ENTÃO 
+SEGUIRMOS 
+
+VENDO 
+
+ALGUNS 
+
+
+TESTS MAIS DIFÍCEIS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEM... FIZ OS TESTS DA PRIMEIRA FUNCTION:
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe, beforeEach } from 'vitest';
+
+import { HttpError, ValidationError } from './errors';
+
+let statusCode;
+let message;
+let data;
+let httpError;
+
+describe('HttpError', () => {
+  beforeEach(() => {
+    //ARRANGE
+    statusCode = 404;
+    message = 'Not found';
+    data = { message: 'Product Not Found' };
+    //'ACT'
+    httpError = new HttpError(statusCode, message, data);
+  });
+
+  it('should have properties set as undefined if called with no parameters being passed', () => {
+    //ACT
+    httpError = new HttpError();
+    //ASSERT
+    expect(httpError.statusCode).toBeUndefined();
+    expect(httpError.message).toBeUndefined();
+    expect(httpError.data).toBeUndefined();
+  });
+
+  it('should be able to be instantiated with a statusCode, message and data parameters', () => {
+    //ASSERT
+    expect(httpError).toBeInstanceOf(HttpError);
+  });
+
+  it('should be able to update its statusCode property', () => {
+    //ARRANGE
+    statusCode = 500;
+    //ACT
+    httpError.statusCode = statusCode;
+    //ASSERT
+    expect(httpError.statusCode).toBe(statusCode);
+  });
+
+  it('should be able to update its message property', () => {
+    //ARRANGE
+    message = 'exemplo';
+    //ACT
+    httpError.message = message;
+    //ASSERT
+    expect(httpError.message).toBe(message);
+  });
+
+  it('should be able to update its data property', () => {
+    //ARRANGE
+    data = { message: 'Hello world!' };
+    //ACT
+    httpError.data = data;
+    //ASSERT
+    expect(httpError.data).toBe(data);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+agora devo fazer os tests da outra function..
+
+
+
+
+
+
+
+
+-> PODEM FICAR ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe, beforeAll, beforeEach } from 'vitest';
+
+import { HttpError, ValidationError } from './errors';
+
+//httpError
+let statusCode;
+let message;
+let data;
+let httpError;
+
+//validationError
+
+let validationMessage;
+let validationError;
+
+describe('HttpError', () => {
+  beforeAll(() => {
+    httpError = new HttpError(statusCode, message, data);
+  });
+
+  beforeEach(() => {
+    //ARRANGE
+    statusCode = 404;
+    message = 'Not found';
+    data = { message: 'Product Not Found' };
+    //'ACT'
+    httpError = new HttpError(statusCode, message, data);
+  });
+
+  it('should have properties set as undefined if called with no parameters being passed', () => {
+    //ACT
+    httpError = new HttpError();
+    //ASSERT
+    expect(httpError.statusCode).toBeUndefined();
+    expect(httpError.message).toBeUndefined();
+    expect(httpError.data).toBeUndefined();
+  });
+
+  it('should be able to be instantiated with a statusCode, message and data parameters', () => {
+    //ASSERT
+    expect(httpError).toBeInstanceOf(HttpError);
+  });
+
+  it('should be able to update its statusCode property', () => {
+    //ARRANGE
+    statusCode = 500;
+    //ACT
+    httpError.statusCode = statusCode;
+    //ASSERT
+    expect(httpError.statusCode).toBe(statusCode);
+  });
+
+  it('should be able to update its message property', () => {
+    //ARRANGE
+    message = 'exemplo';
+    //ACT
+    httpError.message = message;
+    //ASSERT
+    expect(httpError.message).toBe(message);
+  });
+
+  it('should be able to update its data property', () => {
+    //ARRANGE
+    data = { message: 'Hello world!' };
+    //ACT
+    httpError.data = data;
+    //ASSERT
+    expect(httpError.data).toBe(data);
+  });
+});
+
+describe('ValidationError', () => {
+  beforeAll(() => {
+    validationError = new ValidationError(validationMessage);
+  });
+
+  beforeEach(() => {
+    //ARRANGE
+    validationMessage = 'Not found';
+    //'ACT'
+    validationError = new ValidationError(validationMessage);
+  });
+
+  it('should have message property set as undefined if called with no parameter being passed', () => {
+    //ACT
+    validationError = new ValidationError();
+    //ASSERT
+    expect(validationError.message).toBeUndefined();
+  });
+
+  it('should instantiate object with string property equal to the message passed as paremeter', () => {
+    //ACT
+    validationError = new ValidationError(validationMessage);
+    //ASSERT
+    expect(validationError.message).toBe(validationMessage);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO.... AGORA SÓ FALTOU O TEST DE 'validation.js':
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe, beforeAll, beforeEach } from 'vitest';
+
+import { validateNotEmpty } from './validation';
+
+import { ValidationError } from './errors';
+
+describe('validateNotEmpty', () => {
+  it('should throw a ValidationError if no textValue paramater is passed', () => {
+    //ARRANGE
+
+    //ACT
+    const validationFunction = () => {
+      return validateNotEmpty();
+    };
+
+    //ASSERT
+    expect(validationFunction).toThrowError(ValidationError);
+  });
+
+  it('should throw a ValidationError if textValue parameter is an empty string', () => {
+    //ARRANGE
+    const textValue = '';
+    const errorMessage = 'Text is empty';
+
+    //ACT
+    const validationFunction = () => {
+      return validateNotEmpty(textValue, errorMessage);
+    };
+
+    //ASSERT
+    expect(validationFunction).toThrowError(ValidationError);
+  });
+
+  it('should not throw any error if a non-empty string is provided as a parameter', () => {
+    //ARRANGE
+    const textValue = 'example';
+    const errorMessage = 'Text is empty';
+
+    //ACT
+    const validationFunction = () => {
+      return validateNotEmpty(textValue, errorMessage);
+    };
+
+    //ASSERT
+    expect(validationFunction).not.toThrow();
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... ACHO QUE ESTÁ CERTO...
