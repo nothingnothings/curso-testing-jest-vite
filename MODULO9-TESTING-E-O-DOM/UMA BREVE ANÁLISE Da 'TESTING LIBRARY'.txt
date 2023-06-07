@@ -1,0 +1,203 @@
+
+
+
+
+
+
+
+
+
+
+NESSA SECTION, APRENDEMOS COMO PODEMOS 
+
+
+
+
+ESCREVER 
+
+
+
+TESTS PARA CÓDIGO QUE RODA NO 
+
+
+DOM...
+
+
+
+
+
+
+
+
+
+--> SE VC ESCREVE FRONTEND APPS MAIS COMPLEXOS,
+
+AS FEATURES 
+
+PROVIDENCIADAS 
+
+
+PELO 
+
+
+
+HAPPYDOM E JSDOM 
+
+
+PODEM 
+
+
+
+
+
+SER MT CLUNKY,
+
+
+OU INSUFICIENTES --> É MT CÓDIGO QUE VC DEVE ESCREVER SOZINHO,
+
+PARA SELECIONAR ELEMENTOS E ETC ETC...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE O PROFESSOR MENCIONA 1 LIBRARY QUE PODEMOS USAR EM CONJUNTO 
+
+COM 
+
+
+
+O 'JEST E 'VITEST'...
+
+
+
+
+
+
+
+
+--> é o 
+
+
+'testing library' --> É UMA LIBRARY QUE, NO FINAL DAS CONTAS,
+
+TE DÁ 
+
+
+1 MONTE DE UTILITY FUNCTIONS E METHODS 
+
+
+E QUE 
+
+DEIXA 
+
+O 
+TRABALHO COM 'DOM-SPECIFIC CODE'
+
+
+BEM MAIS FÁCIL...
+
+
+
+
+
+
+
+
+
+--> ELE PROVIDENCIA 1 MONTE DE BUILT-IN METHODS QUE 
+
+DEIXAM O SELECT DE ELEMENTS BEM MAIS FÁCIL...
+
+
+
+
+
+
+
+
+-- É MAIS FÁCIL DE SIMULAR MOUSE CLICKS COM ELA,
+
+TAMBÉM...
+
+
+
+
+
+
+
+
+
+--> É UMA LIBRARY MT BOA....
+
+
+
+
+
+
+
+
+
+
+--> CERTO... É UMA ÓTIMA LIBRARY...
+
+
+
+
+
+
+
+
+
+
+ESSA LIBRARY TAMBÉM SUPORTA ______tODAS_ AS LIBRARIES POPULARES,
+
+OUT OF THE BOX,
+
+
+
+
+___ COM SPECIAL ADJUSTED VERSIONS DE CADA LIBRARY..
+
+
+
+
+(
+    podemos usá-la 
+
+    não só com VANILLA JS,
+
+    MAS COM O ANGULAR,
+
+    REACT,
+
+    VUE,
+
+    CYPRESS,
+
+    etc...
+)
+
+
+_> o site é:
+
+
+
+
+https://testing-library.com/
+
+
+
