@@ -1,0 +1,857 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... .
+
+
+
+
+
+
+
+
+PARA ACABAR COM ESSA SECTION,
+
+O PROFESSOR 
+
+
+QUER 
+
+
+
+
+
+
+QUE OLHEMOS O ARQUIVO DE 'posts.js'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+LÁ DENTRO, TEMOS 2 FUNCTIONS:
+
+
+
+
+
+
+import { sendDataRequest } from '../util/http.js';
+import { validateNotEmpty } from '../util/validation.js';
+
+export function savePost(postData) {
+  postData.created = new Date();
+  return sendDataRequest(postData);
+}
+
+export function extractPostData(form) {
+  const title = form.get('title');
+  const content = form.get('content');
+
+  validateNotEmpty(title, 'A title must be provided.');
+  validateNotEmpty(content, 'Content must not be empty!');
+
+  return { title, content };
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> A FUNCTION 'extractPostData'
+
+ É INTERESSANTE...
+
+
+
+
+
+
+
+
+
+ NESSA FUNCTION,
+
+
+ ESPERAMOS CONSEGUIR 1 FORM..
+
+
+
+
+
+
+ MAIS ESPECIFICAMENTE 
+
+
+
+
+
+1 OBJECT DO TIPO 'formData',
+
+
+POR MEIO 
+
+
+DA CLASS 
+
+
+
+BUILT-IN  DO BROWSER, DE 'formData'..
+
+
+(
+
+    const formData = new FormData(formElement);
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO.... NESSE OBJECT 'form',
+
+
+rodamos 
+
+
+os methods de 
+
+
+'form.get('title')'
+
+
+
+e 
+
+
+'form.get('content')'
+
+
+PARA EXTRAÍRMOS ALGUMA DATA DESSE OBJECT..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.. 
+
+
+
+
+
+
+
+
+
+VAMOS QUERER TESTAR A FUNCITON DE 'extractPostData'..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS COMO FAZEMOS ISSO?
+
+
+
+
+
+
+
+
+É MAIS FÁCIL DO QUE 
+
+
+VC PENSA...
+
+
+
+
+
+
+
+
+
+
+
+
+TENTEI RODAR ISTO:
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+
+import { extractPostData } from './posts';
+
+describe('extractPostData', () => {
+  it('should extract the formData from the postData object', () => {
+    //ARRANGE
+    const postData = {
+      title: 'exemplo',
+      content: 'exemplo',
+    };
+    //ACT
+    const result = extractPostData(postData);
+    //ASSERT
+    expect(result).toEqual({ title: 'exemplo', content: 'exemplo' });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS GANHEI 1 ERROR:
+
+
+
+
+
+
+
+ FAIL  posts/posts.test.js > extractPostData > should extract the formData from the postData object
+TypeError: form.get is not a function
+ ❯ Module.extractPostData posts/posts.js:10:22
+      8| 
+      9| export function extractPostData(form) {
+     10|   const title = form.get('title');
+       |                      ^
+     11|   const content = form.get('content');
+
+
+
+
+
+
+
+
+
+
+ISSO ACONTECEU/ACONTECE 
+
+
+
+
+
+
+PQ 
+
+
+
+a 'form' que está sendo passada 
+
+
+NÃO ESTÁ NO FORMATO 'form'
+
+
+CRIADO COM O CONSTRUCTOR DE 'new FormData()'...
+
+
+
+
+
+
+
+
+
+
+
+
+BEM, POSSO TENTAR ESCREVER ASSIm:
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+
+import { extractPostData } from './posts';
+
+describe('extractPostData', () => {
+  it('should extract the formData from the postData object', () => {
+    //ARRANGE
+    const postData = new FormData({
+      title: 'exemplo',
+      content: 'exemplo',
+    });
+    //ACT
+    const result = extractPostData(postData);
+    //ASSERT
+    expect(result).toEqual({ title: 'exemplo', content: 'exemplo' });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS ISSO AINDA ESTÁ ERRADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E EU TAMBÉM PRECISO COLOCAR TESTS PARA A FUNCTION DE 
+
+'savePost'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> queremos testar o 'extractPostData' --> 
+
+
+
+
+
+
+'IT SHOULD EXTRACT TITLE AND CONTENT FROM THE PROVIDED FORM DATA'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC PODERIA PENSAR QUE, PARA ISSO, PRECISARÍAMOS USAR 'FormData',
+
+
+
+O OBJECT --> E VC _ PRECISARIA DE 1 FORM ELEMENT, 1 DOM ELEMENT,
+
+
+PARA FAZER ISSO...
+
+
+
+
+
+
+
+E NÃO TEMOS ESSE ELEMENTO DOM, AQUi...
+
+
+
+
+
+
+
+
+
+
+
+
+--> MAS ISSO É MT COMPLEXO, PARA O QUE QUEREMOS FAZER AQUI....
+
+
+
+
+
+
+
+
+--> PQ O QUE QUEREMOS, DE VERDADE, AQUI, É:
+
+
+
+
+
+
+1 OBJECT QUE:
+
+
+
+
+1) TEM 1 METHOD DE 'get' (form.get),
+
+
+
+
+
+2) ACEITA O 'PASS' DE 2 KEYS, COM 2 VALUES, 'title' e 'content'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----> OU SEJA, ESSE É O MINDSET QUE QUEREMOS TER....
+
+
+
+
+
+
+
+NÃO QUEREMOS TESTAR A 'COISA DE VERDADE',
+
+E SIM __ UMA __ COISA TOTALMENTE _ EQUIVALENTE 
+
+
+à COISA DE VERDAED,
+
+
+MAS QUE NÃO RODA SEU CÓDIGO..
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO.... MAS COMO PODEMOS CRIAR ESSA CLASS/FUNCTION CUSTOMIZADA?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ufa... acho que consegui...
+
+
+
+
+
+
+ficou assim:
+
+
+
+
+
+
+
+
+import { it, expect, describe, vi } from 'vitest';
+
+import { extractPostData } from './posts';
+
+class MockFormData {
+  constructor(title, content) {
+    this.title = title;
+    this.content = content;
+  }
+
+  get(key) {
+    if (key === 'title') {
+      return this.title;
+    }
+
+    if (key === 'content') {
+      return this.content;
+    }
+  }
+}
+
+const mockedFormDataConstructor = vi.fn((title, content) => {
+  return new MockFormData(title, content);
+});
+
+describe('extractPostData', () => {
+  it('should extract the formData from the postData object', () => {
+    //ARRANGE
+    // const postData = new FormData({ ///! isso está ERRADO... --> não devemos usar a function 'FormData' DE VERDADE, E SIM __ DEVEMOS USAR 1 FUNCTION/CLASS COM AS MESMAS FUNCIONALIDADES CORE, MAS QUE NAÕ VAI EXECUTAR O CÓDIGO DE VERDADE, E SIM 1 MOCK...
+    //   title: 'exemplo',
+    //   content: 'exemplo',
+    // });
+    const postData = mockedFormDataConstructor('exemplo1', 'exemplo2'); // * isso está certo (com isso, mockamos o uso da function 'FormData' de verdade, e usamos 1 mock no lugar dela)...
+
+    //ACT
+    const result = extractPostData(postData); //extraímos a data contida nesse object criado a partir do constructor mockado de 'FormData'...
+    //ASSERT
+    expect(result).toEqual({ title: 'exemplo1', content: 'exemplo2' });
+  });
+});
+
+
+
+
+-----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ok...  RECAPITULANDO:
+
+
+
+
+
+
+
+1) PENSE NO CÓDIGO QUE VC QUER TESTAR 
+
+
+
+
+
+2) PENSE __ NO BEHAVIOR QUE VC QUER TESTAR (PARTE MAIS IMPORTANTE)
+
+
+
+
+3) CONSTRUA 1 TESTING ENVIRONMENT QUE __ TE DEIXE TESTAR 
+
+ESSES BEHAVIORS, ESPECIFICAMENTE....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O CÓDIGO FINAL:
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe, vi } from 'vitest';
+
+import { extractPostData } from './posts';
+
+class MockFormData {
+  ///VAMOS USAR ISTO, NO LUGAR DO CONSTRUCTOR DE 'FormData'...
+  constructor(title, content) {
+    this.title = title;
+    this.content = content;
+  }
+
+  get(key) {//substitui 'form.get('title')' e 'form.get('content')'...
+    return this[key]; //this.content, this.title
+  }
+}
+
+const mockedFormDataConstructor = vi.fn((title, content) => {
+  return new MockFormData(title, content);
+});
+
+describe('extractPostData', () => {
+  it('should extract the formData from the postData object', () => {
+    //ARRANGE
+    // const postData = new FormData({ ///! isso está ERRADO... --> não devemos usar a function 'FormData' DE VERDADE, E SIM __ DEVEMOS USAR 1 FUNCTION/CLASS COM AS MESMAS FUNCIONALIDADES CORE, MAS QUE NAÕ VAI EXECUTAR O CÓDIGO DE VERDADE, E SIM 1 MOCK...
+    //   title: 'exemplo',
+    //   content: 'exemplo',
+    // });
+    const postData = mockedFormDataConstructor('exemplo1', 'exemplo2'); // * isso está certo (com isso, mockamos o uso da function 'FormData' de verdade, e usamos 1 mock no lugar dela)...
+
+    //ACT
+    const result = extractPostData(postData); //extraímos a data contida nesse object criado a partir do constructor mockado de 'FormData'...
+    //ASSERT
+    expect(result).toEqual({ title: 'exemplo1', content: 'exemplo2' });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOVAMENTE, AQUI ESTAMOS ___ MOCKANDO ALGO:
+
+
+
+
+
+ESTAMOS SUBSTITUINDO UMA COISA DE VERDADE, 
+
+1 VALUE DE VERDADE,
+
+POR NOSSO PRÓPRIO 'FAKE VALUE',
+
+
+
+
+TUDO PARA QUE CONSIGAMOS TESTAR A 'ACTUAL THING'
+
+
+EM QUE 
+ESTAMOS INTERESSADOS (
+
+QUE É 
+
+
+SE __ NOSSA __ FUNCTION __ EXTRAI A DATA,
+
+E SE ELA 
+
+RETORNA A DATA...
+
+)
+
+
+
+
+
+
+
+AQUI NEM MESMO  PRECISAMOS MOCK-REPLACE 1 VALUE 
+
+
+GLOBAL,
+
+OU 1 MODULE GLOBAL,
+
+
+
+E SIM 
+
+
+
+
+
+
+
+ BASTA __ CRIAR __ NOSSO PRÓPRIO DUMMY OBJECT,
+ MOCK OBJECT,
+
+ QUE 
+
+ PASSAMOS A ESSA FUNCTION, COMO ARGUMENT...
+
+
+
+
+
+
+
+
+ VC PODERIA ADICIONAR MAIS TESTS...
+
+
+
+
+
+
+
+
+SE VC FIZESSE ISSO, TVZ FOSSE BOM 
+
+
+OUTSOURCEAR SUA DATA DE 'testFormData'...
+
+
+
+
+
+
+
+
+
+
+--> TALVEZ COLOCAR 1 'RESET' de 'testFormData',
+
+
+por meio 
+
+
+
+de 
+
+1 call de 'beforEach()'
+
+
+DENTRO DO SEU DESCRIBE BLOCK...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+É CLARO QUE MINHA VERSÃO N PRECISA DISSO,
+
+
+PQ EU FAÇO A INSTANCIAÇÃO DE 1 OBJECT, EM VEZ DE USAR 1 VALUE GLOBAL...
