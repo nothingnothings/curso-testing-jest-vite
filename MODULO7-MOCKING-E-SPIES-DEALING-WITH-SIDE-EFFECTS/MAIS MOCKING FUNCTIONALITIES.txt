@@ -1,0 +1,152 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... PARA CONCLUIR ESSA INTRODUCTION A SPIES E MOCKS,
+
+HÁ 
+
+1
+ 
+
+
+FUNCTION IMPORTANTE PARA TANTO O 'vitest' COMO O JEST...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ALGUMAS VEZES VC ESTARÁ FAZENDO 'MOCK'
+
+
+DE ALGUMA FUNCTIONALITY...
+
+
+
+
+
+
+
+
+
+
+--> MAS EM ALGUNS LUGARES ESPECÍFICOS,
+
+
+VC VAI QUERER ALGUMA IMPLEMENTATION DIFERENTE 
+
+
+PARA _ aLGUNS _ METHODS PROVIDENCIADOS PELO METHOD ... --> CASOS 
+
+
+EM QEU 
+
+VC 
+
+NÃO VAI QUERER 
+
+QUE 
+
+
+
+A FUNCTIONALITY SEJA 'MOCKED'
+
+EM GERAL,
+
+
+E SIM APENAS __ EM ALGUNS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> SE VC QUISER ISSO,
+
+VC DEVE IR ATÉ A TEST FUNCTION 
+
+
+
+EM QUE _ NÃO QUEREMOS QUE ESSE MODULE TENHA SEU COMPORTAMENTO PADRÃO 
+
+
+
+E ESCREVER O METHOD DE 
+
+
+
+
+'vi.fn().mockImplementation(() => {})',
+
+
+OU 
+
+
+
+
+'vi.fn().mockImplementationOnce(() => {})'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO TE DEIXA SUBSTITUIR ESSE BEHAVIOR, SIM,
+
+MAS APENAS 1 ÚNICA VEZ...
+
+
+
+--> VC SUBSTITUI A 'EMPTY FUNCTION'
+
+
+
+PELA LÓGICA QUE VC QUER RODAR...
+
+
+
+
+
+
+
+
+
+
+
+--> com 'mockImplementationOnce()',
+
