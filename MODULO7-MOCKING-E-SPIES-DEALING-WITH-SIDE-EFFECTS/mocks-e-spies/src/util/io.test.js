@@ -4,6 +4,7 @@ import { vi } from 'vitest'; // usamos 'vi' para ter coisas como SPIES (vi.fn())
 import writeData from './io.js';
 import { promises as fs } from 'fs'; //exatamente o mesmo código importado lá em 'io.js'...
 
+/// TODO VVVVV O COMPORTAMENTO DEFAULT DO 'fs' VAI SER SUBSTITUÍDO POR ESSE MOCK DE FS.... --> e esse mock de fs vai UTILIZAR A IMPLEMENTATION QUE DEFINIMOS LÁ NO FOLDER DE '__mocks__', no arquivo de 'fs.js'... (pq esse é o comportamento default do vitest, procurar por mocks nessa pasta específica, dentro do seu project folder)..
 vi.mock('fs'); //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
 vi.mock('path', () => {
   // TODO - COM ISSO, TENTO SIMPLIFICAR AO MÁXIMO O CÓDIGO QUE EXECUTO NO MEU TEST... (substituo o MÓDULO INTEIRO de 'path' POR ESSA EXECUÇÃO AÍ...)
@@ -60,7 +61,7 @@ it('should execute the writeFile method', () => {
   const testFileName = 'test.txt';
   //ACT
   //   const result = await writeData(testData, testFileName);
-  writeData(testData, testFileName); // ? VAI CHAMAR 'fs.writeFile', no seu interior...
+  const result = writeData(testData, testFileName); // ? VAI CHAMAR 'fs.writeFile', no seu interior...
   //// ACT E ASSERT
   //   return expect(writeData(testData, testFileName)).resolves.toBeUndefined(); //isto também funciona.
 
@@ -68,6 +69,17 @@ it('should execute the writeFile method', () => {
   //   return expect(result).resolves.toBeUndefined(); //! ISTO NÃO VAI MAIS FUNCIONAR PQ TODAS AS FUNCTIONS DENTRO DE 'fs' (fs.writeFile, por exemplo) FORAM MOCKADAS/TROCADAS POR EMPTY SPY FUNCTIONS...
   expect(fs.writeFile).toHaveBeenCalled(); // ESSA É A COISA PELA QUAL TESTAMOS DE VERDADE, PQ __ É REALMENTE ISSO QUE IMPORTA (se essa function foi chamada ou não, durante aquela execução)...
   expect(fs.writeFile).toBeCalledWith(testFileName, testData); // vai funcionar por conta do mock de 'fs'...
+  expect(result).resolves.toBeUndefined();
+});
+
+it('should return a promise that resolves to no value if called correctly', () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  const result = writeData(testData, testFileName); 
+  //ASSERT
+  return expect(result).resolves.toBeUndefined();
 });
 
 // OK... DENTRO DO OBJECT 'vi',

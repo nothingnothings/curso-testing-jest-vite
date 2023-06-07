@@ -1,0 +1,892 @@
+
+
+
+
+
+
+
+
+AGORA JÁ APRENDEMOS BASTANTE SOBRE MOCKS... 
+
+
+
+
+
+
+E APRENDEMOS SOBRE COMO PODEMOS USAR 
+
+
+
+
+
+
+
+'vi.mock()',
+
+
+
+
+
+E TAMBÉM APRENDEMOS SOBRE COMO 
+
+
+
+PODEMOS 
+
+SUBSTITUIR O COMPORTAMENTO DO MODULE QUE FOI MOCKED (
+
+    no caso,
+
+
+
+
+
+    com a escrita de coisas como 
+
+
+    ''''
+
+
+    vi.mock('path', () => {
+  // TODO - COM ISSO, TENTO SIMPLIFICAR AO MÁXIMO O CÓDIGO QUE EXECUTO NO MEU TEST... (substituo o MÓDULO INTEIRO de 'path' POR ESSA EXECUÇÃO AÍ...)
+  return {
+    default: {
+      join: (...args) => {
+        return args[args.length - 1]; //? com isso, conseguimos retornar APENAS 'fileName'
+      },
+      // basename: ,  //outras propriedades/methods do module de 'path' que podemos customizar...
+      // format: ,
+    },
+  };
+});
+
+
+''',
+
+
+
+
+em que a segunda function é O 
+
+
+comportamento 
+
+
+
+que COLOCAREMOS NO LUGAR DO 'MOCKED MODULE'...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO... MAS às VEZES VC TAMBÉM 
+
+PRECISA 
+
+
+
+
+DE 1 'REPLACEMENT'
+
+PARA __ TODOS SEUS TESTS EM GERAL... -----> 
+
+
+
+
+
+
+E SE VC TIVER MT LÓGICA QUE VC VAI QUERER 
+
+
+USAR COMO SUBSTITUTA DOS MODULES, NOS SEUS MOCKS,
+
+
+
+
+
+TALVEZ SEJA 
+
+MELHOR 
+
+DEFINIR 
+
+SEU 
+
+
+
+'MOCK REPLACEMENT' 
+
+
+
+EM 
+
+1 FILE 
+
+SEPARADA... --> TUDO PARA QUE VC SEMPRE 
+
+
+SAIBA 
+
+ONDE VC PODERÁ 'TWEAKAR'
+
+ESSES REPLACEMENTS...
+
+
+
+
+
+
+
+
+
+
+
+------> PQ TER MÚLTIPLAS FILES EM QUE TEMOS 
+
+coisas como 
+
+'vi.mock('path', () => {
+  // TODO - COM ISSO, TENTO SIMPLIFICAR AO MÁXIMO O CÓDIGO QUE EXECUTO NO MEU TEST... (substituo o MÓDULO INTEIRO de 'path' POR ESSA EXECUÇÃO AÍ...)
+  return {
+    default: {
+      join: (...args) => {
+        return args[args.length - 1]; //? com isso, conseguimos retornar APENAS 'fileName'
+      },
+      // basename: ,  //outras propriedades/methods do module de 'path' que podemos customizar...
+      // format: ,
+    },
+  };
+});
+'
+
+
+
+
+
+
+
+
+
+PODE DEIXAR NOSSO CÓDIGO BEM CONFUSO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE O JEST E O VITEST 
+
+
+SUPORTAM 
+
+
+
+1 FOLDER ESPECIAL NO NOSSO PROJECT,
+
+QUE É O FOLDER DE 
+
+'__mocks__'...
+
+
+
+
+
+
+
+
+
+ESSE É UM FOLDER NAME ESPECIAL,
+
+QUE 
+
+
+
+
+SERÁ SEMPRE 'PROCURADO'
+
+
+
+
+
+
+QUANDO VC USAR 'vi.mock()'...
+
+
+
+
+
+
+
+
+
+
+
+
+--> DENTRO DESSE FOLDER,
+
+PODEMOS 
+
+
+COLOCAR FILES  ___ QUE __ TERÃO OS FILENAMES DOS MODULES QUE 
+
+VC 
+
+VAI QUERER 
+
+'mock away'...
+
+
+
+
+
+
+
+
+
+--> POR EXEMPLO, SE QUERO MOCKAR 'fs',
+
+
+o module de FILE SYSTEM DO NODEJS,
+
+
+
+
+devo criar o arquivo 'fs.js'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK....
+
+
+
+
+
+
+
+O CÓDIGO QUE ESCREVEREMOS SERÁ ESTE:
+
+
+
+
+
+
+
+
+export const promises = {
+
+    writeFile
+}
+
+
+
+
+
+
+
+
+
+
+
+--> NO CASO,
+
+ESCREVEMOS ISTO 
+
+
+
+PQ O MODULE ORIGINAL DE 'fs' 
+
+
+
+
+TINHA O OBJECT DE 'promises'... 
+
+
+
+
+
+(
+
+
+    como visto 
+
+
+    na linha 
+ 
+    '' import { promises as fs } from 'fs'; ''
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO... COMO O MODULE ORIGINAL DE 'promises'
+
+TINHA 
+
+
+o method de 'writeFile',
+
+PODEMOS ESCREVER ASSIM:
+
+
+
+
+-----------------------------
+
+
+
+
+
+
+
+
+export const promises = {
+
+    writeFile: 
+}
+
+
+
+
+
+
+
+
+
+MAS É CLARO QUE NÃO VAMOS FAZER NENHUM 'WRITE' DENTRO DESSE METHOD 'writeFile' custommizado...
+
+
+
+
+
+
+em vez disso,
+
+VAMOS RODAR 1 SPY FUNCTION,
+
+TUDO PARA QUE 
+
+
+__ PÓSSAMOS 'KEEP TRACK' DE NOSSAS EXECUTIONS...
+
+
+
+
+
+
+
+
+
+
+--> é por isso que o professor escreve assim:
+
+
+
+
+
+
+export const promises = {
+
+    writeFile: vi.fn()
+}
+
+
+
+
+
+
+
+
+
+SIM, COM ISSO CONSEGUIMOS ESSA DUMMY FUNCTION...
+
+
+
+
+
+
+
+
+-> MAS O PROFESSOR AINDA QUER __ ADICIONAR SUA PRÓPRIA 
+
+
+
+IMPLEMENTATION DENTRO DESSA FUNCTION DE 'vi.fn()',
+
+por isso 
+
+
+ele 
+
+
+
+COLOCA '() => {}' 
+
+NO SEU INTERIOR,
+
+TIPO ASSIM:
+
+
+
+
+
+export const promises = {
+
+    writeFile: vi.fn(
+        () => {
+
+        }
+    )
+}
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+import { vi } from 'vitest';
+
+export const promises = {
+  writeFile: vi.fn(() => {}),  // com isso, podemos escrever nossa própria implementation para essa spy function...
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS COMO 'writeFile',
+
+lá do fs,
+
+
+ORIGINALMENTE 
+
+RETORNA 1 PROMISE,
+
+
+
+
+
+SERIA BOM _ fAZER O RETURN DE 1 PROMISE TAMBÉM 
+
+
+
+
+NESSE MOCK AÍ...
+
+
+
+
+
+
+
+
+
+
+
+--> ok... vamos pegar o 'path' e a 'data'...
+
+
+
+
+
+
+--> E O QUE VAMOS RETORNAR É UMA PROMISE..
+
+
+
+
+
+por isso escrevemos assim:
+
+
+
+
+
+
+
+
+
+
+///cada module que está dentro de '__mocks__' é um MOCK IMPLEMENTATION...
+//(será 1 module que vc vai querer mockar) -->
+//vc vai querer SUBSTITUIR O COMPORTAMENTO DEFAULT DESSE MODULE,
+// AS PROPERTIES E METHODS, POR ESSAS PROPERTIES E METHODS QUE VC VAI DEFINIR NESTA FILE
+
+import { vi } from 'vitest';
+
+export const promises = {
+  writeFile: vi.fn((path, data) => {
+    // com isso, podemos escrever nossa própria implementation para essa spy function...
+    //e vamos IMITAR O FORMATO DO 'writeFile' DO 'fs', mas sem o actual write de content a 1 file em nosso file system (sem side effects, portanto)...
+    return new Promise((resolve, reject) => {
+      resolve();
+    });
+  }),
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+
+
+
+
+
+
+
+
+fazemos 1 resolve para 'nada',
+
+
+exatamente como no write file normal....
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+///cada module que está dentro de '__mocks__' é um MOCK IMPLEMENTATION...
+//(será 1 module que vc vai querer mockar) -->
+//vc vai querer SUBSTITUIR O COMPORTAMENTO DEFAULT DESSE MODULE,
+// AS PROPERTIES E METHODS, POR ESSAS PROPERTIES E METHODS QUE VC VAI DEFINIR NESTA FILE
+
+import { vi } from 'vitest';
+
+export const promises = {
+  writeFile: vi.fn((path, data) => {
+    // com isso, podemos escrever nossa própria implementation para essa spy function...
+    //e vamos IMITAR O FORMATO DO 'writeFile' DO 'fs', mas sem o actual write de content a 1 file em nosso file system (sem side effects, portanto)...
+    return new Promise((resolve, reject) => {
+      resolve(); //fazemos 'resolve()' to nothing, exatamente como na function original de 'fs.writeFile()'..
+    });
+  }),
+};
+
+
+
+
+
+
+
+
+
+
+
+
+OK... COM ISSO,
+
+
+
+
+ESSE 'writeFile' method VAI SER USADO, E VAI RETORNAR 1 PROMISE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> E ISSO VAI _ SER USADO AUTOMATICAMENTE... ->  PQ 
+
+O VITEST 
+
+
+PROCURA POR ESSA PASTA,
+
+
+
+E AÍ 
+APLICA 
+
+
+
+
+LÁ NOS 'vi.mock('nome-do-module')'
+
+
+QUE 
+
+VC 
+
+TEM NOS SEUS ARQUIVOS:
+
+
+
+
+
+
+
+
+
+
+
+
+import { expect, it, describe } from 'vitest';
+import { vi } from 'vitest'; // usamos 'vi' para ter coisas como SPIES (vi.fn()) E MOCKS... (com vi.mock())...
+
+import writeData from './io.js';
+import { promises as fs } from 'fs'; //exatamente o mesmo código importado lá em 'io.js'...
+
+
+/// TODO VVVVV O COMPORTAMENTO DEFAULT DO 'fs' VAI SER SUBSTITUÍDO POR ESSE MOCK DE FS.... --> e esse mock de fs vai UTILIZAR A IMPLEMENTATION QUE DEFINIMOS LÁ NO FOLDER DE '__mocks__', no arquivo de 'fs.js'... (pq esse é o comportamento default do vitest, procurar por mocks nessa pasta específica, dentro do seu project folder)..
+vi.mock('fs'); //o segundo argumento, de config, é OPCIONAL. POR MEIO DE 'vi.mock('nome-do-module')' PODEMOS MOCKAR COMPLETAMENTE ESSA FUNCIONALIDADE/MODULO/METHOD...
+vi.mock('path', () => {
+  // TODO - COM ISSO, TENTO SIMPLIFICAR AO MÁXIMO O CÓDIGO QUE EXECUTO NO MEU TEST... (substituo o MÓDULO INTEIRO de 'path' POR ESSA EXECUÇÃO AÍ...)
+  return {
+    default: {
+      join: (...args) => {
+        return args[args.length - 1]; //? com isso, conseguimos retornar APENAS 'fileName'
+      },
+      // basename: ,  //outras propriedades/methods do module de 'path' que podemos customizar...
+      // format: ,
+    },
+  };
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... ISSO FUNCIONA PQ, DE FATO,
+
+
+
+NOSSO METHOD DE 
+'fs.writeFile'
+
+AINDA É CHAMADO,
+
+E É CHAMADO 
+COM AQUELES METHODS,
+
+LÁ 
+
+
+NO TEST DE 
+
+
+''
+
+
+
+
+
+
+
+it('should execute the writeFile method', () => {
+  
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  
+  
+  const result = writeData(testData, testFileName); 
+  
+  
+
+  
+  
+  expect(fs.writeFile).toHaveBeenCalled(); 
+  expect(fs.writeFile).toBeCalledWith(testFileName, testData); 
+  expect(result).resolves.toBeUndefined();
+});
+
+
+
+
+
+
+
+
+
+
+``
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... NOSSA CUSTOM IMPLEMENTATION ESTÁ SENDO USADA... --> ISSO É IMPORTANTE 
+
+
+PARA QUE VC CONSIGA 'FINE-TUNE' SEUS MOCKS,
+
+DE MODO QUE 
+
+
+CONSIGA 
+
+FAZER 
+
+ELES FUNCIONAREM DA MANEIRA QUE VC QUER NOS SEUS TESTS....
+
+
+
+
+
+
+
+
+
+É BEM MELHOR ESCREVER 1 ASSERTION POR TEST..
+
+
+
+
+
+
+
+
+ex:
+
+
+
+
+
+
+
+
+
+it('should return a promise that resolves to no value if called correctly', () => {
+  //ARRANGE
+  const testData = 'DUMMY';
+  const testFileName = 'test.txt';
+  //ACT
+  const result = writeData(testData, testFileName); 
+  //ASSERT
+  return expect(result).resolves.toBeUndefined();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+ok.... É ASSIM QUE PODEMOS USAR ESSE FOLDER DE '__mocks__' PARA PROVIDENCIAR NOSSA PRÓPRIA 
+
+IMPLEMENTATION...
