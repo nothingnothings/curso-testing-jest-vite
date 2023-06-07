@@ -1,0 +1,179 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.... 
+
+
+
+
+
+
+NO ÚLTIMO MÓDULO,
+
+
+
+OOLHAMOS MOCKING MAIS DE PERTO...
+
+
+
+
+
+
+
+
+NESSA COURSE SECTION,
+
+
+TAMBÉM VEREMOS O HANDLE DE SIDE EFFECTS 
+
+
+
+EM TESTING,
+
+
+
+
+
+MAS _ SERÁ _ 1 TIPO DIFERENTE DE SIDE EFFECTS..
+
+
+
+
+
+
+
+
+
+
+--> 1 TIPO DIFERENTE DE 'MOCKING',
+
+
+
+NO CASO...
+
+
+
+
+
+
+
+
+
+
+
+
+-> VEREMOS COMO PODEMOS ESCREVER 
+
+TESTS 
+
+
+QUE __ ENVOLVEM __ CÓDIGO QUE __ ENVOLVE O __ DOM.. (document object model)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-_> VEREMOS COMO ESCREVER CÓDIGO DE TEST QUE INTERAGE COM O DOM..
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ANTES, VEREMOS COMO PODEMOS USAR DIFERENTES 
+
+
+TESTING ENVIRONMENTS...
+
+
+
+
+
+
+
+
+
+--> VEREMOS:
+
+
+
+
+
+1) BROWSERSIDE OU 'DOM SUPPORTING' TESTING ENVIRONMENTS 
+
+
+
+VS 
+
+
+
+2) 'NODEJS TESTING ENVIRONMENTs'..
+
+
+
+
+
+
+
+
+
+
+
+
+depois disso, veremos como podemos ACESSAR 
+
+
+O DOM DE DENTRO DE NOSSOS TESTS.... PARA SERMOS MAIS PRECISOS,
+
+COMO PODEMOS 
+
+
+RODAR __ FUNCTIONS QUE ACESSAM O DOM...
+
+
+
+
+
+
+
+
+
+
+
+
+----->  DEPOIS OLHAREMOS ALGUMAS LIBRARIES DEDICADAS,
+
+
+QUE 
+
+DEIXARÃO O TRABALHO COM O DOM, NOS NOSSOS TESTS,
+
+AINDA MAIS FÁCIL...
