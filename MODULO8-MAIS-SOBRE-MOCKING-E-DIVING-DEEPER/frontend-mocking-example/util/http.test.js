@@ -6,16 +6,22 @@ const testResponseData = { testKey: 'testDataDummy' };
 const fetchSpyFunction = vi.fn((url, options) => {
   //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
 
-  const testResponse = {
-    ok: true, //usado na linha 14 de 'http.js'...
-    json() {
-      //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
-      return new Promise((resolve, reject) => {
-        resolve(testResponseData);
-      });
-    },
-  };
   return new Promise((resolve, reject) => {
+    if (typeof options.body !== 'string') {
+      //com isso, se a data passada NÃO FOR 1 STRING (json data é uma string... e obtemos 1 string por meio do call de 'JSON.stringify(data)'), nosso código vai dar 1 ERRO...
+      return reject('Not a string.');
+    }
+
+    const testResponse = {
+      ok: true, //usado na linha 14 de 'http.js'...
+      json() {
+        //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+        return new Promise((resolve, reject) => {
+          resolve(testResponseData);
+        });
+      },
+    };
+
     resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
   });
 });
@@ -26,28 +32,49 @@ const fetchSpyFunction = vi.fn((url, options) => {
 
 vi.stubGlobal('fetch', fetchSpyFunction); //e esse stub, de 'fetch', será usado nessa function de 'sendDataRequest', que possui um FETCH function call no seu interior...
 
+// describe('sendDataRequest', () => {
+//   it('should return any available response data', async () => {
+//     //ARRANGE
+//     const testData = { key: 'test' };
+//     //ACT
+//     const result = await sendDataRequest(testData);
+//     //ASSERT
+//     expect(result).toEqual(testResponseData);
+//   });
+// });
+
+//? VERSÃO ALTERNATIVA do test de cima:
 describe('sendDataRequest', () => {
-  it('should return any available response data', async () => {
+  it('should return any available response data', () => {
     //ARRANGE
     const testData = { key: 'test' };
-    //ACT
-    const result = await sendDataRequest(testData);
-    //ASSERT
-    expect(result).toEqual(testResponseData); 
+    //ACT AND ASSERT
+    return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData);
   });
 });
 
+it('should convert the provided data to JSON before sending the request', async () => {
+  //ARRANGE
+  const testData = { key: 'test' };
+  let errorMessage;
+  //ACT
+  try {
+    await sendDataRequest(testData);
+  } catch (err) {
+    //ASSERT
+    errorMessage = err;
+  }
 
-//? VERSÃO ALTERNATIVA do test de cima:
-// describe('sendDataRequest', () => {
-//   it('should return any available response data', async () => {
-//     ARRANGE
-//     const testData = { key: 'test' };
-//     ACT AND ASSERT
-//    return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData); 
-//  
-//     
-//   });
+  expect(errorMessage).not.toBe('Not a string.');
+});
+
+// it('should throw an error if the provided data is not converted to JSON before sending the request', () => {
+//   //ARRANGE
+//   const testData = { key: 'test' };
+//   //ACT
+//   sendDataRequest(testData);
+//   //ASSERT
+//   expect(fetch).toBeCalled();
 // });
 
 // COMO PARTE DESSE TEST,

@@ -1,0 +1,727 @@
+
+
+
+
+
+
+
+
+
+
+
+
+OK... APRENDEMOS SOBRE 'vi.stubGlobal()'...
+
+
+
+
+
+
+
+
+
+
+
+--> AGORA QUE SABEMOS QUE PODEMOS TESTAR CÓDIGO QUE 
+
+USA ESSA 'FETCH' FUNCTION,
+
+
+
+
+
+
+
+PODEMOS ESCREVER MAIS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR PODE TESTAR, POR EXEMPLO,
+
+SE NOSSO CÓDIGO 
+
+
+
+REALMENTE 
+
+
+___cONVERTE__ __ NOSSA 'testData',
+
+
+a data em 
+
+
+
+
+describe('sendDataRequest', () => {
+  it('should return any available response data', async () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //ACT
+    const result = await sendDataRequest(testData);
+    //ASSERT
+    expect(result).toEqual(testResponseData); 
+  });
+});
+
+
+
+
+
+
+,
+
+
+
+
+
+
+na linha
+
+de 
+
+'    const testData = { key: 'test' }; '',
+
+
+
+
+
+
+
+
+
+
+
+EM 
+
+
+JSON DATA, ANTES 
+
+DE ENVIAR ESSA DATA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- PQ __ SE OLHARMOS O CÓDIGO DE 'http.js',
+
+TEMOS ISTO:
+
+
+
+
+
+export async function sendDataRequest(data) {
+  const response = await fetch('https://dummy-site.dev/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new HttpError(response.status, 'Sending the request failed.', responseData);
+  }
+
+  return responseData;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> como vc pode observar,
+
+
+
+temos 'JSON.stringify()'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ok... o professor quer testar 
+
+
+
+
+
+
+SE ___ NÓS REALMENTE TIVEMOS 'JSON.stringify()"
+
+sendo 
+
+executado,
+
+dentro dessa function... -------> 
+
+
+
+
+
+
+
+
+
+
+
+ISSO PQ _a FUNCTION ORIGINAL DE 
+
+
+'fetch'
+
+FALHARIA 
+
+
+
+SE __ 
+
+PASSÁSSEMOS 
+
+
+
+
+DATA _EM FORMATO __ NÃO STRING 
+
+
+ao body de nosso data/options object...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-_> OU SEJA, QUEREMOS QUE O NOSSO __ TEST _ FALHE 
+
+
+
+SE ISTO AQUI 
+
+
+ESTIVER ESCRITO:
+
+
+
+
+
+
+  const response = await fetch('https://dummy-site.dev/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: data, ///em vez de 'JSON.stringify(data)' 
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... É POR ISSO QUE O PROFESSOR COMEÇA COM OUTRO TEST...
+
+
+
+
+
+
+
+
+
+
+it('should convert the provided data to JSON before sending the request', () => {
+
+} )
+
+
+
+
+
+
+
+
+
+
+
+
+PARA SABER SE O CÓDIGO QUE FOI PASSADO à FUNCTION DE 'fetch' (mockada)
+
+
+
+ERA REALMENTE JSON DATA,
+
+
+
+O PROFESSOR NOS DIZ QUE 
+
+PODEMOS 
+
+ADICIONAR 
+
+
+1 LÓGICA 
+
+CUSTOMIZADA DENTRO DA PROMISE 
+
+
+
+de 'vi.fn()',
+
+tipo assim:
+
+
+
+
+
+
+const testResponseData = { testKey: 'testDataDummy' };
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  const testResponse = {
+    ok: true, //usado na linha 14 de 'http.js'...
+    json() {
+      //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+      return new Promise((resolve, reject) => {
+        resolve(testResponseData);
+      });
+    },
+  };
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR VAI COLOCAR 1 IF CHECK DENTRO 
+
+DO CÓDIGO DA PROMISE,
+
+
+CHECANDO SE 'options.body' NÃO É DE TIPO JSON (ou seja, se não é uma string)...
+
+
+
+
+
+
+tipo assim:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const testResponseData = { testKey: 'testDataDummy' };
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  if (typeof options.body !== 'string') {
+    return reject('Not a string!')
+  }
+
+  const testResponse = {
+    ok: true, //usado na linha 14 de 'http.js'...
+    json() {
+      //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+      return new Promise((resolve, reject) => {
+        resolve(testResponseData);
+      });
+    },
+  };
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FICAMOS COM ESTE CÓDIGO:
+
+
+
+
+
+
+
+
+
+
+
+const testResponseData = { testKey: 'testDataDummy' };
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  if (typeof options.body !== 'string') { //com isso, se a data passada NÃO FOR 1 STRING (json data é uma string... e obtemos 1 string por meio do call de 'JSON.stringify(data)'), nosso código vai dar 1 ERRO...
+    return reject('Not a string!')
+  }
+
+  const testResponse = {
+    ok: true, //usado na linha 14 de 'http.js'...
+    json() {
+      //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+      return new Promise((resolve, reject) => {
+        resolve(testResponseData);
+      });
+    },
+  };
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction); //e esse stub, de 'fetch', será usado nessa function de 'sendDataRequest', que possui um FETCH function call no seu interior...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... AGORA SE ALGUM TESTER/PESSOA TENTAR ENVIAR APENAS 'data'
+
+
+
+COM NOSSA FETCH 
+
+FUNCTION MOCKADA,
+
+
+ELA VAI RECEBER 1 ERRO...
+
+
+
+
+
+
+
+
+
+queremos que o código NÃO ACABE EM 'REJECT',
+
+E FICAREMOS 
+
+FELIZES SE ELE DER RESOLVE...
+
+
+
+
+
+
+QUEREMOS COLOCAR ESSE PENSAMENTO EM 1 'EXPECT'...
+
+
+
+
+
+
+-> mas como escrever isso?
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR DIZ QUE A MELHOR MANEIRA É PEGAR TODO ESSE CÓDIGO
+
+
+
+
+
+
+
+
+
+
+
+
+it('should convert the provided data to JSON before sending the request', () => {
+  //ARRANGE
+  const testData = { key: 'test' };
+  //ACT AND ASSERT
+  return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+---. aí adicionar ASYNC no call da function de test,
+e aí 
+
+
+WRAPPAR O CALL DE 'sendDataRequest'
+
+
+COM 1 TRY CATCH, TIPO ASSIM:
+
+
+
+
+
+it('should convert the provided data to JSON before sending the request', async () => {
+  //ARRANGE
+  const testData = { key: 'test' };
+
+  //ACT
+  try {
+    const result = await sendDataRequest(testData);
+    expect(result).toEqual(testResponseData);
+  } catch (err) {
+    //ASSERT
+    expect(err).toBe('Not a string!');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+MAS ISSO ESTÁ ERRADO.. O CÓDIGO CORRETO É ESTE:
+
+
+
+
+//? VERSÃO ALTERNATIVA do test de cima:
+describe('sendDataRequest', () => {
+  it('should return any available response data', () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //ACT AND ASSERT
+    return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData);
+  });
+});
+
+it('should convert the provided data to JSON before sending the request', async () => {
+  //ARRANGE
+  const testData = { key: 'test' };
+  let errorMessage;
+  //ACT
+  try {
+    await sendDataRequest(testData);
+  } catch (err) {
+    //ASSERT
+    errorMessage = err;
+  }
+
+  expect(errorMessage).not.toBe('Not a string.');
+});
+
+
+
+
+
+
+
+
+
+
+
+bem confuso.... 
+
+
+
+
+
+
+
+
+MAS AGORA CHECAMOS SE NOSSA PRODUCTION FUNCTION 
+CONVERTE 
+
+
+CORRETAMENTE NOSSOS VALUES.... E TEMOS 1 MANEIRA FÁCIL 
+
+DE DESCOBRIR ISSO, NO NOSSO CÓDIGO,
+
+
+
+COM A AJUDA DESSA 'TEST SPECIFIC REJECTION' --> vc deve construir 
+
+1 
+
+environment que 
+
+
+
+
+TE DEIXA TESTAR AS PARTES DO SEU CÓDIGO QUE VC QUER TESTAR..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+Writing unit tests in JavaScript can be challenging for several reasons:
+
+Asynchronous Code: JavaScript is a popular language for writing asynchronous code, which can be difficult to test using traditional unit testing frameworks. Testing asynchronous code requires handling callbacks, promises, and other asynchronous patterns, which can make tests more complex and harder to write.
+Dynamic Typing: JavaScript is a dynamically typed language, which means that variables can change type at runtime. This can make it more challenging to write tests that cover all possible scenarios, as the behavior of the code can change depending on the type of the input.
+JavaScript Frameworks: Many JavaScript applications are built using complex frameworks such as React, Angular, and Vue. These frameworks have their own specific syntax and conventions, which can make it harder to write and maintain unit tests.
+Browser Environment: JavaScript is often used to write code that runs in a web browser environment, which can add additional complexity to testing. It can be challenging to simulate user interactions and test the behavior of code that relies on the DOM or other browser APIs.
+Mocking Dependencies: JavaScript code often relies on external dependencies, such as APIs or libraries. Testing code that relies on external dependencies can be challenging, as it may require mocking those dependencies in order to isolate the code being tested.
+To overcome these challenges, developers can use testing frameworks and libraries that are specifically designed for JavaScript, such as Jest, Mocha, or Jasmine. These frameworks provide features such as asynchronous testing support, mocking, and integration with popular JavaScript frameworks.
+
+In addition, developers can use best practices such as writing testable code, using dependency injection, and writing tests early in the development process to make writing unit tests in JavaScript easier and more effective.
+
+
+
+
+
