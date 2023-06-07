@@ -1,0 +1,671 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- OK... PARA ACABAR COM ESTE ARQUIVO DE 'http.test.js',
+
+
+
+
+O PROFESSOR QUER MOSTRAR 
+
+
+
+
+O WRITE DE 1 OUTRO TEST,
+
+
+EM QUE 
+
+
+
+ELE QUER 
+
+
+
+MOSTRAR __ OUTRA MANEIRA __ DE 
+
+TRABALHAR COM 1 REPLACEMENT 
+
+
+PARA ESSA FUNCTION 
+
+DE 'FETCH',
+
+
+em alguns cenários específicos...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- no caso,
+
+O PROFESSOR ''QUER QUE SEJA THROWN 1 ERROR DE 
+
+TIPO HTTPERROR, EM CASOS DE NON-OK RESPONSES''..
+
+
+
+(
+    ou seja,
+
+    queremos que seja thrown 1 error desse tipo 
+
+    se recebermos 'ok: false'...
+)
+
+
+
+
+
+
+--> OK.... ATÉ AGORA, O CÓDIGO DE NOSSO MOCK de 'fetch' ESTÁ ASSIM:
+
+
+
+
+
+
+
+const testResponseData = { testKey: 'testDataDummy' };
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  return new Promise((resolve, reject) => {
+    if (typeof options.body !== 'string') {
+      //com isso, se a data passada NÃO FOR 1 STRING (json data é uma string... e obtemos 1 string por meio do call de 'JSON.stringify(data)'), nosso código vai dar 1 ERRO...
+      return reject('Not a string.');
+    }
+
+    const testResponse = {
+      ok: true, //usado na linha 14 de 'http.js'...
+      json() {
+        //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+        return new Promise((resolve, reject) => {
+          resolve(testResponseData);
+        });
+      },
+    };
+
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ACHO QUE O IDEAL, AQUI,
+
+
+É COLOCAR MAIS 1 IF CASE,
+
+
+PARA QUE 'ok' seja definido como false,
+
+
+em casos específicos...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> mas como fazer isso?
+
+
+
+
+
+
+--> acho que eu poderia usar 
+
+
+'vi.mockImplementationOnce()'... --> talvez isso seja possível...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> mas não é possível...
+
+
+
+
+
+
+
+
+
+
+--> VOU SIMULAR QUE VOU RECEBER 1 RESPONSE QUE ESTÁ COM 
+'ok: false',
+
+talvez 
+
+1 response de status 404,
+
+ou 500...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... ---> COMO VAMOS SIMULAR ISSO, AQUI?
+
+
+
+
+
+
+
+
+
+
+
+PARA ISSO, PRECISAREMOS DE 1 POUCO DE TEST DATA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> MAS AGORA VAMOS QUERER _ CHECAr__ 
+
+
+SE 
+
+
+A NOSSA PROMISE VAI 'REJECTS'.
+
+
+
+
+
+
+
+-->> para isso,
+
+
+
+
+O PROFESSOR ESCREVE TIPO ASSIM:
+
+
+
+
+
+
+
+
+  it('should throw an HttpError in case of non-ok responses', () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //ACT
+    // sendDataRequest(testData);
+    //ASSERT
+    return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS É CLARO QUE ISSO FALHA...
+
+
+GANHAMOS ESTE ERROR:
+
+
+
+ FAIL  util/http.test.js > sendDataRequest > should throw an HttpError in case of 
+non-ok responses
+Error: promise resolved "[object Object]" instead of rejecting
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+
+
+
+
+
+
+
+
+
+
+O PROFESSOR EXPLICA QUE ISSO AINDA NÃO VAI FUNCIONAR PQ _ NÃO TEMOS NENHUMA 
+
+LÓGICA 
+
+
+NA FUNCTION MOCK DE FETCH,
+
+
+NENHUMA LÓGICA QUE 
+
+COLOCARIA O OK COMO 'FALSE'...
+
+
+
+
+
+
+
+
+
+
+--> E O __ OK __ PRECISA FICAR FALSE__ PARA QUE 
+
+
+
+O THROW DE 1 ERRO DE TIPO 
+
+'HttpError'
+
+SEJA 
+
+THROWN, COMO PODEMOS ANALISAR AQUI:
+
+
+
+
+
+
+  if (!response.ok) {
+    throw new HttpError(
+      response.status,
+      'Sending the request failed.',
+      responseData
+    );
+  }
+
+
+
+-----------------
+
+
+
+
+
+
+
+
+OK... É ISSO QUE QUEREMOS CHECAR,
+
+
+SE 
+
+
+
+O error será thrown a partir desse 
+
+
+ok settado como false...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.. QUEREMOS TER __ O  OK SETTADO "ÀS VEZES" como false,
+
+
+
+
+
+
+isso pq _ OUTRAS PARTES DE NOSSO CÓDIGO DEPENDEM QUE 
+
+O OK 
+DA RESPONSE FIQUE SETTADO COMO 
+'true'...
+
+
+
+
+
+
+
+
+
+
+
+------> OK... --> ENTAÕ COMO FARÍAMOS ISSO?
+
+
+
+
+
+
+
+O PROFESSOR DIZ QUE PODERÍAMOS INVENTAR ALGUM 
+
+IF CHECK PARA SETTAR O VALUE DE 'OK'
+CONDICIONALMENTE (com base em 1 input extra),
+
+
+
+
+
+
+
+
+mas isso poderia ser tricky...
+
+
+
+
+
+
+
+
+
+--> 1 MANEIRA MELHOR DE __ FAZER ISSO FUNCIONAR 
+
+
+
+
+É __ SUBSTITUIR __ ESSA NOSSA FUNCTION DE 'fetchSpyFunction'
+
+
+
+
+
+POR 1 VALUE DIFERENTE,
+
+TEMPORARIAMENTE,
+
+
+PARA ESSE TEST APENAS...
+
+
+
+
+
+
+
+
+
+
+
+
+--> E JÁ APRENDEMOS A FAZER ISSO, NA COURSE SECTION ANTERIOR...
+
+(
+
+    com 
+
+
+    'vi.fn().mockImplementationOnce()'...
+)
+
+
+
+
+
+
+
+
+
+--> ficou tipo assim:
+
+
+
+
+
+
+
+
+
+
+
+
+
+  it('should throw an HttpError in case of non-ok responses', () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //? exemplo de uso de 'vi.fn().mockImplementationOnce()';
+
+    fetchSpyFunction.mockImplementationOnce(() => { //com isso, colocamos 'overwrite' na nossa implementation de 'fetchSpyFunction' UMA ÚNICA VEZ...
+      (url, _options) => {
+        return new Promise((resolve, reject) => {
+          const testResponse = {
+            ok: false, // TODO - ISTO FARÁ A DIFERENÇA (pq usamos isto neste teste, específico)...
+            json() {
+              return new Promise((resolve, reject) => {
+                resolve(testResponseData);
+              });
+            },
+          };
+
+          resolve(testResponse); 
+        });
+      };
+    });
+
+    //ACT AND ASSERT
+    return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS AINDA ESTÁ ME DANDO ERRO... por alguma razão.
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... era um erro de sintaxe... agora regularizei:
+
+
+
+
+
+
+
+
+
+
+  it('should throw an HttpError in case of non-ok responses', () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //? exemplo de uso de 'vi.fn().mockImplementationOnce()';
+
+    fetchSpyFunction.mockImplementationOnce(
+      //com isso, colocamos 'overwrite' na nossa implementation de 'fetchSpyFunction' UMA ÚNICA VEZ...
+      (url, _options) => {
+        return new Promise((resolve, reject) => {
+          const testResponse = {
+            ok: false, // TODO - ISTO FARÁ A DIFERENÇA (pq usamos isto neste teste, específico)...
+            json() {
+              return new Promise((resolve, reject) => {
+                resolve(testResponseData);
+              });
+            },
+          };
+
+          resolve(testResponse);
+        });
+      }
+    );
+
+    //ACT AND ASSERT
+    return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
+  });
+
+
+
+
+
+
+  ------------------------------
+
+
+
+
+
+
+
+
+
+
+
+  certo.... o ok é settado como false,
+
+
+
+  e essa function funciona... nossa hipótese funciona...
+
+
+
+
+
+
+
+  o test está funcionando...
+
+
+
+
+
+
+
+
+
+
+
+  e esse é o 'vi.fn().mockImplementationOnce()'
+
+
+  EM AÇÃO...
+
+
+
+
+  E É ASSIM QUE 
+
+  PODEMOS TRABALHAR COM GLOBAL APIS,
+
+  como a fetch function....

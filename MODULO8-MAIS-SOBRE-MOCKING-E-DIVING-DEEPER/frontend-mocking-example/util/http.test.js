@@ -1,6 +1,7 @@
 import { it, expect, describe, vi } from 'vitest';
 
 import { sendDataRequest } from './http';
+import { HttpError } from './errors';
 
 const testResponseData = { testKey: 'testDataDummy' };
 const fetchSpyFunction = vi.fn((url, options) => {
@@ -43,29 +44,56 @@ vi.stubGlobal('fetch', fetchSpyFunction); //e esse stub, de 'fetch', será usado
 //   });
 // });
 
-//? VERSÃO ALTERNATIVA do test de cima:
 describe('sendDataRequest', () => {
+  //? VERSÃO ALTERNATIVA do test de cima:
   it('should return any available response data', () => {
     //ARRANGE
     const testData = { key: 'test' };
     //ACT AND ASSERT
     return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData);
   });
-});
 
-it('should convert the provided data to JSON before sending the request', async () => {
-  //ARRANGE
-  const testData = { key: 'test' };
-  let errorMessage;
-  //ACT
-  try {
-    await sendDataRequest(testData);
-  } catch (err) {
-    //ASSERT
-    errorMessage = err;
-  }
+  it('should convert the provided data to JSON before sending the request', async () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    let errorMessage;
+    //ACT
+    try {
+      await sendDataRequest(testData);
+    } catch (err) {
+      //ASSERT
+      errorMessage = err;
+    }
 
-  expect(errorMessage).not.toBe('Not a string.');
+    expect(errorMessage).not.toBe('Not a string.');
+  });
+
+  it('should throw an HttpError in case of non-ok responses', () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //? exemplo de uso de 'vi.fn().mockImplementationOnce()';
+
+    fetchSpyFunction.mockImplementationOnce(
+      //com isso, colocamos 'overwrite' na nossa implementation de 'fetchSpyFunction' UMA ÚNICA VEZ...
+      (url, _options) => {
+        return new Promise((resolve, reject) => {
+          const testResponse = {
+            ok: false, // TODO - ISTO FARÁ A DIFERENÇA (pq usamos isto neste teste, específico)...
+            json() {
+              return new Promise((resolve, reject) => {
+                resolve(testResponseData);
+              });
+            },
+          };
+
+          resolve(testResponse);
+        });
+      }
+    );
+
+    //ACT AND ASSERT
+    return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
+  });
 });
 
 // it('should throw an error if the provided data is not converted to JSON before sending the request', () => {
