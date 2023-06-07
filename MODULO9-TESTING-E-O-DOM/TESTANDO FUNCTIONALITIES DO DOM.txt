@@ -1,3 +1,174 @@
+
+
+
+
+
+
+
+
+
+
+--> OK... AGORA QUE SETTAMOS ESSE 'VIRTUAL DOM',
+
+
+E QUE __ 
+
+
+
+RENDERIZAMOS ESSE CONTEÚDO HTML NOSSO PARA DENTRO DESSE DOM (conteúdo html que é usado 
+
+para os tests),
+
+
+
+
+DEVEMOS COMEÇAR 
+
+
+COM O PRIMEIRO 
+
+TEST DE VERDADE..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> O PRIMEIRO TEST DEVERÁ 
+
+
+SER DA 
+
+FUNCTION DE 'showError':
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SERÁ UM TEST DE 
+
+
+
+it('should add an error paragraph to the id="errors" element', () => {
+
+} )
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+describe('showError', () => {
+  it('should add an error paragraph to the id="errors" element', () => {
+    //ARRANGE
+    const message = 'some error';
+    const errorsElement = document.getElementById('errors');
+    //ACT
+    showError(message);
+    const errorParagraph = errorsElement.firstElementChild;
+    //ASSERT
+    expect(errorParagraph).not.toBeNull(); //verificamos SE ESSE ELEMENT NÃO ESTÁ COMO 'null' (ou seja, se ele EXISTE)...
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  --> SE O ELEMENTO PARAGRAPH NÃO EXISTISSE DENTRO 
+
+
+  DAQUELE ELEMENT,
+
+
+  ELE SERIA 'null' (
+
+    é assim que fazemos, para checar se coisas FORAM RENDERIZADAS NO DOM...
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O CÓDIGO COMPLETO É ESTE:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { it, expect, describe } from 'vitest';
 import { vi } from 'vitest';
 import { showError } from './dom';
@@ -45,3 +216,16 @@ describe('showError', () => {
 
 //   é assim que fazemos, para checar se coisas FORAM RENDERIZADAS NO DOM...
 // )
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------
