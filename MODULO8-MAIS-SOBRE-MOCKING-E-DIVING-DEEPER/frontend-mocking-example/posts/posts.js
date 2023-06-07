@@ -15,3 +15,4 @@ export function extractPostData(form) {
 
   return { title, content };
 }
+ 

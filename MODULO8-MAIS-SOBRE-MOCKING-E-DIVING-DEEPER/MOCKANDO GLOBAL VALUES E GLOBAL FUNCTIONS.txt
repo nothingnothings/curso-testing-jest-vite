@@ -1,0 +1,1422 @@
+
+
+
+
+
+
+
+
+
+
+
+
+OK... VAMOS MOCKAR O HTTP REQUEST...
+
+
+
+
+
+
+VEREMOS COMO PODEMOS MOCKAR A FUNCTION DE 'fetch'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO,
+
+O PROFESSOR 
+
+ADICIONA 
+
+
+1 ARQUIVO http.test.js....
+
+
+
+
+
+
+
+
+
+NESSE ARQUIVO, VAMOS COMEÇAR A ESCREVER NOSSOS TESTS....
+
+
+
+
+
+
+
+
+
+
+
+PODEMOS COMEÇAR ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+
+import { sendDataRequest } from './http';
+
+describe('sendDataRequest', () => {
+  it('should successfully send a HTTP request', () => {
+
+
+
+  });
+});
+
+
+
+
+
+
+
+QUEREMOS TESTAR SE 'CONSEGUIMOS 
+
+ENVIAR 1 REQUEST 
+
+
+E __ GET BACK RETURNED DATA, PARSED DATA',
+
+dessa function de 'sendDataRequest' --> 
+
+
+
+
+É POR ISSO QUE O PROFESSOR COLOCA 
+
+1 DESCRIPTIPON DE 
+
+
+
+
+'should return any available response data'
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+
+import { sendDataRequest } from './http';
+
+describe('sendDataRequest', () => {
+  it('should return any available response data', () => {
+
+    
+
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+COMO PARTE DESSE TEST,
+
+É CLARO QUE VAMOS QUERER 
+
+
+
+chamar 'sendDataRequest'...
+
+
+
+
+
+
+
+-> MAS AGORA QUEREMOS 
+
+
+NOS CERTIFICAR DE QUE 'fetch'
+
+NÃO SERÁ EXECUTADA...
+
+
+
+
+
+
+
+
+
+
+
+
+-> NA VERDADE, QUEREMOS QUE ELA SEJA EXECUTADA, SIM, 
+
+MAS NÃO QUEREMOS 
+
+QUE 
+
+A FUNCTION ORIGINAL SEJA EXECUTADA, E SIM 1 'mock'
+
+
+
+SEJA USADO NO SEU LUGAR...
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO, PODERÍAMOS USAR O FOLDER DE '__mocks__',
+
+
+a princípio...
+
+
+
+
+
+
+
+
+
+BEM, NA ÚLTIMA COURSE SECTION,
+
+
+
+O QUE FARÍAMOS 
+
+SERIA 
+
+IMPORTAR 
+
+'vi.mock()',
+
+
+E AÍ 
+
+ESCREVER ALGO COMO 
+
+
+'vi.mock('fetch')',
+
+
+OU ALGO ASSIM..
+
+
+
+
+
+
+
+
+
+MAS O PROBLEMA, AQUI, É QUE 'fetch'
+
+NÃO É 1 
+
+'MODULE A SER REPLACED' ------> ISSO PQ 
+
+'FETCH'
+
+é uma 
+
+
+API INTEIRA DO BROWSER... 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> CERTO...
+
+
+'fetch' --> É UMA __ GLOBALLY AVAILABLE FUNCTION --. 
+
+
+
+
+
+
+
+
+
+--> ISSO QUER DIZER QUE 
+
+
+
+
+
+
+ELE NÃO É UM MODULE... -> NÃO É IMPORTADO DE QUALQUER MODULE.... É UMA GLOBALLY AVAILABLE FUNCTION..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POSSÍVEL TER MODULES NO FRONTEND JAVASCRIPT TAMBÉM,
+
+
+MAS ESTE NÃO É O CASO, AQUI...
+
+
+
+
+
+
+
+
+
+
+
+-> PARA REALIZAR O REPLACE DE UM 'GLOBAL VALUE'
+
+OU FUNCTION,
+
+
+
+PODEMOS USAR 
+
+
+
+1 method especial do vi,
+
+
+que é o 
+
+
+
+'stubGlobal()'..
+
+
+
+
+
+
+
+eX:
+
+
+
+
+
+
+
+
+
+
+
+vi.stubGlobal() ....
+
+
+
+
+
+
+
+
+
+vi.stubGlobal() --------> é um method QUE NOS DEIXA 
+
+SUBSTITUIR GLOBALLY AVAILABLE OBJECTS E FUNCTIONS ___ POR OUTRAS 
+
+IMPLEMENTATIONS..
+
+
+
+
+
+
+
+
+
+--> e VAMOS CHAMAR ISSO LÁ Em 'http.test.js'....
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+import { it, expect, describe, vi } from 'vitest';
+
+import { sendDataRequest } from './http';
+
+
+
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+describe('sendDataRequest', () => {
+  it('should return any available response data', () => {});
+});
+
+
+
+
+
+
+
+
+
+
+
+CERTO... E STUBGLOBAL EXIGE 1 STRING COMO PRIMEIRO ARGUMENTO...
+
+
+
+
+
+vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+
+
+
+
+
+
+
+
+
+-------> devemos usar o NOME DA FUNCTION AVAILABLE GLOBALMENTE, que deve ser replaced...
+
+
+
+
+
+
+
+
+
+
+-> o segundo value é o REPLACEMENT PARA essa globally available API....
+
+
+
+
+
+
+--> NESSE CASO, DEVE SER A FUNCTION QUE 
+
+DEVE SER USADA NO SEU LUGAR...
+
+
+
+
+
+
+
+
+
+-_> AQUI QUEREMOS CRIAR ESSE REPLACEMENT COM 
+
+
+
+'vi.fn()'...
+
+
+
+
+
+->  ISSO PQ _ QUERO TER 1 'SPY' DENTRO 
+
+DESSA FUNCTION --> ISSO PQ VAMOS QUERER TER ESSA FUNCIONALIDADE DE 'spy'
+
+
+DENTRO DESSE METHOD DE 'fetch'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+PODEMOS COMEÇAR ASSIM:
+
+
+
+
+
+
+
+const fetchSpyFunction = vi.fn();
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS É CLARO QUE ESSA FUNCTION DE 'vi.fn()'
+
+
+
+PRECISA SER TWEAKADA... VAMOS QUERER RODAR LÓGICA CUSTOM DENTRO DELA,
+
+ALÉM DE TER O COMPORTAMENTO DE SPY...
+
+
+
+
+
+
+
+
+
+
+-> PROVAVELMENTE VAMOS QUERER RETORNAR 1 PROMISE,
+
+PQ É 
+
+ISSO 
+
+
+QUE 
+
+
+'fetch' faz...
+
+
+
+
+
+
+
+
+
+-- para isso, provavelmente escreverei assim:
+
+
+
+
+
+
+
+
+
+
+
+
+const fetchSpyFunction = vi.fn(() => {
+  return new Promise((resolve, reject) => {
+    resolve(); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... COLOQUEI 1 BEHAVIOR QUE VAI DEIXAR NOSSA VIDA DE TESTING MAIS FÁCIL...
+
+
+
+
+
+
+
+
+
+--> A FETCH FUNCTION __ACEITA/EXIGE 2 ARGUMENTOS:
+
+
+
+
+
+
+1) A URL A QUE VAI ENVIAR O HTTP REQUEST 
+
+
+
+
+
+
+2) 1 OBJECT, QUE É USADO PARA CONFIGURAR O REQUEST...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE VAMOS COLOCAR ESSES 2 PARAMETERS DENTRO DA 
+
+
+function interna de 'vi.fn()',
+
+tipo assim:
+
+
+
+
+
+
+
+const fetchSpyFunction = vi.fn((url, options) => { //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+  return new Promise((resolve, reject) => {
+    resolve(); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ok... como isso retorna 1 promise,
+
+
+meu código  seguirá assim msm....
+
+
+
+
+
+
+
+MAS VAMOS FAZER RESOLVE PARA 1 DUMMY OBJECT...
+
+
+
+
+ESSE OBJECT VAI CONTER A RESPONSE,
+
+
+A 'FAKE TESTING RESPONSE',
+
+
+
+e também alguma outra data que é necessária..
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  const testResponse = {};
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dentro dessa function, colocamos 'ok: true',
+
+
+
+PQ _ LÁ NO MAIN CODE NÓS CHECAMOS 
+
+
+ISTO:
+
+
+
+
+
+
+
+  if (!response.ok) {
+    throw new HttpError(response.status, 'Sending the request failed.', responseData);
+  }
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+CHECAMOS SE ESSE 'OBJECT-RESPOSTA'
+
+possui ok como true..
+
+
+
+
+
+
+
+
+-> E, PARA A MAIOR PARTE DE NOSSOS TESTS,
+
+
+O PROFESSOR QUER ASSUMIR QUE 
+
+
+ESSA RESPONSE ESTARÁ OK... 
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  const testResponse = {
+    ok: true //usado na linha 14 de 'http.js'...
+  };
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E ALÉM 
+
+
+
+DE ESSA KEY DE OK,
+
+
+O PROFESSOR COLOCA 
+
+
+1 METHOD DE '.json()',
+
+
+PQ NO CÓDIGO ORIGINAL TAMBÉM 
+
+
+TEMOS 
+
+ESSE METHOD, COMO PODEMOS VER AQUI:
+
+
+
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new HttpError(response.status, 'Sending the request failed.', responseData);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> e 'response.json()'
+
+TAMBÉM RENDE 1 PROMISE -----> E É POR ISSO QUE VAMOS DEFINIR O RETURN DE UMA NESTED 
+PROMISE,
+
+
+DENTRO DE 'json()",
+
+tipo assim:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  const testResponse = {
+    ok: true, //usado na linha 14 de 'http.js'...
+    json() { //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+      return new Promise((resolve, reject) => {
+        resolve(); 
+      });
+    },
+  };
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... MAS AQUI QUEREMOS FAZER 'RESOLVE' PARA 1 TEXT RESPONSE DATA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- para isso, o professor coloca uma 
+
+
+response data dummy 
+
+de 
+
+
+
+
+
+
+const testResponseData = {testKey: 'testData'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+const testResponseData = { testKey: 'testDataDummy' };
+const fetchSpyFunction = vi.fn((url, options) => {
+  //criamos 1 'spy function' com 'vi.fn()'... --> e essa spy function deve ter os mesmos parâmetros da function que mockamos... que, no caso, é 'fetch(url, options)'...
+
+  const testResponse = {
+    ok: true, //usado na linha 14 de 'http.js'...
+    json() {
+      //usado na linha 12 de 'http.js'... (e que retorna 1 promise, que é o que queremos retornar aqui, também..)
+      return new Promise((resolve, reject) => {
+        resolve(testResponseData);
+      });
+    },
+  };
+  return new Promise((resolve, reject) => {
+    resolve(testResponse); //fazemos 'resolve()' para 1  value específico, exatamente como a function original de 'fetch' faria, se tivesse 1 resultado válido..
+  });
+});
+
+//COM 'STUBGLOBAL', ficamos capazes de mockar GLOBAL FUNCTIONS E OBJECTS, como 'fetch'... (coisas que não são MODULES NATIVOS DE NOSSA LANGUAGE, OU QUE NÃO SÃO CUSTOM MODULES/FILES IMPORTADOS POR NÓS)...
+// com esse method, podemos definir nossas próprias implementations para essas functions/objects
+// vi.stubGlobal('fetch', () => Promise.resolve({ data: 'Hi there!' }));
+
+vi.stubGlobal('fetch', fetchSpyFunction);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... E ESSA, PORTANTO, É NOSSA REPLACEMENT FETCH FUNCTION,
+
+QUE QUEREMOS USAR DURANTE O TESTING...
+
+
+
+
+
+
+
+
+
+
+NÃO É A ORIGINAL,
+
+MAS __ TEM ALGUMA FUNCTIONALITY NECESSÁRIA PARA FAZER MEU 
+
+CÓDIGO DE TEST FUNCIONAR... (e ela tem alguma functionality que 
+
+me deixa testar várias coisas sem usar a function original,
+
+sem enviar requests de verdade, sem gerar side effects)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> CERTO.... E A FUNCTION GLOBAL DE 'fetch'
+
+É SUBSTITUÍDA POR INTEIRO,
+
+por meio da 
+
+
+linha 
+'vi.stubGlobal('fetch', testFetch)'
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ --> E SÓ PRECISAMOS FAZER ISSO 1 ÚNICA VEZ,
+
+
+
+ QUE AÍ TODOS OS TESTS 
+
+  DESSA FILE __ VÃO __ USAR_  ESSE STUB...  ---> quer dizer que 
+
+
+  os tests dessa file 
+
+
+vão usar esse replacement...
+
+
+
+
+
+
+
+
+
+
+
+
+
+---> OK...
+
+
+
+
+
+
+AGORA, FINALMENTE, NO PRIMEIRO IT CASE,
+
+PODEMOS 
+
+DEFINIR 
+
+
+
+
+ALGUMA TEST DATA QUE SERÁ ENVIADA JUNTO COM O REQUEST...
+
+
+
+
+
+
+
+
+
+
+tipo assim:
+
+
+
+
+
+
+
+
+
+vi.stubGlobal('fetch', fetchSpyFunction); //e esse stub, de 'fetch', será usado nessa function de 'sendDataRequest', que possui um FETCH function call no seu interior...
+
+describe('sendDataRequest', () => {
+  it('should return any available response data', async () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //ACT
+    const result = await sendDataRequest(testData);
+    //ASSERT
+    expect(result).toEqual(testResponseData);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOSSO CÓDIGO PROVAVELMENTE FICARÁ ASSIM... ----> 
+
+
+
+PQ REALMENTE ESPERAMOS QUE O RESULT DAQUELA FUNCTION DE 'sendDataRequest'
+
+
+
+seja igual 
+
+
+ao código de 'testResponseData'...
+
+
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+vi.stubGlobal('fetch', fetchSpyFunction); //e esse stub, de 'fetch', será usado nessa function de 'sendDataRequest', que possui um FETCH function call no seu interior...
+
+describe('sendDataRequest', () => {
+  it('should return any available response data', async () => {
+    //ARRANGE
+    const testData = { key: 'test' };
+    //ACT
+    const result = await sendDataRequest(testData);
+    //ASSERT
+    expect(result).toEqual(testResponseData); 
+  });
+});
+
+
+//? VERSÃO ALTERNATIVA do test de cima:
+// describe('sendDataRequest', () => {
+//   it('should return any available response data', async () => {
+//     ARRANGE
+//     const testData = { key: 'test' };
+//     ACT AND ASSERT
+//    return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData); 
+//  
+//     
+//   });
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+COM ISSO, ESTAMOS TESTANDO SE MEU CÓDIGO, QUE USA ESSA FAKE FETCH FUNCTION,
+
+
+
+COM ESSE CODE/PARAMETERS,
+
+
+
+CONSEGUE USAR ESSA FUNCTION DE MODO QUE A 'DATA QUE NÓS CONSEGUIMOS DE VOLTA'
+
+
+ACABA PARSEADA, POR MEIO DE '.json()', e 
+
+
+
+AÍ ACABA _SENDO RETORNADA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> ISSO QUER DIZER QUE 
+SE A LINHA DO CÓDIGO MAIN DE 
+
+
+''  const responseData = await response.json(); ''
+
+
+ou 
+
+
+
+''   return responseData; ''
+
+
+
+FOSSE DELETADA,
+
+
+
+NOSSO TEST PASSARIA A RESULTAR EM ERRO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ENTRETATNO, COM ESSAS LINHAS NO LUGAR, 
+
+O TEST VAI FUNCIONAR, PQ IMPLEMENTAMOS NOSSA PRÓPRIA TEST FUNCTION...
+
+
+
+
+
+
+
+
+
+
+
+
+É ASSIM QUE PODEMOS MOCKAR 1 FUNCTION GLOBAL COMO 'fetch',
+
+não interessa se estamos no frontend ou no backend...
+
+
+
+
+
+
+
+
+
+
+
+mas 'stubGlobal' 
+
+É UM METHOD ÚTIL 
+
+
+SE VC 
+
+PRECISA 
+
+
+
+__DEAL COM CODE __ QUE NÃO VEM DE 1 MODULE,
+E QUE VC AINDA PRECISA MOCKAR...
