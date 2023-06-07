@@ -1,0 +1,263 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK... AGORA DEVEMOS VER MOCKING MAIS APROFUNDADAMENTE...
+
+
+
+
+
+
+
+
+
+
+VAMOS FOCAR NA FILE DE 'http.js',
+
+ANTES:
+
+
+
+
+import {HttpError} from './errors.js';
+
+export async function sendDataRequest(data) {
+  const response = await fetch('https://dummy-site.dev/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new HttpError(response.status, 'Sending the request failed.', responseData);
+  }
+
+  return responseData;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+NESSE ARQUIVo,
+
+
+
+
+TEMOS 
+
+A FUNCTION DE 'sendDataRequest'...
+
+
+
+
+
+
+
+
+--> ESSA FUNCTION CLARAMENTE ENVIA 1 HTTP REQUEST POR MEIO 
+
+
+DA FUNCTION DE fetch'...
+
+
+
+
+
+
+E A FUNCTION DE FETCH É UMA FUNCTION 
+
+DISPONIBILIZADA, GLOBALMENTE,
+
+PELO BROWSER..
+
+
+
+
+
+
+É UMA BROWSER API....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ELA É AVAILABLE, NO JAVASCRIPT,
+
+NO BROWSER,
+
+ OUT OF THE BOX...  
+
+
+
+
+
+
+
+
+
+ --> NAS VERSÕES MODERNAS DO NODEJS 
+
+ FOI ADICIONADA,
+
+
+ MAS FOI CRIADA ORIGINALMENTE NO BROWSER,
+
+ PARA ENVIAR HTTP REQUESTS...
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --> CERTO...
+
+
+
+
+
+
+
+
+
+ --> TUDO QUE PRECISAMOS SABER É QUE NOSSA FUNCTION 
+
+ ENVIA 
+ 1 REQUEST A 1 BACKEND API...
+
+
+
+
+
+
+
+ -> CERTO.... E ISSO PODERIA ENVIAR 1 HTTP REQUEST A 1 SITE DE VERDADE NA WEB..
+
+
+
+
+
+
+
+
+
+
+
+ -> COM ISSO, FICAMOS COM 1 PROBLEMA SIMILAR AO DO 
+
+ MÓDULO ANTERIOR,
+
+
+
+
+
+ EM QUE NÃO QUEREMOS 
+
+ QUE 
+ 1 REQUEST DE VERDADE SEJA ENVIADOP -----> ALGO PODE ACABAR SENDO ALTERADO EM ALGUMA 
+ DATABASE,
+ EM OUTRO SERVER,
+
+
+EM ALGUM LUGAR DO MUNDO...
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE QUEREMOS EVITAR 
+
+RODAR REAL REQEUSTS 
+
+
+NOS 
+
+NOSSOS TESTS --> PQ ISSO TAMBÉM 
+
+
+DEIXA 
+
+NOSSOS TESTS MAIS LENTOS,
+
+
+
+E OCUPA BANDWIDTH SE VC 
+
+TIVER 1 MONTE DE TESTS,
+
+E SE TODOS ELES 
+
+
+
+
+COMEÇAREM A ENVIAR REQUESTS DIFERENTES ... TBM É POSSÍVEL QUE 
+
+SUA BACKEND API 
+
+
+SEJA 'HAMMERED'
+
+POR TODOS ESSES REQUESTS DESNECESSÁRIOS....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> É POR ISSO QUE ESSE É UM USE-CASE PERFEITO PARA O MOCKING,
+
+
+PQ COM ISSO _ PODEMOS NOS LIVRAR DESSES REQEUSTS E FOCAR NA CORE 
+LOGIC QUE QUEREMOS TESTAR, NOVAMENTE..
