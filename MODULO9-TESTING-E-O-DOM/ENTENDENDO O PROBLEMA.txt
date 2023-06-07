@@ -1,0 +1,612 @@
+
+
+
+
+
+PARA ESSA COURSE SECTION, O PROFESSOR CONTINUARÁ 
+
+
+COM O PROJECT QUE USAMOS NA ÚLTIMA SECTION...
+
+
+
+
+
+
+
+
+
+
+
+É CLARO QUE JÁ ESCREVEMOS ALGUNS TESTS, ANTES...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> TAMBÉM JÁ TRABALHAMOS COM ALGUNS MOCKS....
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAS AGORA VAMOS FOCAR NO ARQUIVO DE 'dom.js'...
+
+
+
+
+
+
+DENTRO DISSO,
+
+TEMOS 1 FUNCTION,
+
+'showError',
+
+
+QUE FAZ REACH OUT AO DOM PARA 
+
+
+1) SELECIONAR 1 ELEMENTO 
+
+
+
+2) CRIAR 1 ELEMENTO 'P'
+
+
+
+
+
+3) DEFINE O TEXT CONTENT DESSE ELEMENTO 
+
+
+
+4) LIMPA O CONTEÚDO DO PRIMEIRO NEGÓCIO QUE FOI SELECIONADO (com 'innerHTML = ''')
+
+
+
+5) depois setta o 
+
+NOVO ELEMENT, RECÉM CRIADO,
+
+
+COMO 1 CHILD DAQUELE ELEMENT QUE FOI CLEARED ANTERIORMENTE...
+
+
+
+
+
+
+
+
+
+
+
+------------> e o problema com ESSA FUNCTION E SEU TESTING 
+
+É 
+QUE 
+NÓS 
+
+
+'DEPENDEMOS DO DOM'..
+
+
+
+
+
+
+
+
+--> DEPENDEMOS DA EXISTÊNCIA DO 'DOCUMENT OBJECT MODEL',
+
+
+E AÍ 
+
+USAMOS 
+
+ESSE OBJECT, E CERTOS METHODS FORNECIDOS POR ESSE OBJECT,
+
+
+PARA 
+
+INTERAGIR COM O DOM...
+
+
+
+
+
+
+
+
+
+
+
+--> FAZEMOS ISSO PARA:
+
+
+1) SELECT 
+
+2) CREATE 
+
+3) ADD 
+
+
+
+TUDO DE ELEMENTS...
+
+
+
+
+
+
+
+
+
+
+
+
+--> E ISSO PODE SER 1 PROBLEMA,
+
+
+
+QUANDO ESCREVEMOS TESTS...
+
+
+
+
+
+
+
+
+
+
+
+--. PQ PODE SER 1 PROBLEMA?
+
+
+
+
+
+
+
+É __ PQ _ ISSO AÍ, PARA INÍCIO DE CONVERSA,
+
+
+É UM SIDE EFFECT... ------->  MAS AO CONTRÁRIO 
+
+
+
+
+DE SIDE EFFECTS CAUSADOS POR METHODS QUE ATUAM 
+
+
+
+NO FILE SYSTEM OU EM 1 DATABASE,
+
+
+
+
+
+
+
+ESSE SIDE EFFECT DO BROWSER 
+
+
+NÃO É 
+
+
+
+
+1 SIDE EFFECT QUE CAUSA QUAISQUER 
+
+PROBLEMAS ESPECÍFICOS ------->  PQ, SE NÓS ADICIONARMOS 
+
+
+
+1 ELEMENT A 1 HTML DOCUMENT,
+
+
+
+
+
+__ ESSE ELEMENT SERÁ 'GONE'
+
+
+NA PRÓXIMA VEZ QUE O DOCUMENT ORIGINAL FOR CARREGADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ISSO QUER DIZER QUE 
+
+
+
+'''QUAISQUER CHANGES FEITAS ATRAVÉS DE JAVASCRIPT NÃO VÃO PERSISTIR,
+
+
+SE A PAGE FOR CARREGADA''' --> NÃO É UMA PERSISTENT CHANGE, EM OUTRAS 
+
+PALAVRAS...
+
+
+
+
+
+
+
+
+
+
+
+
+--> AINDA ASSIM,
+
+
+
+ISSO 
+
+
+
+É UM _ SIDE EFFECT,
+
+
+E __ NÓS TALVEZ QUEIRAMOS EVITAR TRABALHAR COM O 'REAL DOM'....
+
+
+
+
+
+
+
+
+
+
+
+
+MAS ESSE AINDA NÃO É O MAIOR PROBLEMA, AQUI...
+
+
+
+
+
+
+
+
+
+
+
+
+--> EM VEZ DISSO, O MAIOR PROBLEMA É QUE 
+
+QUANDO 
+
+RODAMOS NOSSO TEST COM 
+
+'npm test',
+
+
+
+
+
+
+rodando o VITEST,
+
+
+
+NÃO __ ESTAMOS/ESTAREMOS 
+
+ACTUALLY USANDO 1 BROWSER ---> PQ ESTAREMOS 
+
+
+RODANDO ISSO 
+
+
+
+DE DENTRO 
+
+
+DA COMMAND LINE -->   COMO ESTAMOS RODANDO ISSO 
+
+
+
+
+DENTRO DA COMMAND LINE,
+
+NÃO HÁ NENHUMA HTML PAGE,
+
+
+
+E NENHUM DOM...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+->  O PROFESSOR NOS MOSTRARÁ:
+
+
+
+
+
+
+
+
+
+ELE ESCREVE 
+
+
+1 SIMPLES TEST NO 'dom.test.js':
+
+
+ 
+
+
+
+
+
+
+
+ import { it, expect, describe } from 'vite';
+import { showError } from './dom';
+
+describe('first test', () => {
+  it('first test', () => {
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+se tentamos rodar isso aí,
+
+isso vai falhar:
+
+
+
+
+
+import { it, expect, describe } from 'vite';
+import { showError } from './dom';
+
+describe('first test', () => { //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => { //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OU SEJA,
+
+GANHAREMOS O ERROR DE QUE 'DOCUMENT IS NOT DEFINED'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OU SEJA,
+
+
+NO FINAL DAS CONTAS 
+
+
+É 
+
+
+O 
+
+
+ CÓDIGO DE 'document.getElementById()'
+
+
+ que vai fazer o negócio FALHAR...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> PARA FAZER WORKAROUND A ISSO,
+
+
+O PROFESSOR DIZ QUE SERIA POSSÍVEL 
+
+PROVIDENCIARR 
+
+
+
+NOSSO PRÓPRIO 
+
+'GLOBAL MOCK OBJECT',
+
+ 
+
+
+
+
+
+ POR MEIO 
+
+
+
+
+
+ DE UM CÓDIGO COMO 
+
+
+
+
+
+
+
+ 'vi.stubGlobal('document')
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -> ISSO FUNCIONARIA... --------> MAS, AO CONTRÁRIO 
+
+
+ DA FUNCTION DE 'fetch()',
+
+
+ O OBJECT 
+
+ 'document'
+
+
+ É 
+
+ 1 
+
+
+ OBJECT MT COMPLEXO,
+
+
+ COM MT LÓGICA,
+
+ MTOS METHODS,
+
+ MTAS PROPERTIES.... --> E CONSTRUIR NOSSO PRÓPRIO 
+
+ TEST 
+
+ CLONE  
+
+
+
+
+ __É ALGO BEM TRICKY..
+
+
+
+
+
+
+ -------> E COMO ISSO É UM PROBLEMA TÃO COMUM,
+ TESTS PARA 
+
+ BROWSERSIDE JAVASCRIPT 
+
+ CODE,
+
+
+ EM QUE VC QUER INTERAGIR COM O DOM,
+
+
+
+
+
+
+
+
+
+ __ TANTO __ O 
+
+
+
+
+
+
+ VITEST COMO O JEST 
+
+
+ SUPORTAM 
+
+
+
+ O DOM, VIRTUALMENTE,
+
+ OUT OF THE BOX...
