@@ -1,0 +1,157 @@
+
+
+
+
+
+
+
+
+
+
+
+
+----> ok... com isso, acabamos com esta section..
+
+
+
+
+
+
+
+
+novamente,
+
+usamos 
+
+
+MOCKING TECHNIQUES PARA 
+
+
+MOCKAR 
+
+VÁRIOS PIECES OF CODE...
+
+
+
+
+
+
+
+
+
+
+
+
+---> APRENDEMOS:
+
+
+
+
+1) COMO PODEMOS MOCKAR GLOBAL OBJECTS/VALUES/FUNCTIONS,
+
+
+com 
+
+o 'vi.stubGlobal()'  (como 'vi.stubGlobal('fetch', testFetch)')
+
+
+
+
+
+
+2) VIMOS TAMBÉM __ COMO PODEMOS CONSTRUIR NOSSOS PRÓPRIOS 
+
+
+
+MOCK OBJECTS FAKE,
+
+
+
+como visto lá em 'posts.test.js',
+
+
+
+
+
+
+PARA CASOS EM QUE 
+
+
+
+
+
+''DATA PRECISA SER PASSADA PARA 1 FUNCTION,
+
+E EM QUE 
+
+QUEREMOS PROVIDENCIAR NOSSA PRÓPRIA TEST-SPECIFIC DATA''..
+
+
+
+
+
+
+
+
+
+
+
+--> O PROFESSOR NOS MOSTROU COMO DEVEMOS PENSAR EM TESTING, EM GERAL...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> PQ O TESTING É 'ALL ABOUT'
+
+SER CRIATIVO,
+
+
+
+E 
+
+SOBRE 
+
+
+o
+'SETUP DA DATA E ENVIRONMENT'
+
+
+DE MODO QUE 
+VC CONSIGA 
+
+
+
+TESTAR AS COISAS QUE VC QUER TESTAR,
+
+
+E CONSIGA IGNORAR AS COISAS QUE 
+
+DEVEM SER IGNORADAS...
+
+
+
+
+
+
+
+
+
+
+
+-> VC DEVE __ CRIAR FAKE DATA,
+
+
+
+DESDE QUE ISSO TE AJUDE A TESTAR 
+
+
+OS BEHAVIORS DESEJADOS...
