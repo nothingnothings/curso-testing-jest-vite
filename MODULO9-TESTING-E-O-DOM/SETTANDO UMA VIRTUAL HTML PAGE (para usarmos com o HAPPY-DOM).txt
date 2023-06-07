@@ -1,0 +1,1196 @@
+
+
+
+
+
+
+
+
+
+
+
+
+CERTO...
+
+TROCAMOS PARA 
+
+
+
+
+1 ENVIRONMENT QUE SUPORTA O DOM....
+
+
+
+
+
+
+
+
+
+
+
+COM ESTE PACKAGE.JSON:
+
+
+
+
+
+
+
+{
+  "name": "mocks-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1",
+    "test": "vitest --watch --environment happy-dom"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.0"
+  },
+  "devDependencies": {
+    "happy-dom": "^2.55.0",
+    "vitest": "^0.9.3"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E  NOSSO CÓDIGO DE TEST ESTÁ ASSIM:
+
+
+
+import { it, expect, describe } from 'vitest';
+import { showError } from './dom';
+
+describe('first test', () => { //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => { //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS ESTAMOS RECEBENDO 1 ERRO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> VC DEVE TER EM MENTE QUE 
+
+
+
+
+
+''''SEUS TESTS AINDA NÃO SERÃO EXECUTADOS 
+
+NO MESMO CONTEXTO DO SEU ARQUIVO HTML''.....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> quer dizer que ESTE ARQUIVO AQUI:
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>More on Mocks</title>
+    <script src="app.js" type="module" defer></script>
+  </head>
+  <body>
+    <form>
+      <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" />
+      </div>
+      <div>
+        <label for="content">Content</label>
+        <textarea id="content" name="content" rows="5"></textarea>
+      </div>
+      <button>Save Post</button>
+      <div id="errors"></div>
+    </form>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+É TOTALMENTE DESCONSIDERADO...
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> ESSA É A FILE QUE CARREGAMOS EM 1 BROWSER,
+
+
+MAS É CLARO QUE AQUI NÃO TEMOS BROWSER ALGUM...
+
+
+
+
+
+
+
+
+
+--> COM O 'happy-dom',
+
+FICAMOS COM ALGUMAS DOM E BROWSER-SPECIFIC APIs
+
+
+DISPONÍVEIS,
+
+
+SIM,
+
+
+MAS ISSO NÃO QUER DIZER QUE NOSSO ARQUIVO HTML É EXECUTADO QUANDO 
+
+
+
+
+RODAMOS NOSSOS TESTS...
+
+
+
+
+
+
+
+
+
+
+--> MAS PRECISAMOS QUE ESSE CÓDIGO HTML ESTEJA NO NOSSO DOM,
+
+PARA QUE 
+
+
+O CÓDIGO DE 
+
+'dom.js' 
+
+
+e o código de tests 
+
+
+funcioneM...
+
+
+
+
+
+
+
+
+
+
+
+-> PARA CONSEGUIRMOS 
+
+TESTAR 
+
+
+
+AS COISAS A SEREM RODADAS NO BROWSER,
+
+
+PRECISAMOS 
+
+FAZER UM POUCO DE 
+
+'SETUP WORK'...
+
+
+
+
+
+
+
+
+
+
+
+-------> PARA SERMOS PRECISOS,
+
+O QUE QUEREMOS FAZER 
+
+
+
+
+
+
+
+
+É ABRIR AQUELE ARQUIVO HTML
+
+
+
+
+E O CARREGAR NESSE 'VIRTUALLY EMULATED DOM'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.. -> TENTAR CARREGAR ESSE ARQUIVO HTML NESSE DOM VIRTUAL PRODUZIDO 
+
+
+
+PELO JSDOM/HAPPY-DOM..
+
+
+
+
+
+
+
+
+
+
+
+--> QUEREMOS QUE ESSE CÓDIGO DE TEST (e código normal) CONSIGAM 
+
+INTERAGIR 
+
+
+
+COM OS ELEMENTOS DO VIRTUAL DOM....
+
+
+
+
+
+
+
+
+
+
+--> PARA ISSO, LÁ DENTRO DE 
+
+
+
+
+'dom.test.js',
+
+
+
+
+O PROFESSOR IMPORTA 
+
+
+O FILE SYSTEM DO NODE,
+
+E DEPOIS 
+
+
+O 
+
+
+
+'path'
+
+
+
+DO NODE, TAMBÉM..
+
+
+
+
+
+
+
+
+
+
+--> ELE IMPORTA ESSAS 2 COISAS PARA __ QUE _SEJA _POSSÍVEL:
+
+
+
+1) ABRIR 1 FILE 
+
+
+2) CARREGAR O CONTEÚDO DE 1 FILE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { showError } from './dom';
+
+import fs from 'fs'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+import path from 'path'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+
+
+
+describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... QUEREMOS 
+CARREGAR O ARQUIVO 'index.html' para dentro do nosso dom,
+
+no caso..
+
+
+
+
+
+
+
+
+
+
+
+OK... MAS PQ DIABOS 'fs' e 'path'
+
+ESTÃO DISPONÍVEIS,
+
+
+
+SE TROCAMOS DO ENVIRONMENT DE 'node' para 'happy-dom'?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> BEM, É IMPORTANTE SABER QUE _ NÓS _ AINDA TEREMOS TODAS AS NODE APIs
+
+
+disponíveis DENTRO
+
+DE SUAS TEST FILES --------> SIGNIFICA QUE AINDA PODEMOS USAR 
+
+
+TODO O CÓDIGO 
+
+
+NODEJS 
+
+EM 
+
+
+NOSSAS FILES PQ 
+
+
+O 
+
+
+DOM SÓ É EMULADO VIRTUALMENTE (
+
+
+
+ seu dom ainda não está rodando em 1 browser,
+
+ e sim só está sendo emulado...
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... o professor escreve assim:
+
+
+
+
+
+
+
+
+
+
+const htmlDocPath = path.join(process.cwd(), 'index.html');'
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { showError } from './dom';
+
+import fs from 'fs'; // usado para IMPORTAR 1 FILE (o 'index.html') NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+import path from 'path'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+
+const htmlDocPath = path.join(process.cwd(), 'index.html'); 
+
+describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... E VAMOS CONSEGUIR 
+
+
+O CONTEÚDO DESSE 
+
+ARQUIVO COM 
+
+
+'fs.readFileSync()",
+
+TIPO ASSIM:
+
+
+
+
+
+const htmlDocPath = path.join(process.cwd(), 'index.html');
+const htmlDocumentContent = fs.readFileSync(htmlDocPath);
+
+
+
+
+
+
+
+
+
+
+
+
+TAMBÉM VAMOS CONVERTER O CONTEÚDO DESSA FILE EM 1 STRING,
+
+PARA QUE CONSIGAMOS FAZER 'READ'
+
+
+DO CONTEÚDO DESSA FILE COMO 1 STRING,
+
+QUE 
+
+
+ENTÃO 
+
+
+__SERÁ__ CARREGADA_  
+
+
+
+DENTRO DAQUELE VIRTUALLY EMULATED DOM...
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { showError } from './dom';
+
+import fs from 'fs'; // usado para IMPORTAR 1 FILE (o 'index.html') NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+import path from 'path'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+
+const htmlDocPath = path.join(process.cwd(), 'index.html'); //path de noso arquivo html
+const htmlDocumentContent = fs.readFileSync(htmlDocPath).toString(); //conteúdo de nosso arquivo html
+
+describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> OK.. E PARA CARREGARMOS ISSO EM 1 'DOM VIRTUAL',
+
+
+
+DEVEMOS IMPORTAR 
+
+
+
+'Window',
+
+
+
+
+LÁ DO 'happy-dom' --> ISSO PQ QUEREMOS 
+
+INSTANCIAR 
+
+1 
+
+'WINDOW' 
+
+
+DE NOSSO BROWSER --> ISSO BASICAMENTE CRIA 
+
+1 
+
+EMULATED BROWSER,
+
+
+
+MAS COM 
+
+1 
+
+
+LOADED PAGE QUE PODEMOS CONFIGURATR...
+
+
+
+
+
+
+
+TIPO ASSIM:
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { showError } from './dom';
+import { Window } from 'happy-dom';
+
+import fs from 'fs'; // usado para IMPORTAR 1 FILE (o 'index.html') NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+import path from 'path'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+
+const htmlDocPath = path.join(process.cwd(), 'index.html'); //path de noso arquivo html
+const htmlDocumentContent = fs.readFileSync(htmlDocPath).toString(); //conteúdo de nosso arquivo html
+
+const window = new Window(); //criamos 1 'window' (1 DOM VIRTUAL) com o 'happy-dom'...
+const document = window.document; //criamos 1 'document' (1 DOM VIRTUAL) com o 'happy-dom'...
+
+describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK.... E TUDO ISSO FOI PROVIDENCIADO PELO HAPPY DOM... --> 
+
+
+
+PARA CONSEGUIRMOS FAZER 
+
+
+NOSSO 
+
+
+
+
+DOM/BROWSER NÃO FICAR VAZIO,
+
+PRECISAMOS 
+
+CHAMAR O METHOD DE 
+
+
+
+'document.write(htmlDocumentContent)'...
+
+
+
+
+
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { showError } from './dom';
+import { Window } from 'happy-dom';
+
+import fs from 'fs'; // usado para IMPORTAR 1 FILE (o 'index.html') NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+import path from 'path'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+
+const htmlDocPath = path.join(process.cwd(), 'index.html'); //path de noso arquivo html
+const htmlDocumentContent = fs.readFileSync(htmlDocPath).toString(); //conteúdo de nosso arquivo html
+
+const window = new Window(); //criamos 1 'window' (1 DOM VIRTUAL) com o 'happy-dom'...
+const document = window.document; //criamos 1 'document' (1 DOM VIRTUAL) com o 'happy-dom'...
+
+document.write(htmlDocumentContent); //escrevemos o conteúdo de nosso arquivo html no 'document' (1 DOM VIRTUAL) criado com o 'happy-dom'...
+
+describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... COM ISSO,
+
+
+CONSEGUIMOS SETTAR NOSSO DOCUMENT,...
+
+
+
+
+
+
+
+
+
+COMO ÚLTIMO PASSO,
+
+USAMOS 
+
+O OBJET 
+
+DE 'vi'
+
+
+
+PARA ESCREVER 
+
+
+'vi.stubGlobal()',
+
+
+PARA 
+
+
+
+__ FAZERMOS 'STUB'
+
+GLOBAL
+
+
+
+
+DO TERMO DE 'document',
+
+
+QUE 
+
+AGORA VAI SE REFERIR A ESSE 'document' object,
+
+
+QUE SERÁ JUSTAMENTE NOSSA PAGE...
+
+
+
+EX:
+
+
+
+
+
+
+
+
+
+
+
+import { it, expect, describe } from 'vitest';
+import { vi } from 'vitest';
+import { showError } from './dom';
+import { Window } from 'happy-dom';
+
+import fs from 'fs'; // usado para IMPORTAR 1 FILE (o 'index.html') NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+import path from 'path'; // usado para IMPORTAR 1 FILE NO VIRTUAL DOM PRODUZIDO PELO 'HAPPY-DOM'...
+
+const htmlDocPath = path.join(process.cwd(), 'index.html'); //path de noso arquivo html
+const htmlDocumentContent = fs.readFileSync(htmlDocPath).toString(); //conteúdo de nosso arquivo html
+
+const window = new Window(); //criamos 1 'window' (1 DOM VIRTUAL) com o 'happy-dom'...
+const document = window.document; //criamos 1 'document' (1 DOM VIRTUAL) com o 'happy-dom'...
+
+document.write(htmlDocumentContent); //escrevemos o conteúdo de nosso arquivo html no 'document' (1 DOM VIRTUAL) criado com o 'happy-dom'...
+
+vi.stubGlobal('document', document); //criamos 1 stub global para o 'document' (1 DOM VIRTUAL) criado com o 'happy-dom'...
+
+describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... ISSO SIGNIFICA QUE 
+
+
+
+O DOCUMENT VAI FICAR DISPONÍVEL EM TODOS OS CÓDIGOS 
+
+
+
+DE NOSSO ARQUIVO DE TEST,
+
+
+
+MAS QUE 
+
+ESSE DOCUMENT VAI SER 
+
+
+O 
+'VIRTUAL DOM OBJECT',
+
+CRIADO PELO HAPPY DOM,
+
+COM 
+
+
+
+
+__TODO NOSSO CONTEÚDO (do index.html)
+
+ESCRITO DENTRO DELE...
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> QUER DIZER QUE 
+
+É O DOCUMENT OBJECT,
+
+
+
+
+
+COM __ TODOS OS METHODS E COISAS NORMAIS,
+
+
+
+MAS __ TAMBÉM 
+
+COM NOSSO HTML CONTENT,
+
+QUE FOI 
+
+
+
+COLOCADO/RENDERIZADO NESSE 'VIRTUAL BROWSER/DOM'...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--> OK.... COM ISSO,
+
+
+
+
+
+O CÓDIGO DE 
+
+
+''describe('first test', () => {
+  //ISSO FALHARÁ --> FALHARÁ PQ NÃO TEMOS, NATIVAMENTE, ACESSO AO 'DOM' COM O VITEST...
+  it('first test', () => {
+    //ganharemos 'document is not defined'...
+    showError('some message');
+  });
+});
+'',
+
+
+
+
+
+
+
+
+
+
+
+
+
+QUE 
+
+
+
+RODA ESTE CÓDIGO AQUI:
+
+
+
+
+
+export function showError(message) {
+  const errorContainerElement = document.getElementById('errors');
+  const errorMessageElement = document.createElement('p');
+  errorMessageElement.textContent = message;
+  errorContainerElement.innerHTML = '';
+  errorContainerElement.append(errorMessageElement);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VAI FUNCIONAR, OS TESTS VÃO FUNCIONAR,
+
+
+PQ AGORA 
+
+'document' VAI SE REFERIR 
+
+A 
+
+ESSE 
+
+
+HTML CODE, NOSSO HTML CODE,
+
+QUE FOI RENDERIZADO PARA DENTRO DESSE VIRTUAL DOCUMENT..
+
+
+
+
+
+(
+
+    ex:
+
+
+
+      const errorContainerElement = document.getElementById('errors');
+  const errorMessageElement = document.createElement('p');
+  errorMessageElement.textContent = message;
+  errorContainerElement.innerHTML = '';
+  errorContainerElement.append(errorMessageElement);
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK... E SE AGORA RODAMOS TUDO ISSO DE NOVO,
+
+
+FICAMOS SEM FAILURES.... --> SIGNIFICA QUE INTERAGIMOS COM ESSE DOCUMENT/virtual dom COM SUCESSO...
